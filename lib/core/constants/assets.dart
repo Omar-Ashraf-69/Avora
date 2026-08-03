@@ -1,0 +1,13 @@
+// ignore_for_file: prefer_single_quotes
+class Assets {
+  Assets._();
+  
+  static const String imagesPngsAndroid12splash = "assets/images/pngs/android12splash.png";
+
+  static const String imagesPngsAppIcon = "assets/images/pngs/app_icon.png";
+
+  static const String imagesPngsSplash = "assets/images/pngs/splash.png";
+
+  static const String imagesSvgsLogo = "assets/images/svgs/logo.svg";
+}
+
