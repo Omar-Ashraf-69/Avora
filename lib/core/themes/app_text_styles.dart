@@ -35,6 +35,10 @@ abstract class TextStyles {
     fontWeight: FontWeight.w600,
     fontSize: 16.sp,
   );
+  static TextStyle semiBold19 = TextStyle(
+    fontWeight: FontWeight.w600,
+    fontSize: 19.sp,
+  );
 
   static TextStyle bold28 = TextStyle(
     fontWeight: FontWeight.bold,

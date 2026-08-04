@@ -7,6 +7,7 @@ import 'package:avora/features/auth/presentation/views/widgets/custom_phone_numb
 import 'package:avora/features/auth/presentation/views/widgets/have_an_account_row_text.dart';
 import 'package:avora/generated/l10n.dart';
 import 'package:flutter/material.dart';
+
 class LoginView extends StatelessWidget {
   const LoginView({super.key});
 
@@ -21,7 +22,9 @@ class LoginView extends StatelessWidget {
             verticalSpace(24),
             CustomButton(
               label: S.of(context).login,
-              onPressed: () {},
+              onPressed: () {
+                context.pushNamed(AppRoutes.otp);
+              },
             ),
           ],
         ),
@@ -29,9 +32,7 @@ class LoginView extends StatelessWidget {
           title: S.of(context).dont_have_an_account,
           actionText: S.of(context).sign_up,
           onTap: () {
-            context.pushReplacementNamed(
-              AppRoutes.signUp,
-            );
+            context.pushReplacementNamed(AppRoutes.signUp);
           },
         ),
       ),
