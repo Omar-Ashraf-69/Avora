@@ -1,5 +1,6 @@
 import 'package:avora/core/routing/app_routes.dart';
 import 'package:avora/features/auth/presentation/views/login_view.dart';
+import 'package:avora/features/auth/presentation/views/sign_up_view.dart';
 import 'package:flutter/material.dart';
 
 class AppRouter {
@@ -7,6 +8,8 @@ class AppRouter {
     switch (settings.name) {
       case AppRoutes.login:
         return _buildRoute(const LoginView());
+      case AppRoutes.signUp:
+        return _buildRoute(const SignUpView());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

@@ -1,169 +1,95 @@
-import 'package:avora/core/constants/assets.dart';
+import 'package:avora/core/constants/app_durations.dart';
+import 'package:avora/core/helper/extenstions.dart';
 import 'package:avora/core/helper/spacing.dart';
-import 'package:avora/core/themes/app_colors.dart';
+import 'package:avora/core/routing/app_routes.dart';
 import 'package:avora/core/themes/app_text_styles.dart';
 import 'package:avora/core/themes/padding.dart';
+import 'package:avora/core/widgets/custom_button.dart';
+import 'package:avora/features/auth/presentation/views/widgets/custom_phone_number_field.dart';
+import 'package:avora/features/auth/presentation/views/widgets/have_an_account_row_text.dart';
+import 'package:avora/features/auth/presentation/views/widgets/login_logo.dart';
 import 'package:avora/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 class LoginView extends StatelessWidget {
   const LoginView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.sizeOf(context);
+    final isKeyboardOpen = context.isKeyboardOpen;
+
     return Scaffold(
-      body: SafeArea(
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppPadding.medium),
-          child: SingleChildScrollView(
+      resizeToAvoidBottomInset: true,
+      body: GestureDetector(
+        behavior: HitTestBehavior.opaque,
+        onTap: () => FocusScope.of(context).unfocus(),
+        child: SafeArea(
+          bottom: false,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: AppPadding.medium),
             child: Column(
               children: [
-                SizedBox(height: size.height * 0.18),
-                LoginLogoWidget(),
-                SizedBox(height: size.height * 0.1),
-                Text(
-                  S.of(context).login_into_your_account,
-                  style: TextStyles.bold23,
+                Expanded(
+                  child: SingleChildScrollView(
+                    keyboardDismissBehavior:
+                        ScrollViewKeyboardDismissBehavior.onDrag,
+                    child: Column(
+                      children: [
+                        /// Header
+                        AnimatedPadding(
+                          duration: AppDurations.fast,
+                          curve: Curves.easeOutCubic,
+                          padding: EdgeInsets.only(
+                            top: isKeyboardOpen ? 40.h : 190.h,
+                          ),
+                          child: Column(
+                            children: [
+                              AnimatedScale(
+                                duration: AppDurations.fast,
+                                curve: Curves.easeOutCubic,
+                                scale: isKeyboardOpen ? .65 : 1,
+                                child: const LoginLogo(),
+                              ),
+
+                              SizedBox(height: isKeyboardOpen ? 24.h : 56.h),
+
+                              AnimatedOpacity(
+                                duration: AppDurations.fast,
+                                opacity: isKeyboardOpen ? .7 : 1,
+                                child: Text(
+                                  S.of(context).login_into_your_account,
+                                  style: TextStyles.bold23,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        verticalSpace(24),
+                        const CustomPhoneNumberField(),
+                        verticalSpace(24),
+                        CustomButton(
+                          label: S.of(context).login,
+                          onPressed: () {},
+                        ),
+                      ],
+                    ),
+                  ),
                 ),
-                verticalSpace(32),
-                CustomPhoneNumberField(),
-                verticalSpace(32),
-                CustomButton(),
-                SizedBox(height: size.height * 0.18),
-                HaveAnAccountRowText(),
+                HaveAnAccountRowText(
+                  title: S.of(context).dont_have_an_account,
+                  actionText: S.of(context).sign_up,
+                  onTap: () {
+                    context.pushReplacementNamed(AppRoutes.signUp);
+                  },
+                ),
+
+                verticalSpace(16),
               ],
             ),
           ),
         ),
       ),
-    );
-  }
-}
-
-class HaveAnAccountRowText extends StatelessWidget {
-  const HaveAnAccountRowText({
-    super.key,
-  });
-  
-  @override
-  Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        Text(
-          S.of(context).dont_have_an_account,
-          style: TextStyles.semiBold16,
-        ),
-        Padding(
-          padding: const EdgeInsets.symmetric(
-            horizontal: AppPadding.small,
-          ),
-          child: GestureDetector(
-            onTap: () {},
-            child: Text(
-              S.of(context).sign_up,
-              style: TextStyles.bold16.copyWith(color: Colors.blue),
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-}
-
-class CustomButton extends StatelessWidget {
-  const CustomButton({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: ElevatedButton(
-        onPressed: () {},
-        style: ElevatedButton.styleFrom(
-          iconColor: Colors.blue,
-          backgroundColor: Colors.blue,
-          enableFeedback: false,
-    
-          elevation: 0.0,
-          foregroundColor: Colors.white,
-        ),
-    
-        child: Padding(
-          padding: const EdgeInsets.symmetric(
-            vertical: AppPadding.normal,
-          ),
-          child: Text(
-            S.of(context).login,
-            style: TextStyles.bold16,
-          ),
-        ),
-      ),
-    );
-  }
-}
-
-class CustomPhoneNumberField extends StatelessWidget {
-  const CustomPhoneNumberField({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InternationalPhoneNumberInput(
-      onInputChanged: (PhoneNumber number) {},
-      onInputValidated: (bool value) {},
-      textStyle: TextStyles.semiBold16,
-      inputDecoration: InputDecoration(
-        hintText: S.of(context).enter_your_phone_number,
-        hintStyle: TextStyles.semiBold13.copyWith(
-          color: AppColors.lightGray,
-        ),
-        filled: true,
-        fillColor: AppColors.lighterGray,
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(24),
-          borderSide: BorderSide.none,
-        ),
-      ),
-      selectorConfig: SelectorConfig(
-        selectorType: PhoneInputSelectorType.DIALOG,
-        setSelectorButtonAsPrefixIcon: true,
-        leadingPadding: 24,
-        trailingSpace: false,
-        useEmoji: false,
-      ),
-      ignoreBlank: false,
-      autoValidateMode: AutovalidateMode.disabled,
-      selectorTextStyle: TextStyle(color: Colors.black),
-      initialValue: PhoneNumber(isoCode: 'EG'),
-      formatInput: false,
-      keyboardType: TextInputType.numberWithOptions(
-        signed: true,
-        decimal: true,
-      ),
-      inputBorder: OutlineInputBorder(),
-      onSaved: (PhoneNumber number) {},
-    );
-  }
-}
-
-class LoginLogoWidget extends StatelessWidget {
-  const LoginLogoWidget({
-    super.key,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Image.asset(
-      Assets.imagesPngsSplash,
-      width: 120.w,
-      height: 120.h,
     );
   }
 }

@@ -45,3 +45,9 @@ extension NavigatorExtension on BuildContext {
         this,
       ).pushNamedAndRemoveUntil(routeName, (_) => false, arguments: arguments);
 }
+
+
+extension KeyboardExtension on BuildContext {
+  bool get isKeyboardOpen =>
+      MediaQuery.viewInsetsOf(this).bottom > 0;
+}
