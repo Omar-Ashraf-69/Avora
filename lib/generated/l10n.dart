@@ -94,6 +94,26 @@ class S {
   String get sign_up {
     return Intl.message('Sign Up', name: 'sign_up', desc: '', args: []);
   }
+
+  /// `Already have an account?`
+  String get already_have_an_account {
+    return Intl.message(
+      'Already have an account?',
+      name: 'already_have_an_account',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create an account`
+  String get create_an_account {
+    return Intl.message(
+      'Create an account',
+      name: 'create_an_account',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
