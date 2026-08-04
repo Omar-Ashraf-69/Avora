@@ -114,6 +114,41 @@ class S {
       args: [],
     );
   }
+
+  /// `OTP Code Verification`
+  String get otp_code_verification {
+    return Intl.message(
+      'OTP Code Verification',
+      name: 'otp_code_verification',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Code has been sent to `
+  String get code_has_been_sent_to {
+    return Intl.message(
+      'Code has been sent to ',
+      name: 'code_has_been_sent_to',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Resend Code in `
+  String get resend_code_in {
+    return Intl.message(
+      'Resend Code in ',
+      name: 'resend_code_in',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Verify`
+  String get verify {
+    return Intl.message('Verify', name: 'verify', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

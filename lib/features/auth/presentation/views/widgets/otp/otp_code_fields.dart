@@ -68,8 +68,6 @@ class _OtpCodeFieldsState extends State<OtpCodeFields> {
         widget.length,
         (index) {
           return OtpDigitField(
-            index: index,
-            length: widget.length,
             controller: _controllers[index],
             focusNode: _focusNodes[index],
 

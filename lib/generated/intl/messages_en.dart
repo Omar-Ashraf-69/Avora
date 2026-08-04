@@ -25,6 +25,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "already_have_an_account": MessageLookupByLibrary.simpleMessage(
       "Already have an account?",
     ),
+    "code_has_been_sent_to": MessageLookupByLibrary.simpleMessage(
+      "Code has been sent to ",
+    ),
     "create_an_account": MessageLookupByLibrary.simpleMessage(
       "Create an account",
     ),
@@ -38,6 +41,11 @@ class MessageLookup extends MessageLookupByLibrary {
     "login_into_your_account": MessageLookupByLibrary.simpleMessage(
       "Login into your account",
     ),
+    "otp_code_verification": MessageLookupByLibrary.simpleMessage(
+      "OTP Code Verification",
+    ),
+    "resend_code_in": MessageLookupByLibrary.simpleMessage("Resend Code in "),
     "sign_up": MessageLookupByLibrary.simpleMessage("Sign Up"),
+    "verify": MessageLookupByLibrary.simpleMessage("Verify"),
   };
 }

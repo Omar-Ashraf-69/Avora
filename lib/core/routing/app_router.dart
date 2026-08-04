@@ -12,7 +12,7 @@ class AppRouter {
       case AppRoutes.signUp:
         return _buildRoute(const SignUpView());
       case AppRoutes.otp:
-        return _buildRoute(const OtpView());
+        return _buildRoute(const OtpVerificationView());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(
