@@ -31,6 +31,10 @@ class AvoraApp extends StatelessWidget {
           GlobalCupertinoLocalizations.delegate,
         ],
         locale: Provider.of<LocaleProvider>(context).locale,
+        theme: ThemeData(
+          scaffoldBackgroundColor: Colors.white,
+          appBarTheme: AppBarTheme(backgroundColor: Colors.white),
+        ),
         initialRoute: initialRoute,
         onGenerateRoute: _appRouter.onGenerateRoute,
         supportedLocales: S.delegate.supportedLocales,

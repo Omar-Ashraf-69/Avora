@@ -1,4 +1,3 @@
-
 import 'package:avora/core/constants/assets.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,6 +7,6 @@ class LoginLogo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Image.asset(Assets.imagesPngsSplash, width: 120.w, height: 120.h);
+    return Image.asset(Assets.imagesPngsAppIcon, width: 120.w, height: 120.h);
   }
 }

@@ -1,4 +1,3 @@
-
 import 'package:avora/core/themes/app_colors.dart';
 import 'package:avora/core/themes/app_text_styles.dart';
 import 'package:avora/core/themes/padding.dart';

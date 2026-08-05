@@ -11,6 +11,7 @@ dynamic congratulationsDialog(BuildContext context) {
   return showDialog(
     context: context,
     builder: (context) => AlertDialog(
+      backgroundColor: Colors.white,
       icon: Image.asset(
         Assets.imagesPngsPersonAvatar,
         width: 200.w,
