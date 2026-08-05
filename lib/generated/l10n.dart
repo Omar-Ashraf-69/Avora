@@ -149,6 +149,71 @@ class S {
   String get verify {
     return Intl.message('Verify', name: 'verify', desc: '', args: []);
   }
+
+  /// `Fill your profile`
+  String get fill_your_profile {
+    return Intl.message(
+      'Fill your profile',
+      name: 'fill_your_profile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Continue`
+  String get con {
+    return Intl.message('Continue', name: 'con', desc: '', args: []);
+  }
+
+  /// `Fisrt name`
+  String get fisrt_name {
+    return Intl.message('Fisrt name', name: 'fisrt_name', desc: '', args: []);
+  }
+
+  /// `NickName`
+  String get nick_name {
+    return Intl.message('NickName', name: 'nick_name', desc: '', args: []);
+  }
+
+  /// `Email`
+  String get email {
+    return Intl.message('Email', name: 'email', desc: '', args: []);
+  }
+
+  /// `Date of birth`
+  String get date_of_birth {
+    return Intl.message(
+      'Date of birth',
+      name: 'date_of_birth',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `About`
+  String get about {
+    return Intl.message('About', name: 'about', desc: '', args: []);
+  }
+
+  /// `Congratulations!`
+  String get congratulations {
+    return Intl.message(
+      'Congratulations!',
+      name: 'congratulations',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your account is ready to use. You will be redirected to the Home page in a few seconds.`
+  String get your_account_has_been_created {
+    return Intl.message(
+      'Your account is ready to use. You will be redirected to the Home page in a few seconds.',
+      name: 'your_account_has_been_created',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

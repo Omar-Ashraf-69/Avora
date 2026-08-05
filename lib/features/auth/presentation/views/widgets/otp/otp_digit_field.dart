@@ -65,7 +65,7 @@ class OtpDigitField extends StatelessWidget {
           cursorHeight: 28,
           maxLength: 1,
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          decoration: decoration,
+          decoration: counterInputDecortaion,
         ),
       ),
     );

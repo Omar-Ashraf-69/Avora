@@ -10,5 +10,14 @@
   "otp_code_verification": "OTP Code Verification",
   "code_has_been_sent_to": "Code has been sent to ",
   "resend_code_in": "Resend Code in ",
-  "verify": "Verify"
+  "verify": "Verify",
+  "fill_your_profile": "Fill your profile",
+  "con": "Continue",
+  "fisrt_name": "Fisrt name",
+  "nick_name": "NickName",
+  "email": "Email",
+  "date_of_birth": "Date of birth",
+  "about": "About",
+  "congratulations": "Congratulations!",
+  "your_account_has_been_created": "Your account is ready to use. You will be redirected to the Home page in a few seconds."
 }

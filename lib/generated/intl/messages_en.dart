@@ -22,30 +22,43 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "about": MessageLookupByLibrary.simpleMessage("About"),
     "already_have_an_account": MessageLookupByLibrary.simpleMessage(
       "Already have an account?",
     ),
     "code_has_been_sent_to": MessageLookupByLibrary.simpleMessage(
       "Code has been sent to ",
     ),
+    "con": MessageLookupByLibrary.simpleMessage("Continue"),
+    "congratulations": MessageLookupByLibrary.simpleMessage("Congratulations!"),
     "create_an_account": MessageLookupByLibrary.simpleMessage(
       "Create an account",
     ),
+    "date_of_birth": MessageLookupByLibrary.simpleMessage("Date of birth"),
     "dont_have_an_account": MessageLookupByLibrary.simpleMessage(
       "Don\'t have an account?",
     ),
+    "email": MessageLookupByLibrary.simpleMessage("Email"),
     "enter_your_phone_number": MessageLookupByLibrary.simpleMessage(
       "Enter your phone number",
     ),
+    "fill_your_profile": MessageLookupByLibrary.simpleMessage(
+      "Fill your profile",
+    ),
+    "fisrt_name": MessageLookupByLibrary.simpleMessage("Fisrt name"),
     "login": MessageLookupByLibrary.simpleMessage("Login"),
     "login_into_your_account": MessageLookupByLibrary.simpleMessage(
       "Login into your account",
     ),
+    "nick_name": MessageLookupByLibrary.simpleMessage("NickName"),
     "otp_code_verification": MessageLookupByLibrary.simpleMessage(
       "OTP Code Verification",
     ),
     "resend_code_in": MessageLookupByLibrary.simpleMessage("Resend Code in "),
     "sign_up": MessageLookupByLibrary.simpleMessage("Sign Up"),
     "verify": MessageLookupByLibrary.simpleMessage("Verify"),
+    "your_account_has_been_created": MessageLookupByLibrary.simpleMessage(
+      "Your account is ready to use. You will be redirected to the Home page in a few seconds.",
+    ),
   };
 }

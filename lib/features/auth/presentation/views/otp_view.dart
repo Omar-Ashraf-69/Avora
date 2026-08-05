@@ -1,8 +1,10 @@
 import 'package:avora/core/constants/app_spacing.dart';
+import 'package:avora/core/helper/extenstions.dart';
 import 'package:avora/core/helper/spacing.dart';
+import 'package:avora/core/routing/app_routes.dart';
 import 'package:avora/core/themes/padding.dart';
 import 'package:avora/core/widgets/custom_button.dart';
-import 'package:avora/features/auth/presentation/views/widgets/otp/otp_appbar.dart';
+import 'package:avora/core/widgets/custom_app_bar.dart';
 import 'package:avora/features/auth/presentation/views/widgets/otp/otp_code_fields.dart';
 import 'package:avora/features/auth/presentation/views/widgets/otp/otp_header.dart';
 import 'package:avora/features/auth/presentation/views/widgets/otp/otp_resend_section.dart';
@@ -15,7 +17,7 @@ class OtpVerificationView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: otpAppBar(context),
+      appBar: customAppBar(context, S.of(context).otp_code_verification),
       body: GestureDetector(
         behavior: HitTestBehavior.opaque,
         onTap: () => FocusScope.of(context).unfocus(),
@@ -33,7 +35,9 @@ class OtpVerificationView extends StatelessWidget {
               verticalSpace(24),
               const OtpResendSection(),
               const Spacer(flex: 2),
-              CustomButton(label: S.of(context).verify, onPressed: () {}),
+              CustomButton(label: S.of(context).verify, onPressed: () {
+                context.pushNamed(AppRoutes.fillYourProfile);
+              }),
               verticalSpace(AppSpacing.md),
             ],
           ),

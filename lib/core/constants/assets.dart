@@ -6,6 +6,8 @@ class Assets {
 
   static const String imagesPngsAppIcon = "assets/images/pngs/app_icon.png";
 
+  static const String imagesPngsPersonAvatar = "assets/images/pngs/person_avatar.png";
+
   static const String imagesPngsSplash = "assets/images/pngs/splash.png";
 
   static const String imagesSvgsLogo = "assets/images/svgs/logo.svg";
