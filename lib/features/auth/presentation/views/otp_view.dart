@@ -2,9 +2,9 @@ import 'package:avora/core/constants/app_spacing.dart';
 import 'package:avora/core/helper/extenstions.dart';
 import 'package:avora/core/helper/spacing.dart';
 import 'package:avora/core/routing/app_routes.dart';
-import 'package:avora/core/themes/padding.dart';
 import 'package:avora/core/widgets/custom_button.dart';
 import 'package:avora/core/widgets/custom_app_bar.dart';
+import 'package:avora/features/auth/presentation/views/widgets/auth_body.dart';
 import 'package:avora/features/auth/presentation/views/widgets/otp/otp_code_fields.dart';
 import 'package:avora/features/auth/presentation/views/widgets/otp/otp_header.dart';
 import 'package:avora/features/auth/presentation/views/widgets/otp/otp_resend_section.dart';
@@ -18,29 +18,27 @@ class OtpVerificationView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: customAppBar(context, S.of(context).otp_code_verification),
-      body: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: AppPadding.medium),
-          child: Column(
-            children: [
-              OtpHeader(phoneNumber: "+1 23******0"),
-              verticalSpace(AppSpacing.xl),
-              OtpCodeFields(
-                onCompleted: (code) {
-                  //! Handle OTP code completion
-                },
-              ),
-              verticalSpace(24),
-              const OtpResendSection(),
-              const Spacer(flex: 2),
-              CustomButton(label: S.of(context).verify, onPressed: () {
+      body: AuthScaffoldBodyWidget(
+        child: Column(
+          children: [
+            OtpHeader(phoneNumber: "+1 23******0"),
+            verticalSpace(AppSpacing.xl),
+            OtpCodeFields(
+              onCompleted: (code) {
+                //! Handle OTP code completion
+              },
+            ),
+            verticalSpace(24),
+            const OtpResendSection(),
+            const Spacer(flex: 2),
+            CustomButton(
+              label: S.of(context).verify,
+              onPressed: () {
                 context.pushNamed(AppRoutes.fillYourProfile);
-              }),
-              verticalSpace(AppSpacing.md),
-            ],
-          ),
+              },
+            ),
+            verticalSpace(AppSpacing.md),
+          ],
         ),
       ),
     );
