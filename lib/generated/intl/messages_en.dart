@@ -26,6 +26,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "already_have_an_account": MessageLookupByLibrary.simpleMessage(
       "Already have an account?",
     ),
+    "chats": MessageLookupByLibrary.simpleMessage("Chats"),
     "code_has_been_sent_to": MessageLookupByLibrary.simpleMessage(
       "Code has been sent to ",
     ),
@@ -46,6 +47,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Fill your profile",
     ),
     "fisrt_name": MessageLookupByLibrary.simpleMessage("Fisrt name"),
+    "groups": MessageLookupByLibrary.simpleMessage("Groups"),
     "login": MessageLookupByLibrary.simpleMessage("Login"),
     "login_into_your_account": MessageLookupByLibrary.simpleMessage(
       "Login into your account",
@@ -55,6 +57,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "OTP Code Verification",
     ),
     "resend_code_in": MessageLookupByLibrary.simpleMessage("Resend Code in "),
+    "settings": MessageLookupByLibrary.simpleMessage("Settings"),
     "sign_up": MessageLookupByLibrary.simpleMessage("Sign Up"),
     "verify": MessageLookupByLibrary.simpleMessage("Verify"),
     "your_account_has_been_created": MessageLookupByLibrary.simpleMessage(

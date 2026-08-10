@@ -19,5 +19,8 @@
   "date_of_birth": "Date of birth",
   "about": "About",
   "congratulations": "Congratulations!",
-  "your_account_has_been_created": "Your account is ready to use. You will be redirected to the Home page in a few seconds."
+  "your_account_has_been_created": "Your account is ready to use. You will be redirected to the Home page in a few seconds.",
+  "settings": "Settings",
+  "chats": "Chats",
+  "groups": "Groups"
 }
