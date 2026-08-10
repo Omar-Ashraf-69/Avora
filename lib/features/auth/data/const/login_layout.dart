@@ -1,5 +1,3 @@
-
-
 class LoginLayout {
   static const expandedLogoScale = 1.0;
   static const collapsedLogoScale = .65;
