@@ -1,4 +1,4 @@
-import 'package:avora/core/widgets/custom_floating_action_button.dart';
+import 'package:avora/features/chats/presentation/views/chats_view.dart';
 import 'package:avora/features/home/presentation/views/widgets/home_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -33,15 +33,14 @@ class _HomeViewState extends State<HomeView> {
         controller: _pageController,
         onPageChanged: _onPageChanged,
         children: const [
-          Center(child: Text('Chats View')),
+          ChatsView(),
           Center(child: Text('Groups View')),
           Center(child: Text('Settings View')),
         ],
       ),
-      floatingActionButton: CustomFloatingActionButton(
-        icon: Icons.add,
-        onPressed: () {},
-      ),
+      // floatingActionButton: _currentIndex == 2
+      //     ? null
+      //     : CustomFloatingActionButton(icon: Icons.add, onPressed: () {}),
       bottomNavigationBar: HomeBottomNavigationBar(
         currentIndex: _currentIndex,
         onDestinationSelected: _onNavigationItemTapped,

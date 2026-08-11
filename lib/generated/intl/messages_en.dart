@@ -57,6 +57,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "OTP Code Verification",
     ),
     "resend_code_in": MessageLookupByLibrary.simpleMessage("Resend Code in "),
+    "search": MessageLookupByLibrary.simpleMessage("Search"),
     "settings": MessageLookupByLibrary.simpleMessage("Settings"),
     "sign_up": MessageLookupByLibrary.simpleMessage("Sign Up"),
     "verify": MessageLookupByLibrary.simpleMessage("Verify"),

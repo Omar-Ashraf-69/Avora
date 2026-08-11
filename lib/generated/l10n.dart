@@ -229,6 +229,11 @@ class S {
   String get groups {
     return Intl.message('Groups', name: 'groups', desc: '', args: []);
   }
+
+  /// `Search`
+  String get search {
+    return Intl.message('Search', name: 'search', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
