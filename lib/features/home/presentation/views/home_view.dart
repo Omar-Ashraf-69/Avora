@@ -1,4 +1,5 @@
 import 'package:avora/features/chats/presentation/views/chats_view.dart';
+import 'package:avora/features/groups/presentation/views/groups_view.dart';
 import 'package:avora/features/home/presentation/views/widgets/home_bottom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 
@@ -34,7 +35,7 @@ class _HomeViewState extends State<HomeView> {
         onPageChanged: _onPageChanged,
         children: const [
           ChatsView(),
-          Center(child: Text('Groups View')),
+          GroupsView(),
           Center(child: Text('Settings View')),
         ],
       ),

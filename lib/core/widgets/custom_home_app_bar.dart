@@ -26,3 +26,10 @@ class ChatsAppBar extends StatelessWidget {
     );
   }
 }
+
+AppBar customHomeAppBar() {
+  return AppBar(
+    surfaceTintColor: Colors.transparent,
+    title: const ChatsAppBar(),
+  );
+}

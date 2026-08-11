@@ -6,9 +6,10 @@ import 'package:avora/core/themes/app_text_styles.dart';
 import 'package:avora/core/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 
-class ChatsWelcomeView extends StatelessWidget {
-  const ChatsWelcomeView({super.key});
-
+class WelcomeViewColumn extends StatelessWidget {
+  const WelcomeViewColumn({super.key, required this.actionText, required this.message});
+  final String actionText;
+  final String message;
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -28,12 +29,12 @@ class ChatsWelcomeView extends StatelessWidget {
               ),
             ),
             Text(
-              "Avora connects you with family and friends. \n Start chatting now",
+              message,
               style: TextStyles.regular15,
               textAlign: TextAlign.center,
             ),
             verticalSpace(AppSpacing.md),
-            CustomButton(label: "Start new chat", onPressed: () {}),
+            CustomButton(label: actionText, onPressed: () {}),
             verticalSpace(AppSpacing.xl),
           ],
         ),
