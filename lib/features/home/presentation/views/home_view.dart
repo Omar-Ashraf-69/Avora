@@ -1,6 +1,7 @@
 import 'package:avora/features/chats/presentation/views/chats_view.dart';
 import 'package:avora/features/groups/presentation/views/groups_view.dart';
 import 'package:avora/features/home/presentation/views/widgets/home_bottom_navigation_bar.dart';
+import 'package:avora/features/settings/presentation/views/settings_view.dart';
 import 'package:flutter/material.dart';
 
 class HomeView extends StatefulWidget {
@@ -36,7 +37,7 @@ class _HomeViewState extends State<HomeView> {
         children: const [
           ChatsView(),
           GroupsView(),
-          Center(child: Text('Settings View')),
+          SettingsView(),
         ],
       ),
       // floatingActionButton: _currentIndex == 2
