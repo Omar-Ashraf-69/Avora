@@ -1,7 +1,9 @@
 import 'package:avora/core/helper/extenstions.dart';
 import 'package:avora/core/routing/app_routes.dart';
+import 'package:avora/core/themes/app_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:hugeicons/hugeicons.dart';
 
 class SettingsView extends StatelessWidget {
   const SettingsView({super.key});
@@ -54,7 +56,7 @@ class _HeaderSection extends StatelessWidget {
       height: 280.h,
       width: double.infinity,
       child: Padding(
-        padding: EdgeInsets.fromLTRB(24.w, 40.h, 24.w, 24.h),
+        padding: EdgeInsets.fromLTRB(24.w, 40.h, 24.w, 8.h),
         child: Column(
           children: [
             Expanded(
@@ -66,14 +68,29 @@ class _HeaderSection extends StatelessWidget {
                 ),
               ),
             ),
-            Text(
-              name,
-              style: TextStyle(
-                fontSize: 28.sp,
-                fontWeight: FontWeight.bold,
-                color: Colors.black,
-                height: 1.1,
-              ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  name,
+                  style: TextStyle(
+                    fontSize: 28.sp,
+                    fontWeight: FontWeight.bold,
+                    color: Colors.black,
+                    height: 1.1,
+                  ),
+                ),
+                IconButton(
+                  onPressed: () {
+                    context.pushNamed(AppRoutes.qrCode);
+                  },
+                  icon: HugeIcon(
+                    icon: HugeIcons.strokeRoundedQrCode01,
+                    color: AppColors.mainBlue,
+                  ),
+                ),
+              ],
             ),
           ],
         ),
@@ -122,7 +139,7 @@ class _AccountInfoCard extends StatelessWidget {
         ),
 
         Positioned(
-          top: -20.h,
+          top: -16.h,
           right: 20.w,
           child: SizedBox(
             width: 48.w,
@@ -134,11 +151,7 @@ class _AccountInfoCard extends StatelessWidget {
               elevation: 4,
               backgroundColor: SettingsView._editButtonColor,
               shape: const CircleBorder(),
-              child: Icon(
-                Icons.edit_outlined,
-                color: Colors.white,
-                size: 22.r,
-              ),
+              child: Icon(Icons.edit_outlined, color: Colors.white, size: 22.r),
             ),
           ),
         ),

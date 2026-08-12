@@ -5,6 +5,7 @@ import 'package:avora/features/auth/presentation/views/login_view.dart';
 import 'package:avora/features/auth/presentation/views/otp_view.dart';
 import 'package:avora/features/auth/presentation/views/sign_up_view.dart';
 import 'package:avora/features/home/presentation/views/home_view.dart';
+import 'package:avora/features/qr/presentation/views/qr_code_view.dart';
 import 'package:flutter/material.dart';
 
 class AppRouter {
@@ -22,6 +23,8 @@ class AppRouter {
         return _buildRoute(const HomeView());
       case AppRoutes.editProfile:
         return _buildRoute(const EditProfileView());
+      case AppRoutes.qrCode:
+        return _buildRoute(const QrCodeView());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

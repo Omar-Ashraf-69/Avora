@@ -67,6 +67,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "password": MessageLookupByLibrary.simpleMessage("Password"),
     "phone_number": MessageLookupByLibrary.simpleMessage("Phone number"),
+    "qr_code": MessageLookupByLibrary.simpleMessage("QR Code"),
     "resend_code_in": MessageLookupByLibrary.simpleMessage("Resend Code in "),
     "save_changes": MessageLookupByLibrary.simpleMessage("Save changes"),
     "search": MessageLookupByLibrary.simpleMessage("Search"),

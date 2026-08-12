@@ -5,4 +5,5 @@ class AppRoutes {
   static const String fillYourProfile = 'fillYourProfile';
   static const String home = 'home';
   static const String editProfile = 'editProfile';
+  static const String qrCode = 'qrCode';
 }

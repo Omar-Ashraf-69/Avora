@@ -314,6 +314,11 @@ class S {
   String get no {
     return Intl.message('No', name: 'no', desc: '', args: []);
   }
+
+  /// `QR Code`
+  String get qr_code {
+    return Intl.message('QR Code', name: 'qr_code', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -34,5 +34,6 @@
   "delete": "Delete",
   "are_you_sure": "Are you sure?",
   "yes": "Yes",
-  "no": "No"
+  "no": "No",
+  "qr_code": "QR Code"
 }
