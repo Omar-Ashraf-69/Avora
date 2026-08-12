@@ -26,6 +26,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "already_have_an_account": MessageLookupByLibrary.simpleMessage(
       "Already have an account?",
     ),
+    "are_you_sure": MessageLookupByLibrary.simpleMessage("Are you sure?"),
+    "bio": MessageLookupByLibrary.simpleMessage("Bio"),
     "chats": MessageLookupByLibrary.simpleMessage("Chats"),
     "code_has_been_sent_to": MessageLookupByLibrary.simpleMessage(
       "Code has been sent to ",
@@ -36,8 +38,13 @@ class MessageLookup extends MessageLookupByLibrary {
       "Create an account",
     ),
     "date_of_birth": MessageLookupByLibrary.simpleMessage("Date of birth"),
+    "delete": MessageLookupByLibrary.simpleMessage("Delete"),
+    "delete_account": MessageLookupByLibrary.simpleMessage("Delete account"),
     "dont_have_an_account": MessageLookupByLibrary.simpleMessage(
       "Don\'t have an account?",
+    ),
+    "edit_your_profile": MessageLookupByLibrary.simpleMessage(
+      "Edit your profile",
     ),
     "email": MessageLookupByLibrary.simpleMessage("Email"),
     "enter_your_phone_number": MessageLookupByLibrary.simpleMessage(
@@ -52,15 +59,21 @@ class MessageLookup extends MessageLookupByLibrary {
     "login_into_your_account": MessageLookupByLibrary.simpleMessage(
       "Login into your account",
     ),
+    "logout": MessageLookupByLibrary.simpleMessage("Logout"),
     "nick_name": MessageLookupByLibrary.simpleMessage("NickName"),
+    "no": MessageLookupByLibrary.simpleMessage("No"),
     "otp_code_verification": MessageLookupByLibrary.simpleMessage(
       "OTP Code Verification",
     ),
+    "password": MessageLookupByLibrary.simpleMessage("Password"),
+    "phone_number": MessageLookupByLibrary.simpleMessage("Phone number"),
     "resend_code_in": MessageLookupByLibrary.simpleMessage("Resend Code in "),
+    "save_changes": MessageLookupByLibrary.simpleMessage("Save changes"),
     "search": MessageLookupByLibrary.simpleMessage("Search"),
     "settings": MessageLookupByLibrary.simpleMessage("Settings"),
     "sign_up": MessageLookupByLibrary.simpleMessage("Sign Up"),
     "verify": MessageLookupByLibrary.simpleMessage("Verify"),
+    "yes": MessageLookupByLibrary.simpleMessage("Yes"),
     "your_account_has_been_created": MessageLookupByLibrary.simpleMessage(
       "Your account is ready to use. You will be redirected to the Home page in a few seconds.",
     ),

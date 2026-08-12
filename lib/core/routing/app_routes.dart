@@ -4,4 +4,5 @@ class AppRoutes {
   static const String otp = 'otp';
   static const String fillYourProfile = 'fillYourProfile';
   static const String home = 'home';
+  static const String editProfile = 'editProfile';
 }

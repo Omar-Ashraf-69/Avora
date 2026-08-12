@@ -234,6 +234,86 @@ class S {
   String get search {
     return Intl.message('Search', name: 'search', desc: '', args: []);
   }
+
+  /// `Edit your profile`
+  String get edit_your_profile {
+    return Intl.message(
+      'Edit your profile',
+      name: 'edit_your_profile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save changes`
+  String get save_changes {
+    return Intl.message(
+      'Save changes',
+      name: 'save_changes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bio`
+  String get bio {
+    return Intl.message('Bio', name: 'bio', desc: '', args: []);
+  }
+
+  /// `Phone number`
+  String get phone_number {
+    return Intl.message(
+      'Phone number',
+      name: 'phone_number',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password`
+  String get password {
+    return Intl.message('Password', name: 'password', desc: '', args: []);
+  }
+
+  /// `Logout`
+  String get logout {
+    return Intl.message('Logout', name: 'logout', desc: '', args: []);
+  }
+
+  /// `Delete account`
+  String get delete_account {
+    return Intl.message(
+      'Delete account',
+      name: 'delete_account',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get delete {
+    return Intl.message('Delete', name: 'delete', desc: '', args: []);
+  }
+
+  /// `Are you sure?`
+  String get are_you_sure {
+    return Intl.message(
+      'Are you sure?',
+      name: 'are_you_sure',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yes`
+  String get yes {
+    return Intl.message('Yes', name: 'yes', desc: '', args: []);
+  }
+
+  /// `No`
+  String get no {
+    return Intl.message('No', name: 'no', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

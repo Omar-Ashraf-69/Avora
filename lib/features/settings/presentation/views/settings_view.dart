@@ -1,3 +1,5 @@
+import 'package:avora/core/helper/extenstions.dart';
+import 'package:avora/core/routing/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -126,14 +128,16 @@ class _AccountInfoCard extends StatelessWidget {
             width: 48.w,
             height: 48.w,
             child: FloatingActionButton(
-              onPressed: () {},
+              onPressed: () {
+                context.pushNamed(AppRoutes.editProfile);
+              },
               elevation: 4,
               backgroundColor: SettingsView._editButtonColor,
               shape: const CircleBorder(),
               child: Icon(
                 Icons.edit_outlined,
                 color: Colors.white,
-                size: 22.sp,
+                size: 22.r,
               ),
             ),
           ),

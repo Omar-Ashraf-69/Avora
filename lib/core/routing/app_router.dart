@@ -1,5 +1,6 @@
 import 'package:avora/core/routing/app_routes.dart';
-import 'package:avora/features/auth/presentation/views/fill_your_profile_view.dart';
+import 'package:avora/features/profile/presentation/views/edit_profile_view.dart';
+import 'package:avora/features/profile/presentation/views/fill_your_profile_view.dart';
 import 'package:avora/features/auth/presentation/views/login_view.dart';
 import 'package:avora/features/auth/presentation/views/otp_view.dart';
 import 'package:avora/features/auth/presentation/views/sign_up_view.dart';
@@ -19,6 +20,8 @@ class AppRouter {
         return _buildRoute(const FillYourProfileView());
       case AppRoutes.home:
         return _buildRoute(const HomeView());
+      case AppRoutes.editProfile:
+        return _buildRoute(const EditProfileView());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

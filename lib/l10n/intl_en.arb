@@ -23,5 +23,16 @@
   "settings": "Settings",
   "chats": "Chats",
   "groups": "Groups",
-  "search": "Search"
+  "search": "Search",
+  "edit_your_profile": "Edit your profile",
+  "save_changes": "Save changes",
+  "bio": "Bio",
+  "phone_number": "Phone number",
+  "password": "Password",
+  "logout": "Logout",
+  "delete_account": "Delete account",
+  "delete": "Delete",
+  "are_you_sure": "Are you sure?",
+  "yes": "Yes",
+  "no": "No"
 }
