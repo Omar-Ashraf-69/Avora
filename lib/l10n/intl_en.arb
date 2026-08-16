@@ -35,5 +35,12 @@
   "are_you_sure": "Are you sure?",
   "yes": "Yes",
   "no": "No",
-  "qr_code": "QR Code"
+  "qr_code": "QR Code",
+  "start_new_chat": "Start New Chat",
+  "start_a_converstion": "Start a conversation with your friends and family ",
+  "to_share_your_thoughts_and_ideas": "to share your thoughts and ideas. ",
+  "start": "Start",
+  "welcome": "Welcome",
+  "start_new_group": "Start New Group"
+
 }

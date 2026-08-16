@@ -319,6 +319,56 @@ class S {
   String get qr_code {
     return Intl.message('QR Code', name: 'qr_code', desc: '', args: []);
   }
+
+  /// `Start New Chat`
+  String get start_new_chat {
+    return Intl.message(
+      'Start New Chat',
+      name: 'start_new_chat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start a conversation with your friends and family `
+  String get start_a_converstion {
+    return Intl.message(
+      'Start a conversation with your friends and family ',
+      name: 'start_a_converstion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `to share your thoughts and ideas. `
+  String get to_share_your_thoughts_and_ideas {
+    return Intl.message(
+      'to share your thoughts and ideas. ',
+      name: 'to_share_your_thoughts_and_ideas',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start`
+  String get start {
+    return Intl.message('Start', name: 'start', desc: '', args: []);
+  }
+
+  /// `Welcome`
+  String get welcome {
+    return Intl.message('Welcome', name: 'welcome', desc: '', args: []);
+  }
+
+  /// `Start New Group`
+  String get start_new_group {
+    return Intl.message(
+      'Start New Group',
+      name: 'start_new_group',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

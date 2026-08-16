@@ -13,7 +13,7 @@ abstract class AppColors {
   static const Color lightSecondaryColor = Color(0xFFF8C76D);
   static const Color lightCardBackground = Color(0xffF3F5F6);
   static const Color ligtherWhite = Color(0xffF2F4F6);
-
+  static const Color lightRed = Color(0xffE60000);
   static const Color lightGreen = Color(0xffE7F7EA);
   static const Color lightWhite = Color(0xffF1F1F5);
 }

@@ -73,7 +73,17 @@ class MessageLookup extends MessageLookupByLibrary {
     "search": MessageLookupByLibrary.simpleMessage("Search"),
     "settings": MessageLookupByLibrary.simpleMessage("Settings"),
     "sign_up": MessageLookupByLibrary.simpleMessage("Sign Up"),
+    "start": MessageLookupByLibrary.simpleMessage("Start"),
+    "start_a_converstion": MessageLookupByLibrary.simpleMessage(
+      "Start a conversation with your friends and family ",
+    ),
+    "start_new_chat": MessageLookupByLibrary.simpleMessage("Start New Chat"),
+    "start_new_group": MessageLookupByLibrary.simpleMessage("Start New Group"),
+    "to_share_your_thoughts_and_ideas": MessageLookupByLibrary.simpleMessage(
+      "to share your thoughts and ideas. ",
+    ),
     "verify": MessageLookupByLibrary.simpleMessage("Verify"),
+    "welcome": MessageLookupByLibrary.simpleMessage("Welcome"),
     "yes": MessageLookupByLibrary.simpleMessage("Yes"),
     "your_account_has_been_created": MessageLookupByLibrary.simpleMessage(
       "Your account is ready to use. You will be redirected to the Home page in a few seconds.",
