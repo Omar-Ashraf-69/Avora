@@ -1,4 +1,5 @@
 import 'package:avora/core/routing/app_routes.dart';
+import 'package:avora/features/groups/presentation/views/widgets/create_group_view.dart';
 import 'package:avora/features/profile/presentation/views/edit_profile_view.dart';
 import 'package:avora/features/profile/presentation/views/fill_your_profile_view.dart';
 import 'package:avora/features/auth/presentation/views/login_view.dart';
@@ -25,6 +26,8 @@ class AppRouter {
         return _buildRoute(const EditProfileView());
       case AppRoutes.qrCode:
         return _buildRoute(const QrCodeView());
+      case AppRoutes.createGroup:
+        return _buildRoute(const CreateGroupView());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

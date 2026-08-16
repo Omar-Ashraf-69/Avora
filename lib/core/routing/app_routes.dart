@@ -6,4 +6,5 @@ class AppRoutes {
   static const String home = 'home';
   static const String editProfile = 'editProfile';
   static const String qrCode = 'qrCode';
+  static const String createGroup = 'createGroup';
 }
