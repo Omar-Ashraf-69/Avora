@@ -41,6 +41,12 @@
   "to_share_your_thoughts_and_ideas": "to share your thoughts and ideas. ",
   "start": "Start",
   "welcome": "Welcome",
-  "start_new_group": "Start New Group"
+  "start_new_group": "Start New Group",
+  "create_a_new_group": "Create a new group",
+  "get_your_friends_to": "Get your friends and family together to share your thoughts and ideas",
+  "add_members": "Add Members",
+  "choose_people_from": "Choose people from your chats to add to the group",
+  "create": "Create",
+  "cancel": "Cancel"
 
 }

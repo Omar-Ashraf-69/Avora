@@ -4,7 +4,6 @@ import 'package:avora/core/helper/spacing.dart';
 import 'package:avora/core/themes/app_colors.dart';
 import 'package:avora/core/themes/app_text_styles.dart';
 import 'package:avora/core/widgets/custom_button.dart';
-import 'package:avora/features/chats/presentation/views/widgets/new_chat_bottom_sheet.dart';
 import 'package:avora/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
@@ -12,10 +11,11 @@ class WelcomeViewColumn extends StatelessWidget {
   const WelcomeViewColumn({
     super.key,
     required this.actionText,
-    required this.message,
+    required this.message, this.onPressed,
   });
   final String actionText;
   final String message;
+  final Function()? onPressed;
   @override
   Widget build(BuildContext context) {
     return Center(
@@ -42,16 +42,7 @@ class WelcomeViewColumn extends StatelessWidget {
             verticalSpace(AppSpacing.md),
             CustomButton(
               label: actionText,
-              onPressed: () async {
-                await showNewChatBottomSheet(
-                  context,
-                  onStartChat: (phoneNumber) {
-                    //! TODO: Find user by phone number.
-                    //! TODO: Navigate to ChatRoomView.
-                    debugPrint('Start chat with: $phoneNumber');
-                  },
-                );
-              },
+              onPressed: onPressed,
             ),
             verticalSpace(AppSpacing.xl),
           ],

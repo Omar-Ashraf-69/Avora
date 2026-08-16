@@ -369,6 +369,51 @@ class S {
       args: [],
     );
   }
+
+  /// `Create a new group`
+  String get create_a_new_group {
+    return Intl.message(
+      'Create a new group',
+      name: 'create_a_new_group',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Get your friends and family together to share your thoughts and ideas`
+  String get get_your_friends_to {
+    return Intl.message(
+      'Get your friends and family together to share your thoughts and ideas',
+      name: 'get_your_friends_to',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Members`
+  String get add_members {
+    return Intl.message('Add Members', name: 'add_members', desc: '', args: []);
+  }
+
+  /// `Choose people from your chats to add to the group`
+  String get choose_people_from {
+    return Intl.message(
+      'Choose people from your chats to add to the group',
+      name: 'choose_people_from',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create`
+  String get create {
+    return Intl.message('Create', name: 'create', desc: '', args: []);
+  }
+
+  /// `Cancel`
+  String get cancel {
+    return Intl.message('Cancel', name: 'cancel', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -29,9 +29,11 @@ class GroupsView extends StatelessWidget {
           top: AppPadding.small,
         ),
         // child: WelcomeViewColumn(
-        //   actionText: "Start New Group",
-        //   message:
-        //       "Get your friends and family together to share your thoughts and ideas ",
+        //   actionText: S.of(context).start_new_group,
+        //   message: S.of(context).get_your_friends_to,
+        //   onPressed: () {
+        //     context.pushNamed(AppRoutes.createGroup);
+        //   },
         // ),
         child: Column(
           children: [

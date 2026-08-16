@@ -23,17 +23,26 @@ class MessageLookup extends MessageLookupByLibrary {
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "about": MessageLookupByLibrary.simpleMessage("About"),
+    "add_members": MessageLookupByLibrary.simpleMessage("Add Members"),
     "already_have_an_account": MessageLookupByLibrary.simpleMessage(
       "Already have an account?",
     ),
     "are_you_sure": MessageLookupByLibrary.simpleMessage("Are you sure?"),
     "bio": MessageLookupByLibrary.simpleMessage("Bio"),
+    "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
     "chats": MessageLookupByLibrary.simpleMessage("Chats"),
+    "choose_people_from": MessageLookupByLibrary.simpleMessage(
+      "Choose people from your chats to add to the group",
+    ),
     "code_has_been_sent_to": MessageLookupByLibrary.simpleMessage(
       "Code has been sent to ",
     ),
     "con": MessageLookupByLibrary.simpleMessage("Continue"),
     "congratulations": MessageLookupByLibrary.simpleMessage("Congratulations!"),
+    "create": MessageLookupByLibrary.simpleMessage("Create"),
+    "create_a_new_group": MessageLookupByLibrary.simpleMessage(
+      "Create a new group",
+    ),
     "create_an_account": MessageLookupByLibrary.simpleMessage(
       "Create an account",
     ),
@@ -54,6 +63,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Fill your profile",
     ),
     "fisrt_name": MessageLookupByLibrary.simpleMessage("Fisrt name"),
+    "get_your_friends_to": MessageLookupByLibrary.simpleMessage(
+      "Get your friends and family together to share your thoughts and ideas",
+    ),
     "groups": MessageLookupByLibrary.simpleMessage("Groups"),
     "login": MessageLookupByLibrary.simpleMessage("Login"),
     "login_into_your_account": MessageLookupByLibrary.simpleMessage(

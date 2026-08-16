@@ -39,7 +39,14 @@ class ChatsView extends StatelessWidget {
         //   actionText: S.of(context).start_new_chat,
         //   message:
         //       "${S.of(context).start_a_converstion}\n ${S.of(context).with_your_friends_and_family}",
-
+        //   onPressed: () async {
+        //     await showNewChatBottomSheet(
+        //       context,
+        //       onStartChat: (phoneNumber) {
+        //         debugPrint('Start chat with: $phoneNumber');
+        //       },
+        //     );
+        //   },
         // ),
         child: Column(
           children: [
