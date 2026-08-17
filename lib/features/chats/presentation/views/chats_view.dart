@@ -1,4 +1,6 @@
+import 'package:avora/core/helper/extenstions.dart';
 import 'package:avora/core/helper/spacing.dart';
+import 'package:avora/core/routing/app_routes.dart';
 import 'package:avora/core/themes/padding.dart';
 import 'package:avora/core/widgets/custom_floating_action_button.dart';
 import 'package:avora/core/widgets/custom_home_app_bar.dart';
@@ -55,7 +57,10 @@ class ChatsView extends StatelessWidget {
             Expanded(
               child: ListView.builder(
                 itemCount: 12,
-                itemBuilder: (context, index) => const ChatRoomTile(),
+                itemBuilder: (context, index) => GestureDetector(
+                  onTap: () => context.pushNamed(AppRoutes.chatRoom),
+                  child: const ChatRoomTile(),
+                ),
               ),
             ),
           ],

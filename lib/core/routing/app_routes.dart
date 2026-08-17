@@ -7,4 +7,5 @@ class AppRoutes {
   static const String editProfile = 'editProfile';
   static const String qrCode = 'qrCode';
   static const String createGroup = 'createGroup';
+  static const String chatRoom = 'chatRoom';
 }
