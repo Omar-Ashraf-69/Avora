@@ -79,8 +79,13 @@ abstract class TextStyles {
     fontSize: 15.sp,
   );
 
-   static TextStyle bold32 = TextStyle(
+  static TextStyle bold32 = TextStyle(
     fontWeight: FontWeight.bold,
     fontSize: 32.sp,
+  );
+
+  static TextStyle regular09 = TextStyle(
+    fontWeight: FontWeight.normal,
+    fontSize: 9.sp,
   );
 }
