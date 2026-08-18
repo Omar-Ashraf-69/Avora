@@ -47,6 +47,11 @@
   "add_members": "Add Members",
   "choose_people_from": "Choose people from your chats to add to the group",
   "create": "Create",
-  "cancel": "Cancel"
+  "cancel": "Cancel",
+  "online": "Online",
+  "offline": "Offline",
+  "recently": "recently",
+  "last_seen": "Last seen",
+  "type_a_message": "Type a message..."
 
 }

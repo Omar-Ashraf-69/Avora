@@ -1,10 +1,10 @@
-
 import 'package:avora/core/helper/extenstions.dart';
 import 'package:avora/core/helper/spacing.dart';
 import 'package:avora/core/themes/app_colors.dart';
 import 'package:avora/core/themes/app_text_styles.dart';
 import 'package:avora/core/themes/padding.dart';
 import 'package:avora/features/chat/presentation/views/chat_room_view.dart';
+import 'package:avora/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
 class ChatRoomAppBar extends StatelessWidget {
@@ -48,8 +48,9 @@ class ChatRoomAppBar extends StatelessWidget {
               verticalSpace(2),
               Text(
                 widget.isOnline
-                    ? 'Online'
-                    : widget.lastSeen ?? 'Last seen recently',
+                    ? S.of(context).online
+                    : widget.lastSeen ??
+                          "${S.of(context).last_seen} ${S.of(context).recently}",
                 style: TextStyles.regular13.copyWith(
                   color: widget.isOnline ? AppColors.mainBlue : AppColors.gray,
                 ),

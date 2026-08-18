@@ -1,4 +1,5 @@
-import 'package:avora/core/funcs/formate_data_time.dart';
+import 'package:avora/core/helper/extenstions.dart';
+import 'package:avora/core/helper/spacing.dart';
 import 'package:avora/core/themes/app_colors.dart';
 import 'package:avora/core/themes/app_text_styles.dart';
 import 'package:avora/features/chat/data/enums/message_status.dart';
@@ -16,12 +17,13 @@ class MessageMeta extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       children: [
         Text(
-          formatMessageTime(message.createdAt,context),
+          message.createdAt.toLocalTimeLabel(context),
+          // formatMessageTime(message.createdAt,context),
           style: TextStyles.regular09.copyWith(
             color: message.isMe ? Colors.white70 : AppColors.gray,
           ),
         ),
-        if (message.isMe) ...[const SizedBox(width: 3), _buildStatusIcon()],
+        if (message.isMe) ...[horizontalSpace(3), _buildStatusIcon()],
       ],
     );
   }

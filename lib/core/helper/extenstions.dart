@@ -51,3 +51,10 @@ extension KeyboardExtension on BuildContext {
   bool get isKeyboardOpen =>
       MediaQuery.viewInsetsOf(this).bottom > 0;
 }
+
+extension MessageTimeFormatting on DateTime {
+  String toLocalTimeLabel(BuildContext context) {
+    final local = toLocal(); 
+    return TimeOfDay.fromDateTime(local).format(context);
+  }
+}

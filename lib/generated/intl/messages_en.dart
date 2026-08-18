@@ -67,6 +67,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Get your friends and family together to share your thoughts and ideas",
     ),
     "groups": MessageLookupByLibrary.simpleMessage("Groups"),
+    "last_seen": MessageLookupByLibrary.simpleMessage("Last seen"),
     "login": MessageLookupByLibrary.simpleMessage("Login"),
     "login_into_your_account": MessageLookupByLibrary.simpleMessage(
       "Login into your account",
@@ -74,12 +75,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "logout": MessageLookupByLibrary.simpleMessage("Logout"),
     "nick_name": MessageLookupByLibrary.simpleMessage("NickName"),
     "no": MessageLookupByLibrary.simpleMessage("No"),
+    "offline": MessageLookupByLibrary.simpleMessage("Offline"),
+    "online": MessageLookupByLibrary.simpleMessage("Online"),
     "otp_code_verification": MessageLookupByLibrary.simpleMessage(
       "OTP Code Verification",
     ),
     "password": MessageLookupByLibrary.simpleMessage("Password"),
     "phone_number": MessageLookupByLibrary.simpleMessage("Phone number"),
     "qr_code": MessageLookupByLibrary.simpleMessage("QR Code"),
+    "recently": MessageLookupByLibrary.simpleMessage("recently"),
     "resend_code_in": MessageLookupByLibrary.simpleMessage("Resend Code in "),
     "save_changes": MessageLookupByLibrary.simpleMessage("Save changes"),
     "search": MessageLookupByLibrary.simpleMessage("Search"),
@@ -94,6 +98,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "to_share_your_thoughts_and_ideas": MessageLookupByLibrary.simpleMessage(
       "to share your thoughts and ideas. ",
     ),
+    "type_a_message": MessageLookupByLibrary.simpleMessage("Type a message..."),
     "verify": MessageLookupByLibrary.simpleMessage("Verify"),
     "welcome": MessageLookupByLibrary.simpleMessage("Welcome"),
     "yes": MessageLookupByLibrary.simpleMessage("Yes"),

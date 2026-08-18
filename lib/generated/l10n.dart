@@ -414,6 +414,36 @@ class S {
   String get cancel {
     return Intl.message('Cancel', name: 'cancel', desc: '', args: []);
   }
+
+  /// `Online`
+  String get online {
+    return Intl.message('Online', name: 'online', desc: '', args: []);
+  }
+
+  /// `Offline`
+  String get offline {
+    return Intl.message('Offline', name: 'offline', desc: '', args: []);
+  }
+
+  /// `recently`
+  String get recently {
+    return Intl.message('recently', name: 'recently', desc: '', args: []);
+  }
+
+  /// `Last seen`
+  String get last_seen {
+    return Intl.message('Last seen', name: 'last_seen', desc: '', args: []);
+  }
+
+  /// `Type a message...`
+  String get type_a_message {
+    return Intl.message(
+      'Type a message...',
+      name: 'type_a_message',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

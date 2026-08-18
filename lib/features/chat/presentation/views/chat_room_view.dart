@@ -5,6 +5,7 @@ import 'package:avora/features/chat/data/models/chat_message_model.dart';
 import 'package:avora/features/chat/presentation/views/widgets/chat_Input.dart';
 import 'package:avora/features/chat/presentation/views/widgets/chat_room_app_bar.dart';
 import 'package:avora/features/chat/presentation/views/widgets/message_bubble.dart';
+import 'package:avora/features/chat/presentation/views/widgets/scroll_down_floating_action_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -12,7 +13,8 @@ class ChatRoomView extends StatefulWidget {
   const ChatRoomView({
     super.key,
     required this.userName,
-    this.userImage,
+    this.userImage =
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVfMoUD1O9jVxSKrF3EFoS1k55PyUrojQ5Py3z-1oKQ95qlm0ozgY3YCpLl-UUkFf9D9fUjcCZyRVy5ls9GcUtzK9O2X9W1TCZmgmWFcxEUA&s=10",
     this.isOnline = false,
     this.lastSeen,
   });
@@ -27,47 +29,24 @@ class ChatRoomView extends StatefulWidget {
 }
 
 class _ChatRoomViewState extends State<ChatRoomView> {
+  static const _scrollThreshold = 100.0;
+
   final _messageController = TextEditingController();
   final _scrollController = ScrollController();
+  bool _showScrollToBottomButton = false;
+
+  @override
+  void initState() {
+    super.initState();
+
+    _scrollController.addListener(_onScroll);
+  }
 
   @override
   void dispose() {
     _messageController.dispose();
     _scrollController.dispose();
     super.dispose();
-  }
-
-  void _sendMessage() {
-    final text = _messageController.text.trim();
-
-    if (text.isEmpty) return;
-    //! Must edite the time of the message this is only for testing the UI
-    setState(() {
-      messages.add(
-        ChatMessage(
-          text: text,
-          createdAt: DateTime.now().toUtc(),
-          isMe: true,
-          status: MessageStatus.delivered,
-        ),
-      );
-    });
-
-    _messageController.clear();
-
-    _scrollToBottom();
-  }
-
-  void _scrollToBottom() {
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      if (!_scrollController.hasClients) return;
-
-      _scrollController.animateTo(
-        _scrollController.position.maxScrollExtent,
-        duration: const Duration(milliseconds: 250),
-        curve: Curves.easeOutQuart,
-      );
-    });
   }
 
   @override
@@ -82,17 +61,28 @@ class _ChatRoomViewState extends State<ChatRoomView> {
         child: Column(
           children: [
             Expanded(
-              child: ListView.separated(
-                controller: _scrollController,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: AppPadding.medium,
-                  vertical: AppPadding.medium,
-                ),
-                itemCount: messages.length,
-                separatorBuilder: (_, _) => verticalSpace(8),
-                itemBuilder: (context, index) {
-                  return MessageBubble(message: messages[index]);
-                },
+              child: Stack(
+                children: [
+                  ListView.separated(
+                    controller: _scrollController,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppPadding.medium,
+                      vertical: AppPadding.medium,
+                    ),
+                    itemCount: messages.length,
+                    reverse: true,
+                    separatorBuilder: (_, _) => verticalSpace(8),
+                    itemBuilder: (context, index) {
+                      final message = messages[messages.length - 1 - index];
+
+                      return MessageBubble(message: message);
+                    },
+                  ),
+                  ScrollDownFloatingActionButton(
+                    onPressed: _scrollToBottom,
+                    showScrollToBottomButton: _showScrollToBottomButton,
+                  ),
+                ],
               ),
             ),
             ChatInput(
@@ -104,5 +94,49 @@ class _ChatRoomViewState extends State<ChatRoomView> {
         ),
       ),
     );
+  }
+
+  void _onScroll() {
+    if (!_scrollController.hasClients) return;
+
+    // With reverse:true, position 0 is the bottom.
+    final shouldShowButton = _scrollController.offset > _scrollThreshold;
+
+    if (shouldShowButton == _showScrollToBottomButton) return;
+
+    setState(() {
+      _showScrollToBottomButton = shouldShowButton;
+    });
+  }
+
+  void _scrollToBottom() {
+    if (!_scrollController.hasClients) return;
+
+    _scrollController.animateTo(
+      0,
+      duration: const Duration(milliseconds: 300),
+      curve: Curves.easeOutQuart,
+    );
+  }
+
+  void _sendMessage() {
+    final text = _messageController.text.trim();
+
+    if (text.isEmpty) return;
+
+    setState(() {
+      messages.add(
+        ChatMessage(
+          text: text,
+          createdAt: DateTime.now().toUtc(),
+          isMe: true,
+          status: MessageStatus.delivered,
+        ),
+      );
+    });
+
+    _messageController.clear();
+    // With reverse:true, bottom = 0.
+    _scrollToBottom();
   }
 }
