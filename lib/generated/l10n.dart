@@ -214,6 +214,236 @@ class S {
       args: [],
     );
   }
+
+  /// `Settings`
+  String get settings {
+    return Intl.message('Settings', name: 'settings', desc: '', args: []);
+  }
+
+  /// `Chats`
+  String get chats {
+    return Intl.message('Chats', name: 'chats', desc: '', args: []);
+  }
+
+  /// `Groups`
+  String get groups {
+    return Intl.message('Groups', name: 'groups', desc: '', args: []);
+  }
+
+  /// `Search`
+  String get search {
+    return Intl.message('Search', name: 'search', desc: '', args: []);
+  }
+
+  /// `Edit your profile`
+  String get edit_your_profile {
+    return Intl.message(
+      'Edit your profile',
+      name: 'edit_your_profile',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Save changes`
+  String get save_changes {
+    return Intl.message(
+      'Save changes',
+      name: 'save_changes',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Bio`
+  String get bio {
+    return Intl.message('Bio', name: 'bio', desc: '', args: []);
+  }
+
+  /// `Phone number`
+  String get phone_number {
+    return Intl.message(
+      'Phone number',
+      name: 'phone_number',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password`
+  String get password {
+    return Intl.message('Password', name: 'password', desc: '', args: []);
+  }
+
+  /// `Logout`
+  String get logout {
+    return Intl.message('Logout', name: 'logout', desc: '', args: []);
+  }
+
+  /// `Delete account`
+  String get delete_account {
+    return Intl.message(
+      'Delete account',
+      name: 'delete_account',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Delete`
+  String get delete {
+    return Intl.message('Delete', name: 'delete', desc: '', args: []);
+  }
+
+  /// `Are you sure?`
+  String get are_you_sure {
+    return Intl.message(
+      'Are you sure?',
+      name: 'are_you_sure',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Yes`
+  String get yes {
+    return Intl.message('Yes', name: 'yes', desc: '', args: []);
+  }
+
+  /// `No`
+  String get no {
+    return Intl.message('No', name: 'no', desc: '', args: []);
+  }
+
+  /// `QR Code`
+  String get qr_code {
+    return Intl.message('QR Code', name: 'qr_code', desc: '', args: []);
+  }
+
+  /// `Start New Chat`
+  String get start_new_chat {
+    return Intl.message(
+      'Start New Chat',
+      name: 'start_new_chat',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start a conversation with your friends and family `
+  String get start_a_converstion {
+    return Intl.message(
+      'Start a conversation with your friends and family ',
+      name: 'start_a_converstion',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `to share your thoughts and ideas. `
+  String get to_share_your_thoughts_and_ideas {
+    return Intl.message(
+      'to share your thoughts and ideas. ',
+      name: 'to_share_your_thoughts_and_ideas',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Start`
+  String get start {
+    return Intl.message('Start', name: 'start', desc: '', args: []);
+  }
+
+  /// `Welcome`
+  String get welcome {
+    return Intl.message('Welcome', name: 'welcome', desc: '', args: []);
+  }
+
+  /// `Start New Group`
+  String get start_new_group {
+    return Intl.message(
+      'Start New Group',
+      name: 'start_new_group',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create a new group`
+  String get create_a_new_group {
+    return Intl.message(
+      'Create a new group',
+      name: 'create_a_new_group',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Get your friends and family together to share your thoughts and ideas`
+  String get get_your_friends_to {
+    return Intl.message(
+      'Get your friends and family together to share your thoughts and ideas',
+      name: 'get_your_friends_to',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Add Members`
+  String get add_members {
+    return Intl.message('Add Members', name: 'add_members', desc: '', args: []);
+  }
+
+  /// `Choose people from your chats to add to the group`
+  String get choose_people_from {
+    return Intl.message(
+      'Choose people from your chats to add to the group',
+      name: 'choose_people_from',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Create`
+  String get create {
+    return Intl.message('Create', name: 'create', desc: '', args: []);
+  }
+
+  /// `Cancel`
+  String get cancel {
+    return Intl.message('Cancel', name: 'cancel', desc: '', args: []);
+  }
+
+  /// `Online`
+  String get online {
+    return Intl.message('Online', name: 'online', desc: '', args: []);
+  }
+
+  /// `Offline`
+  String get offline {
+    return Intl.message('Offline', name: 'offline', desc: '', args: []);
+  }
+
+  /// `recently`
+  String get recently {
+    return Intl.message('recently', name: 'recently', desc: '', args: []);
+  }
+
+  /// `Last seen`
+  String get last_seen {
+    return Intl.message('Last seen', name: 'last_seen', desc: '', args: []);
+  }
+
+  /// `Type a message...`
+  String get type_a_message {
+    return Intl.message(
+      'Type a message...',
+      name: 'type_a_message',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
