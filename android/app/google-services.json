@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "489305052451",
+    "project_id": "avora-d943b",
+    "storage_bucket": "avora-d943b.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:489305052451:android:a246e67a330b06640ee896",
+        "android_client_info": {
+          "package_name": "com.example.avora"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBRarrXMA4uSKIVRL8TM3vo_bLWEvqfrYI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
