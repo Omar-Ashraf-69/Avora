@@ -1,10 +1,10 @@
-import 'package:avora/features/auth/domain/entities/auth_user.dart';
 import 'package:avora/features/auth/domain/repos/auth_repo.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class GetCurrentUserUseCase {
   final AuthRepository _repo;
 
   GetCurrentUserUseCase(this._repo);
 
-  AuthUser? call() => _repo.getCurrentUser();
+  User? call() => _repo.getCurrentUser();
 }

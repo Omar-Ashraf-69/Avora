@@ -2,7 +2,9 @@ import 'package:avora/features/auth/data/datasources/auth_remote_data_source.dar
 import 'package:avora/features/auth/data/repos/auth_repo_impl.dart';
 import 'package:avora/features/auth/domain/repos/auth_repo.dart';
 import 'package:avora/features/auth/domain/use_cases/get_current_user.dart';
+import 'package:avora/features/auth/domain/use_cases/sign_in_with_email.dart';
 import 'package:avora/features/auth/domain/use_cases/sign_out.dart';
+import 'package:avora/features/auth/domain/use_cases/sign_up_with_email.dart';
 import 'package:avora/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
@@ -17,11 +19,32 @@ Future<void> setupGetIt() async {
   //Secure Storage
   _registerSecureStorage();
   _registerSupabase();
-  _registerAuthCubit();
+  _registerAuth();
 }
 
-void _registerAuthCubit() {
+void _registerAuth() {
   getIt.registerFactory(() => AuthCubit());
+  // Auth Data Source
+  getIt.registerLazySingleton<AuthRemoteDataSource>(
+    () => AuthRemoteDataSource(getIt<SupabaseClient>()),
+  );
+
+  // Auth Repository
+  getIt.registerLazySingleton<AuthRepository>(
+    () => AuthRepositoryImpl(getIt<AuthRemoteDataSource>()),
+  );
+
+  getIt.registerLazySingleton(
+    () => GetCurrentUserUseCase(getIt<AuthRepository>()),
+  );
+
+  getIt.registerLazySingleton(() => SignOutUseCase(getIt<AuthRepository>()));
+  getIt.registerLazySingleton(
+    () => SignInWithEmailAndPasswordUseCase(getIt<AuthRepository>()),
+  );
+  getIt.registerLazySingleton(
+    () => SignUpWithEmailAndPasswordUseCase(getIt<AuthRepository>()),
+  );
 }
 
 void _registerSecureStorage() {
@@ -37,21 +60,4 @@ Future<void> _registerSharedPreferences() async {
 void _registerSupabase() {
   // Supabase
   getIt.registerLazySingleton<SupabaseClient>(() => Supabase.instance.client);
-
-  // Auth Data Source
-  getIt.registerLazySingleton<AuthRemoteDataSource>(
-    () => AuthRemoteDataSource(getIt<SupabaseClient>()),
-  );
-
-  // Auth Repository
-  getIt.registerLazySingleton<AuthRepository>(
-    () => AuthRepositoryImpl(getIt<AuthRemoteDataSource>()),
-  );
-
-  
-  getIt.registerLazySingleton(
-    () => GetCurrentUserUseCase(getIt<AuthRepository>()),
-  );
-
-  getIt.registerLazySingleton(() => SignOutUseCase(getIt<AuthRepository>()));
 }

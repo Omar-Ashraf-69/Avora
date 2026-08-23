@@ -79,6 +79,41 @@
   "at_least_1_lowercase_letter": "At least 1 lowercase letter",
   "at_least_1_uppercase_letter": "At least 1 uppercase letter",
   "at_least_1_number": "At least 1 number",
-  "at_least_1_special_character": "At least 1 special character"
+  "at_least_1_special_character": "At least 1 special character",
+
+
+
+
+  
+  "something_went_wrong": "Something went wrong. Please try again",
+  "invalid_credentials": "The email or password is incorrect",
+  "user_disabled": "This account has been disabled",
+  "user_not_found": "No account found with this email address",
+  "wrong_password": "The password is incorrect",
+  "email_already_in_use": "This email address is already in use",
+  "weak_password": "The password is too weak",
+  "check_your_internet_connection": "Please check your internet connection",
+  "too_many_requests": "Too many attempts. Please try again later",
+  "operation_not_allowed": "This operation is currently unavailable",
+  "requires_recent_login": "Please sign in again and try again",
+  "unexpected_error": "An unexpected error occurred. Please try again",
+
+  "permission_denied": "You don't have permission to perform this operation",
+  "data_not_found": "The requested data was not found",
+  "data_already_exists": "The data already exists",
+  "service_unavailable": "The service is currently unavailable",
+  "connection_timeout": "The request timed out. Please try again",
+  "operation_cancelled": "The operation was cancelled",
+  "resource_exhausted": "The resource limit has been exceeded",
+  "database_error": "An error occurred while accessing the database",
+
+  "file_not_found": "The file was not found",
+  "file_access_denied": "You don't have permission to access this file",
+  "storage_quota_exceeded": "The storage quota has been exceeded",
+  "operation_failed_retry": "The operation failed. Please try again",
+  "file_corrupted": "The file is corrupted",
+  "storage_error": "An error occurred while uploading or downloading the file"
+
+  
 
 }

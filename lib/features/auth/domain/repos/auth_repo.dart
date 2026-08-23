@@ -1,14 +1,14 @@
-import '../entities/auth_user.dart';
+import 'package:avora/core/error/failures.dart';
+import 'package:dartz/dartz.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 abstract class AuthRepository {
-  Future<void> sendOtp(String phoneNumber);
 
-  Future<AuthUser> verifyOtp({
-    required String phoneNumber,
-    required String otp,
-  });
+  Future<Either<Failure, User>> signUpNewUser({required String email, required String password});
 
-  AuthUser? getCurrentUser();
+  Future<Either<Failure, User>> signInWithEmail({required String email, required String password});
+
+  User? getCurrentUser();
 
   Future<void> signOut();
 }

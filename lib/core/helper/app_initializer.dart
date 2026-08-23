@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:avora/core/routing/app_routes.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AppInitializer {
   Future<void> initialize() async {
@@ -14,11 +15,11 @@ class AppInitializer {
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
-    // await loadEnv();
-    // await Supabase.initialize(
-    //   url: dotenv.env['SUPABASE_URL'] ?? "",
-    //   publishableKey: dotenv.env['SUPABASE_KEY'] ?? "",
-    // );
+    await loadEnv();
+    await Supabase.initialize(
+      url: dotenv.env['SUPABASE_URL'] ?? "",
+      publishableKey: dotenv.env['SUPABASE_PUBLISHABLE_KEY'] ?? "",
+    );
   }
 
   String getInitialRoute() {

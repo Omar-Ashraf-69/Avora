@@ -699,6 +699,266 @@ class S {
       args: [],
     );
   }
+
+  /// `Something went wrong. Please try again`
+  String get something_went_wrong {
+    return Intl.message(
+      'Something went wrong. Please try again',
+      name: 'something_went_wrong',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The email or password is incorrect`
+  String get invalid_credentials {
+    return Intl.message(
+      'The email or password is incorrect',
+      name: 'invalid_credentials',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This account has been disabled`
+  String get user_disabled {
+    return Intl.message(
+      'This account has been disabled',
+      name: 'user_disabled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No account found with this email address`
+  String get user_not_found {
+    return Intl.message(
+      'No account found with this email address',
+      name: 'user_not_found',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The password is incorrect`
+  String get wrong_password {
+    return Intl.message(
+      'The password is incorrect',
+      name: 'wrong_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This email address is already in use`
+  String get email_already_in_use {
+    return Intl.message(
+      'This email address is already in use',
+      name: 'email_already_in_use',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The password is too weak`
+  String get weak_password {
+    return Intl.message(
+      'The password is too weak',
+      name: 'weak_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please check your internet connection`
+  String get check_your_internet_connection {
+    return Intl.message(
+      'Please check your internet connection',
+      name: 'check_your_internet_connection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Too many attempts. Please try again later`
+  String get too_many_requests {
+    return Intl.message(
+      'Too many attempts. Please try again later',
+      name: 'too_many_requests',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `This operation is currently unavailable`
+  String get operation_not_allowed {
+    return Intl.message(
+      'This operation is currently unavailable',
+      name: 'operation_not_allowed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please sign in again and try again`
+  String get requires_recent_login {
+    return Intl.message(
+      'Please sign in again and try again',
+      name: 'requires_recent_login',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `An unexpected error occurred. Please try again`
+  String get unexpected_error {
+    return Intl.message(
+      'An unexpected error occurred. Please try again',
+      name: 'unexpected_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You don't have permission to perform this operation`
+  String get permission_denied {
+    return Intl.message(
+      'You don\'t have permission to perform this operation',
+      name: 'permission_denied',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The requested data was not found`
+  String get data_not_found {
+    return Intl.message(
+      'The requested data was not found',
+      name: 'data_not_found',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The data already exists`
+  String get data_already_exists {
+    return Intl.message(
+      'The data already exists',
+      name: 'data_already_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The service is currently unavailable`
+  String get service_unavailable {
+    return Intl.message(
+      'The service is currently unavailable',
+      name: 'service_unavailable',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The request timed out. Please try again`
+  String get connection_timeout {
+    return Intl.message(
+      'The request timed out. Please try again',
+      name: 'connection_timeout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The operation was cancelled`
+  String get operation_cancelled {
+    return Intl.message(
+      'The operation was cancelled',
+      name: 'operation_cancelled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The resource limit has been exceeded`
+  String get resource_exhausted {
+    return Intl.message(
+      'The resource limit has been exceeded',
+      name: 'resource_exhausted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `An error occurred while accessing the database`
+  String get database_error {
+    return Intl.message(
+      'An error occurred while accessing the database',
+      name: 'database_error',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The file was not found`
+  String get file_not_found {
+    return Intl.message(
+      'The file was not found',
+      name: 'file_not_found',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You don't have permission to access this file`
+  String get file_access_denied {
+    return Intl.message(
+      'You don\'t have permission to access this file',
+      name: 'file_access_denied',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The storage quota has been exceeded`
+  String get storage_quota_exceeded {
+    return Intl.message(
+      'The storage quota has been exceeded',
+      name: 'storage_quota_exceeded',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The operation failed. Please try again`
+  String get operation_failed_retry {
+    return Intl.message(
+      'The operation failed. Please try again',
+      name: 'operation_failed_retry',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `The file is corrupted`
+  String get file_corrupted {
+    return Intl.message(
+      'The file is corrupted',
+      name: 'file_corrupted',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `An error occurred while uploading or downloading the file`
+  String get storage_error {
+    return Intl.message(
+      'An error occurred while uploading or downloading the file',
+      name: 'storage_error',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -1,12 +1,15 @@
 import 'package:avora/core/helper/app_regex.dart';
-import 'package:avora/core/helper/extenstions.dart';
+import 'package:avora/core/helper/custom_toast.dart';
 import 'package:avora/core/helper/spacing.dart';
 import 'package:avora/core/routing/app_routes.dart';
 import 'package:avora/core/widgets/app_text_form_field.dart';
 import 'package:avora/core/widgets/custom_button.dart';
+import 'package:avora/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:avora/features/auth/presentation/cubit/auth_state.dart';
 import 'package:avora/features/auth/presentation/views/widgets/sign_up/password_validations.dart';
 import 'package:avora/generated/l10n.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SingUpFormSection extends StatefulWidget {
   const SingUpFormSection({super.key});
@@ -62,91 +65,108 @@ class _SingUpFormSectionState extends State<SingUpFormSection> {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      key: _formKey,
-      child: Column(
-        children: [
-          AppTextFormField(
-            hintText: S.of(context).email,
-            validator: (value) {
-              if (value == null ||
-                  value.isEmpty ||
-                  !AppRegex.isEmailValid(value)) {
-                return S.of(context).please_enter_a_valid_email;
-              }
-            },
-            controller: emailController,
-          ),
-          verticalSpace(12),
-          AppTextFormField(
-            controller: passwordController,
-            hintText: S.of(context).password,
-            isObscureText: isObscureText,
-            suffixIcon: GestureDetector(
-              onTap: () {
-                setState(() {
-                  isObscureText = !isObscureText;
-                });
-              },
-              child: Icon(
-                isObscureText ? Icons.visibility_off : Icons.visibility,
-              ),
-            ),
-            validator: (value) {
-              if (value == null || value.isEmpty) {
-                return S.of(context).please_enter_a_valid_password;
-              }
-            },
-          ),
-          verticalSpace(12),
-          AppTextFormField(
-            controller: confirmPasswordController,
-            hintText: S.of(context).confirm_password,
-            isObscureText: isObscureText,
+    return BlocListener<AuthCubit, AuthState>(
+      listener: (context, state) {
+        if (state is AuthError) {
+          ToastNoContext.showColoredToast(message: state.message);
+        }
 
-            suffixIcon: GestureDetector(
-              onTap: () {
-                setState(() {
-                  isObscureText = !isObscureText;
-                });
+        if (state is Authenticated) {
+          Navigator.pushNamedAndRemoveUntil(
+            context,
+            AppRoutes.fillYourProfile,
+            (route) => false,
+          );
+        }
+      },
+      child: Form(
+        key: _formKey,
+        child: Column(
+          children: [
+            AppTextFormField(
+              hintText: S.of(context).email,
+              validator: (value) {
+                if (value == null ||
+                    value.isEmpty ||
+                    !AppRegex.isEmailValid(value)) {
+                  return S.of(context).please_enter_a_valid_email;
+                }
               },
-              child: Icon(
-                isObscureText ? Icons.visibility_off : Icons.visibility,
-              ),
+              controller: emailController,
             ),
-            validator: (value) {
-              if (value == null ||
-                  value.isEmpty ||
-                  value != passwordController.text) {
-                setState(() {});
-                return S.of(context).passwords_do_not_match;
-              }
-            },
-          ),
-          verticalSpace(16),
-          PasswordValidations(
-            hasLowerCase: hasLowercase,
-            hasUpperCase: hasUppercase,
-            hasSpecialCharacters: hasSpecialCharacters,
-            hasNumber: hasNumber,
-            hasMinLength: hasMinLength,
-          ),
-          verticalSpace(16),
-          CustomButton(
-            label: S.of(context).sign_up,
-            onPressed: () {
-              validateThenDoSingUp(context);
-            },
-          ),
-        ],
+            verticalSpace(12),
+            AppTextFormField(
+              controller: passwordController,
+              hintText: S.of(context).password,
+              isObscureText: isObscureText,
+              suffixIcon: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    isObscureText = !isObscureText;
+                  });
+                },
+                child: Icon(
+                  isObscureText ? Icons.visibility_off : Icons.visibility,
+                ),
+              ),
+              validator: (value) {
+                if (value == null || value.isEmpty) {
+                  return S.of(context).please_enter_a_valid_password;
+                }
+              },
+            ),
+            verticalSpace(12),
+            AppTextFormField(
+              controller: confirmPasswordController,
+              hintText: S.of(context).confirm_password,
+              isObscureText: isObscureText,
+
+              suffixIcon: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    isObscureText = !isObscureText;
+                  });
+                },
+                child: Icon(
+                  isObscureText ? Icons.visibility_off : Icons.visibility,
+                ),
+              ),
+              validator: (value) {
+                if (value == null ||
+                    value.isEmpty ||
+                    value != passwordController.text) {
+                  setState(() {});
+                  return S.of(context).passwords_do_not_match;
+                }
+              },
+            ),
+            verticalSpace(16),
+            PasswordValidations(
+              hasLowerCase: hasLowercase,
+              hasUpperCase: hasUppercase,
+              hasSpecialCharacters: hasSpecialCharacters,
+              hasNumber: hasNumber,
+              hasMinLength: hasMinLength,
+            ),
+            verticalSpace(16),
+            CustomButton(
+              label: S.of(context).sign_up,
+              onPressed: () {
+                validateThenDoSingUp(context);
+              },
+            ),
+          ],
+        ),
       ),
     );
   }
 
   void validateThenDoSingUp(BuildContext context) {
     if (_formKey.currentState!.validate()) {
-      //? TODO: SupaBase integration
-      context.pushNamed(AppRoutes.fillYourProfile);
+      context.read<AuthCubit>().signUpNewUser(
+        email: emailController.text,
+        password: passwordController.text,
+      );
     }
   }
 }

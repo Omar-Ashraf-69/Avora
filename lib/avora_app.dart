@@ -1,7 +1,9 @@
 import 'package:avora/core/localization/locale_provider.dart';
 import 'package:avora/core/routing/app_router.dart';
+import 'package:avora/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:avora/generated/l10n.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -21,23 +23,26 @@ class AvoraApp extends StatelessWidget {
       designSize: const Size(375, 812),
       minTextAdapt: true,
 
-      child: MaterialApp(
-        title: 'Avora',
-        debugShowCheckedModeBanner: false,
-        localizationsDelegates: [
-          S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        locale: Provider.of<LocaleProvider>(context).locale,
-        theme: ThemeData(
-          scaffoldBackgroundColor: Colors.white,
-          appBarTheme: AppBarTheme(backgroundColor: Colors.white),
+      child: BlocProvider(
+        create: (context) => AuthCubit(),
+        child: MaterialApp(
+          title: 'Avora',
+          debugShowCheckedModeBanner: false,
+          localizationsDelegates: [
+            S.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          locale: Provider.of<LocaleProvider>(context).locale,
+          theme: ThemeData(
+            scaffoldBackgroundColor: Colors.white,
+            appBarTheme: AppBarTheme(backgroundColor: Colors.white),
+          ),
+          initialRoute: initialRoute,
+          onGenerateRoute: _appRouter.onGenerateRoute,
+          supportedLocales: S.delegate.supportedLocales,
         ),
-        initialRoute: initialRoute,
-        onGenerateRoute: _appRouter.onGenerateRoute,
-        supportedLocales: S.delegate.supportedLocales,
       ),
     );
   }

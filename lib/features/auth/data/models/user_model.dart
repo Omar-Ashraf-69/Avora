@@ -1,24 +1,13 @@
-import 'package:supabase_flutter/supabase_flutter.dart' hide AuthUser;
+import 'package:supabase_flutter/supabase_flutter.dart';
 
-import '../../domain/entities/auth_user.dart';
-
-class AuthUserModel  {
+class AuthUserModel {
+  final String email;
   final String id;
-  final String? phone;
-  const AuthUserModel({
-     required this.id, this.phone,
-  });
+  final String? pass;
+  const AuthUserModel({required this.id,  this.pass,required this.email});
 
   factory AuthUserModel.fromSupabase(User user) {
-    return AuthUserModel(
-      id: user.id,
-      phone: user.phone,
-    );
+    return AuthUserModel(id: user.id, email: user.email!);
   }
-  AuthUser toEntity() {
-    return AuthUser(
-      id: id,
-      phone: phone,
-    );
-  }
+
 }

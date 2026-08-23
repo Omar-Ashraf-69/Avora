@@ -54,6 +54,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "check_your_inbox": MessageLookupByLibrary.simpleMessage(
       "Check your inbox",
     ),
+    "check_your_internet_connection": MessageLookupByLibrary.simpleMessage(
+      "Please check your internet connection",
+    ),
     "choose_people_from": MessageLookupByLibrary.simpleMessage(
       "Choose people from your chats to add to the group",
     ),
@@ -65,12 +68,24 @@ class MessageLookup extends MessageLookupByLibrary {
       "Confirm Password",
     ),
     "congratulations": MessageLookupByLibrary.simpleMessage("Congratulations!"),
+    "connection_timeout": MessageLookupByLibrary.simpleMessage(
+      "The request timed out. Please try again",
+    ),
     "create": MessageLookupByLibrary.simpleMessage("Create"),
     "create_a_new_group": MessageLookupByLibrary.simpleMessage(
       "Create a new group",
     ),
     "create_an_account": MessageLookupByLibrary.simpleMessage(
       "Create an account",
+    ),
+    "data_already_exists": MessageLookupByLibrary.simpleMessage(
+      "The data already exists",
+    ),
+    "data_not_found": MessageLookupByLibrary.simpleMessage(
+      "The requested data was not found",
+    ),
+    "database_error": MessageLookupByLibrary.simpleMessage(
+      "An error occurred while accessing the database",
     ),
     "date_of_birth": MessageLookupByLibrary.simpleMessage("Date of birth"),
     "delete": MessageLookupByLibrary.simpleMessage("Delete"),
@@ -83,6 +98,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "email": MessageLookupByLibrary.simpleMessage("Email"),
     "email_address": MessageLookupByLibrary.simpleMessage("Email address"),
+    "email_already_in_use": MessageLookupByLibrary.simpleMessage(
+      "This email address is already in use",
+    ),
     "enter_your_email_address": MessageLookupByLibrary.simpleMessage(
       "Enter your email address",
     ),
@@ -91,6 +109,15 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "enter_your_phone_number": MessageLookupByLibrary.simpleMessage(
       "Enter your phone number",
+    ),
+    "file_access_denied": MessageLookupByLibrary.simpleMessage(
+      "You don\'t have permission to access this file",
+    ),
+    "file_corrupted": MessageLookupByLibrary.simpleMessage(
+      "The file is corrupted",
+    ),
+    "file_not_found": MessageLookupByLibrary.simpleMessage(
+      "The file was not found",
     ),
     "fill_your_profile": MessageLookupByLibrary.simpleMessage(
       "Fill your profile",
@@ -101,6 +128,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Get your friends and family together to share your thoughts and ideas",
     ),
     "groups": MessageLookupByLibrary.simpleMessage("Groups"),
+    "invalid_credentials": MessageLookupByLibrary.simpleMessage(
+      "The email or password is incorrect",
+    ),
     "last_seen": MessageLookupByLibrary.simpleMessage("Last seen"),
     "login": MessageLookupByLibrary.simpleMessage("Login"),
     "login_into_your_account": MessageLookupByLibrary.simpleMessage(
@@ -117,6 +147,15 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "offline": MessageLookupByLibrary.simpleMessage("Offline"),
     "online": MessageLookupByLibrary.simpleMessage("Online"),
+    "operation_cancelled": MessageLookupByLibrary.simpleMessage(
+      "The operation was cancelled",
+    ),
+    "operation_failed_retry": MessageLookupByLibrary.simpleMessage(
+      "The operation failed. Please try again",
+    ),
+    "operation_not_allowed": MessageLookupByLibrary.simpleMessage(
+      "This operation is currently unavailable",
+    ),
     "or": MessageLookupByLibrary.simpleMessage("Or"),
     "otp_code_verification": MessageLookupByLibrary.simpleMessage(
       "OTP Code Verification",
@@ -128,6 +167,9 @@ class MessageLookup extends MessageLookupByLibrary {
         ),
     "passwords_do_not_match": MessageLookupByLibrary.simpleMessage(
       "Passwords don\'t match",
+    ),
+    "permission_denied": MessageLookupByLibrary.simpleMessage(
+      "You don\'t have permission to perform this operation",
     ),
     "phone_number": MessageLookupByLibrary.simpleMessage("Phone number"),
     "please_enter_a_valid_email": MessageLookupByLibrary.simpleMessage(
@@ -142,32 +184,68 @@ class MessageLookup extends MessageLookupByLibrary {
     "privacy_policy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
     "qr_code": MessageLookupByLibrary.simpleMessage("QR Code"),
     "recently": MessageLookupByLibrary.simpleMessage("recently"),
+    "requires_recent_login": MessageLookupByLibrary.simpleMessage(
+      "Please sign in again and try again",
+    ),
     "resend_code_in": MessageLookupByLibrary.simpleMessage("Resend Code in "),
+    "resource_exhausted": MessageLookupByLibrary.simpleMessage(
+      "The resource limit has been exceeded",
+    ),
     "save_changes": MessageLookupByLibrary.simpleMessage("Save changes"),
     "search": MessageLookupByLibrary.simpleMessage("Search"),
     "send": MessageLookupByLibrary.simpleMessage("Send"),
     "send_rest_link": MessageLookupByLibrary.simpleMessage("Send Reset Link"),
+    "service_unavailable": MessageLookupByLibrary.simpleMessage(
+      "The service is currently unavailable",
+    ),
     "settings": MessageLookupByLibrary.simpleMessage("Settings"),
     "sign_up": MessageLookupByLibrary.simpleMessage("Sign Up"),
+    "something_went_wrong": MessageLookupByLibrary.simpleMessage(
+      "Something went wrong. Please try again",
+    ),
     "start": MessageLookupByLibrary.simpleMessage("Start"),
     "start_a_converstion": MessageLookupByLibrary.simpleMessage(
       "Start a conversation with your friends and family ",
     ),
     "start_new_chat": MessageLookupByLibrary.simpleMessage("Start New Chat"),
     "start_new_group": MessageLookupByLibrary.simpleMessage("Start New Group"),
+    "storage_error": MessageLookupByLibrary.simpleMessage(
+      "An error occurred while uploading or downloading the file",
+    ),
+    "storage_quota_exceeded": MessageLookupByLibrary.simpleMessage(
+      "The storage quota has been exceeded",
+    ),
     "terms_and_conditions": MessageLookupByLibrary.simpleMessage(
       " Terms & Conditions",
     ),
     "to_share_your_thoughts_and_ideas": MessageLookupByLibrary.simpleMessage(
       "to share your thoughts and ideas. ",
     ),
+    "too_many_requests": MessageLookupByLibrary.simpleMessage(
+      "Too many attempts. Please try again later",
+    ),
     "type_a_message": MessageLookupByLibrary.simpleMessage("Type a message..."),
+    "unexpected_error": MessageLookupByLibrary.simpleMessage(
+      "An unexpected error occurred. Please try again",
+    ),
+    "user_disabled": MessageLookupByLibrary.simpleMessage(
+      "This account has been disabled",
+    ),
+    "user_not_found": MessageLookupByLibrary.simpleMessage(
+      "No account found with this email address",
+    ),
     "verify": MessageLookupByLibrary.simpleMessage("Verify"),
     "we_will_send_you_a_link_to_reset_your_password":
         MessageLookupByLibrary.simpleMessage(
           "We’ll send a password reset link to the email you provide.",
         ),
+    "weak_password": MessageLookupByLibrary.simpleMessage(
+      "The password is too weak",
+    ),
     "welcome": MessageLookupByLibrary.simpleMessage("Welcome"),
+    "wrong_password": MessageLookupByLibrary.simpleMessage(
+      "The password is incorrect",
+    ),
     "yes": MessageLookupByLibrary.simpleMessage("Yes"),
     "your_account_has_been_created": MessageLookupByLibrary.simpleMessage(
       "Your account is ready to use. You will be redirected to the Home page in a few seconds.",

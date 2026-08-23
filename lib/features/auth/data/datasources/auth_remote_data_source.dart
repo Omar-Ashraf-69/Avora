@@ -1,3 +1,7 @@
+import 'dart:developer';
+
+import 'package:avora/core/error/failures.dart';
+import 'package:dartz/dartz.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AuthRemoteDataSource {
@@ -5,31 +9,35 @@ class AuthRemoteDataSource {
 
   final SupabaseClient _client;
 
-  Future<void> sendOtp(String phoneNumber) async {
-    await _client.auth.signInWithOtp(
-      phone: phoneNumber,
-    );
+  Future<Either<Failure, User>> signUpNewUser({
+    required String email,
+    required String password,
+  }) async {
+    try {
+     final res =  await _client.auth.signUp(email: email, password: password);
+      return right(res.user!);
+    } on Exception catch (e) {
+      log(" AuthRemoteDataSource  signUpNewUser error: ");
+      log(e.toString());
+      return left(ServerFailure( e.toString()));
+    }
   }
 
-  Future<User> verifyOtp({
-    required String phoneNumber,
-    required String otp,
+  Future<Either<Failure, User>> signInWithEmail({
+    required String email,
+    required String password,
   }) async {
-    final response = await _client.auth.verifyOTP(
-      type: OtpType.sms,
-      phone: phoneNumber,
-      token: otp,
-    );
-
-    final user = response.user;
-
-    if (user == null) {
-      throw const AuthException(
-        'Authentication failed. User was not returned.',
+    try {
+      final res = await _client.auth.signInWithPassword(
+        email: email,
+        password: password,
       );
+      return right(res.user!);
+    } on Exception catch (e) {
+      log(" AuthRemoteDataSource  signInWithEmail error: ");
+      log(e.toString());
+      return left(ServerFailure( e.toString()));
     }
-
-    return user;
   }
 
   User? getCurrentUser() {

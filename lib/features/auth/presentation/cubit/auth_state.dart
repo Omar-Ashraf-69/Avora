@@ -1,5 +1,4 @@
-
-import 'package:avora/features/auth/domain/entities/auth_user.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 sealed class AuthState {
   const AuthState();
@@ -9,28 +8,28 @@ class AuthInitial extends AuthState {
   const AuthInitial();
 }
 
-class AuthLoading extends AuthState {
-  const AuthLoading();
-}
-
-class AuthOtpSent extends AuthState {
-  const AuthOtpSent(this.phoneNumber);
-
-  final String phoneNumber;
-}
-
-class AuthAuthenticated extends AuthState {
-  const AuthAuthenticated(this.user);
-
-  final AuthUser user;
+class Authenticated extends AuthState {
+  final User user;
+  const Authenticated({required this.user});
 }
 
 class AuthUnauthenticated extends AuthState {
   const AuthUnauthenticated();
 }
 
-class AuthError extends AuthState {
-  const AuthError(this.message);
+class AuthLoading extends AuthState {
+  const AuthLoading();
+}
 
+class AuthError extends AuthState {
   final String message;
+  const AuthError(this.message);
+}
+
+class AuthSignedIn extends AuthState {
+  const AuthSignedIn();
+}
+
+class AuthSignedOut extends AuthState {
+  const AuthSignedOut();
 }

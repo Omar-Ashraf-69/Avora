@@ -1,9 +1,7 @@
 import 'package:avora/core/themes/app_colors.dart';
 import 'package:avora/core/themes/app_text_styles.dart';
-import 'package:avora/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:avora/generated/l10n.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl_phone_number_input/intl_phone_number_input.dart';
 
 // ignore: must_be_immutable
@@ -13,7 +11,6 @@ class CustomPhoneNumberField extends StatelessWidget {
   Widget build(BuildContext context) {
     return InternationalPhoneNumberInput(
       onInputChanged: (PhoneNumber number) {
-       context.read<AuthCubit>().phoneNumber = number.phoneNumber ?? '';
       },
       onFieldSubmitted: (String value) {},
       onSubmit: () {},
