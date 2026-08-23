@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:avora/core/constants/app_spacing.dart';
 import 'package:avora/core/helper/extenstions.dart';
 import 'package:avora/core/helper/spacing.dart';
@@ -21,10 +23,11 @@ class OtpVerificationView extends StatelessWidget {
       body: AuthScaffoldBodyWidget(
         child: Column(
           children: [
-            OtpHeader(phoneNumber: "+1 23******0"),
+            OtpHeader(phoneNumber: "+201150000000"),
             verticalSpace(AppSpacing.xl),
             OtpCodeFields(
-              onCompleted: (code) {
+              onCompleted: (code) async {
+                log("The code is : $code");
                 //! Handle OTP code completion
               },
             ),
@@ -33,7 +36,7 @@ class OtpVerificationView extends StatelessWidget {
             const Spacer(flex: 2),
             CustomButton(
               label: S.of(context).verify,
-              onPressed: () {
+              onPressed: () async {
                 context.pushNamed(AppRoutes.fillYourProfile);
               },
             ),

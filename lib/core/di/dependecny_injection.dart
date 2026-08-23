@@ -1,6 +1,13 @@
+import 'package:avora/features/auth/data/datasources/auth_remote_data_source.dart';
+import 'package:avora/features/auth/data/repos/auth_repo_impl.dart';
+import 'package:avora/features/auth/domain/repos/auth_repo.dart';
+import 'package:avora/features/auth/domain/use_cases/get_current_user.dart';
+import 'package:avora/features/auth/domain/use_cases/sign_out.dart';
+import 'package:avora/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 final getIt = GetIt.instance;
 
@@ -9,7 +16,12 @@ Future<void> setupGetIt() async {
   await _registerSharedPreferences();
   //Secure Storage
   _registerSecureStorage();
+  _registerSupabase();
+  _registerAuthCubit();
+}
 
+void _registerAuthCubit() {
+  getIt.registerFactory(() => AuthCubit());
 }
 
 void _registerSecureStorage() {
@@ -20,4 +32,26 @@ void _registerSecureStorage() {
 Future<void> _registerSharedPreferences() async {
   final prefs = await SharedPreferences.getInstance();
   getIt.registerSingleton<SharedPreferences>(prefs);
+}
+
+void _registerSupabase() {
+  // Supabase
+  getIt.registerLazySingleton<SupabaseClient>(() => Supabase.instance.client);
+
+  // Auth Data Source
+  getIt.registerLazySingleton<AuthRemoteDataSource>(
+    () => AuthRemoteDataSource(getIt<SupabaseClient>()),
+  );
+
+  // Auth Repository
+  getIt.registerLazySingleton<AuthRepository>(
+    () => AuthRepositoryImpl(getIt<AuthRemoteDataSource>()),
+  );
+
+  
+  getIt.registerLazySingleton(
+    () => GetCurrentUserUseCase(getIt<AuthRepository>()),
+  );
+
+  getIt.registerLazySingleton(() => SignOutUseCase(getIt<AuthRepository>()));
 }

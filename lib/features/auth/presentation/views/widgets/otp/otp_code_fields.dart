@@ -2,11 +2,7 @@ import 'package:avora/features/auth/presentation/views/widgets/otp/otp_digit_fie
 import 'package:flutter/material.dart';
 
 class OtpCodeFields extends StatefulWidget {
-  const OtpCodeFields({
-    super.key,
-    this.length = 4,
-    this.onCompleted,
-  });
+  const OtpCodeFields({super.key, this.length = 6, this.onCompleted});
 
   final int length;
   final ValueChanged<String>? onCompleted;
@@ -23,15 +19,9 @@ class _OtpCodeFieldsState extends State<OtpCodeFields> {
   void initState() {
     super.initState();
 
-    _controllers = List.generate(
-      widget.length,
-      (_) => TextEditingController(),
-    );
+    _controllers = List.generate(widget.length, (_) => TextEditingController());
 
-    _focusNodes = List.generate(
-      widget.length,
-      (_) => FocusNode(),
-    );
+    _focusNodes = List.generate(widget.length, (_) => FocusNode());
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _focusNodes.first.requestFocus();
@@ -64,25 +54,22 @@ class _OtpCodeFieldsState extends State<OtpCodeFields> {
   Widget build(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: List.generate(
-        widget.length,
-        (index) {
-          return OtpDigitField(
-            controller: _controllers[index],
-            focusNode: _focusNodes[index],
+      children: List.generate(widget.length, (index) {
+        return OtpDigitField(
+          controller: _controllers[index],
+          focusNode: _focusNodes[index],
 
-            onNext: index == widget.length - 1
-                ? null
-                : () => _focusNodes[index + 1].requestFocus(),
+          onNext: index == widget.length - 1
+              ? null
+              : () => _focusNodes[index + 1].requestFocus(),
 
-            onPrevious: index == 0
-                ? null
-                : () => _focusNodes[index - 1].requestFocus(),
+          onPrevious: index == 0
+              ? null
+              : () => _focusNodes[index - 1].requestFocus(),
 
-            onChanged: (_) => _checkCompleted(),
-          );
-        },
-      ),
+          onChanged: (_) => _checkCompleted(),
+        );
+      }),
     );
   }
 }

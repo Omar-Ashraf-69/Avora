@@ -10,7 +10,7 @@ import 'package:flutter/material.dart';
 
 class LoginView extends StatelessWidget {
   const LoginView({super.key});
-
+  final String phoneNumber = '';
   @override
   Widget build(BuildContext context) {
     return Scaffold(

@@ -3,6 +3,7 @@ import 'package:avora/core/themes/app_colors.dart';
 import 'package:avora/core/themes/app_text_styles.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class OtpDigitField extends StatelessWidget {
   const OtpDigitField({
@@ -47,25 +48,27 @@ class OtpDigitField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 70,
-      height: 60,
-      child: Focus(
-        onKeyEvent: _handleKeyEvent,
-        child: TextField(
-          controller: controller,
-          focusNode: focusNode,
-          onTap: () {},
-          onChanged: _handleChanged,
-          keyboardType: TextInputType.number,
-          textAlign: TextAlign.center,
-          textAlignVertical: TextAlignVertical.center,
-          style: TextStyles.bold23.copyWith(height: 1),
-          cursorColor: AppColors.mainBlue,
-          cursorHeight: 28,
-          maxLength: 1,
-          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
-          decoration: counterInputDecortaion,
+    return Flexible(
+      child: SizedBox(
+        width: 50.w,
+        height: 64.h,
+        child: Focus(
+          onKeyEvent: _handleKeyEvent,
+          child: TextField(
+            controller: controller,
+            focusNode: focusNode,
+            onTap: () {},
+            onChanged: _handleChanged,
+            keyboardType: TextInputType.number,
+            textAlign: TextAlign.center,
+            textAlignVertical: TextAlignVertical.center,
+            style: TextStyles.bold23.copyWith(height: 1),
+            cursorColor: AppColors.mainBlue,
+            cursorHeight: 28,
+            maxLength: 1,
+            inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+            decoration: counterInputDecortaion,
+          ),
         ),
       ),
     );
