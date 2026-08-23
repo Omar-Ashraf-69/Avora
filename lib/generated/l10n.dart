@@ -594,6 +594,111 @@ class S {
       args: [],
     );
   }
+
+  /// `By Signing up, you agree to our`
+  String get by_siging_up {
+    return Intl.message(
+      'By Signing up, you agree to our',
+      name: 'by_siging_up',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ` Terms & Conditions`
+  String get terms_and_conditions {
+    return Intl.message(
+      ' Terms & Conditions',
+      name: 'terms_and_conditions',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// ` and `
+  String get and {
+    return Intl.message(' and ', name: 'and', desc: '', args: []);
+  }
+
+  /// `Privacy Policy`
+  String get privacy_policy {
+    return Intl.message(
+      'Privacy Policy',
+      name: 'privacy_policy',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Passwords don't match`
+  String get passwords_do_not_match {
+    return Intl.message(
+      'Passwords don\'t match',
+      name: 'passwords_do_not_match',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Confirm Password`
+  String get confirm_password {
+    return Intl.message(
+      'Confirm Password',
+      name: 'confirm_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `At least 8 characters`
+  String get at_least_8_characters {
+    return Intl.message(
+      'At least 8 characters',
+      name: 'at_least_8_characters',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `At least 1 lowercase letter`
+  String get at_least_1_lowercase_letter {
+    return Intl.message(
+      'At least 1 lowercase letter',
+      name: 'at_least_1_lowercase_letter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `At least 1 uppercase letter`
+  String get at_least_1_uppercase_letter {
+    return Intl.message(
+      'At least 1 uppercase letter',
+      name: 'at_least_1_uppercase_letter',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `At least 1 number`
+  String get at_least_1_number {
+    return Intl.message(
+      'At least 1 number',
+      name: 'at_least_1_number',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `At least 1 special character`
+  String get at_least_1_special_character {
+    return Intl.message(
+      'At least 1 special character',
+      name: 'at_least_1_special_character',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

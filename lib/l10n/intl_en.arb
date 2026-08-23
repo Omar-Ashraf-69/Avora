@@ -68,6 +68,17 @@
   "send_rest_link":"Send Reset Link",
   "password_reset_link_sent_successfully":"Password reset link sent successfully!",
   "check_your_inbox": "Check your inbox",
-  "we_will_send_you_a_link_to_reset_your_password": "We’ll send a password reset link to the email you provide."
+  "we_will_send_you_a_link_to_reset_your_password": "We’ll send a password reset link to the email you provide.",
+  "by_siging_up": "By Signing up, you agree to our",
+  "terms_and_conditions": " Terms & Conditions",
+  "and": " and ",
+  "privacy_policy": "Privacy Policy",
+  "passwords_do_not_match": "Passwords don't match",
+  "confirm_password": "Confirm Password",
+  "at_least_8_characters": "At least 8 characters",
+  "at_least_1_lowercase_letter": "At least 1 lowercase letter",
+  "at_least_1_uppercase_letter": "At least 1 uppercase letter",
+  "at_least_1_number": "At least 1 number",
+  "at_least_1_special_character": "At least 1 special character"
 
 }

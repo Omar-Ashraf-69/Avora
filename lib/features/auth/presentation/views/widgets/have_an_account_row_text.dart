@@ -25,7 +25,7 @@ class HaveAnAccountRowText extends StatelessWidget {
             onTap: onTap,
             child: Text(
               actionText,
-              style: TextStyles.bold13.copyWith(color: Colors.blue),
+              style: TextStyles.bold16.copyWith(color: Colors.blue),
             ),
           ),
         ),

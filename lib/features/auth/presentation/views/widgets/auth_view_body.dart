@@ -8,12 +8,12 @@ class AuthViewBody extends StatelessWidget {
     super.key,
     required this.title,
     required this.form,
-    required this.footer,
+    this.footer,
   });
 
   final String title;
   final Widget form;
-  final Widget footer;
+  final Widget? footer;
 
   @override
   Widget build(BuildContext context) {
@@ -35,7 +35,7 @@ class AuthViewBody extends StatelessWidget {
             ),
           ),
 
-          footer,
+          ?footer,
 
           verticalSpace(16),
         ],

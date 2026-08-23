@@ -1,4 +1,3 @@
-
 import 'package:avora/core/helper/spacing.dart';
 import 'package:avora/core/themes/app_text_styles.dart';
 import 'package:avora/core/themes/padding.dart';
@@ -17,7 +16,7 @@ class AuthHeader extends StatelessWidget {
       child: Column(
         children: [
           const LoginLogo(),
-          verticalSpace(20),
+          verticalSpace(18),
           Text(title, style: TextStyles.bold23),
         ],
       ),

@@ -27,9 +27,28 @@ class MessageLookup extends MessageLookupByLibrary {
     "already_have_an_account": MessageLookupByLibrary.simpleMessage(
       "Already have an account?",
     ),
+    "and": MessageLookupByLibrary.simpleMessage(" and "),
     "are_you_sure": MessageLookupByLibrary.simpleMessage("Are you sure?"),
+    "at_least_1_lowercase_letter": MessageLookupByLibrary.simpleMessage(
+      "At least 1 lowercase letter",
+    ),
+    "at_least_1_number": MessageLookupByLibrary.simpleMessage(
+      "At least 1 number",
+    ),
+    "at_least_1_special_character": MessageLookupByLibrary.simpleMessage(
+      "At least 1 special character",
+    ),
+    "at_least_1_uppercase_letter": MessageLookupByLibrary.simpleMessage(
+      "At least 1 uppercase letter",
+    ),
+    "at_least_8_characters": MessageLookupByLibrary.simpleMessage(
+      "At least 8 characters",
+    ),
     "back_to_login": MessageLookupByLibrary.simpleMessage("Back to Login"),
     "bio": MessageLookupByLibrary.simpleMessage("Bio"),
+    "by_siging_up": MessageLookupByLibrary.simpleMessage(
+      "By Signing up, you agree to our",
+    ),
     "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
     "chats": MessageLookupByLibrary.simpleMessage("Chats"),
     "check_your_inbox": MessageLookupByLibrary.simpleMessage(
@@ -42,6 +61,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Code has been sent to ",
     ),
     "con": MessageLookupByLibrary.simpleMessage("Continue"),
+    "confirm_password": MessageLookupByLibrary.simpleMessage(
+      "Confirm Password",
+    ),
     "congratulations": MessageLookupByLibrary.simpleMessage("Congratulations!"),
     "create": MessageLookupByLibrary.simpleMessage("Create"),
     "create_a_new_group": MessageLookupByLibrary.simpleMessage(
@@ -104,6 +126,9 @@ class MessageLookup extends MessageLookupByLibrary {
         MessageLookupByLibrary.simpleMessage(
           "Password reset link sent successfully!",
         ),
+    "passwords_do_not_match": MessageLookupByLibrary.simpleMessage(
+      "Passwords don\'t match",
+    ),
     "phone_number": MessageLookupByLibrary.simpleMessage("Phone number"),
     "please_enter_a_valid_email": MessageLookupByLibrary.simpleMessage(
       "Please enter a valid email",
@@ -114,6 +139,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "please_enter_a_valid_password": MessageLookupByLibrary.simpleMessage(
       "Please enter a valid password",
     ),
+    "privacy_policy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
     "qr_code": MessageLookupByLibrary.simpleMessage("QR Code"),
     "recently": MessageLookupByLibrary.simpleMessage("recently"),
     "resend_code_in": MessageLookupByLibrary.simpleMessage("Resend Code in "),
@@ -129,6 +155,9 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "start_new_chat": MessageLookupByLibrary.simpleMessage("Start New Chat"),
     "start_new_group": MessageLookupByLibrary.simpleMessage("Start New Group"),
+    "terms_and_conditions": MessageLookupByLibrary.simpleMessage(
+      " Terms & Conditions",
+    ),
     "to_share_your_thoughts_and_ideas": MessageLookupByLibrary.simpleMessage(
       "to share your thoughts and ideas. ",
     ),
