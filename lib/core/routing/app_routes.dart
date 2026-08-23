@@ -8,4 +8,5 @@ class AppRoutes {
   static const String qrCode = 'qrCode';
   static const String createGroup = 'createGroup';
   static const String chatRoom = 'chatRoom';
+  static const String forgotPassword = 'forgotPassword';
 }

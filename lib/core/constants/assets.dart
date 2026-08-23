@@ -11,5 +11,7 @@ class Assets {
   static const String imagesPngsSplashImage = "assets/images/pngs/splash_image.png";
 
   static const String imagesSvgsAppIcon = "assets/images/svgs/app_icon.svg";
+
+  static const String imagesSvgsGoogleIcon = "assets/images/svgs/google_icon.svg";
 }
 

@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 
 AppBar customAppBar(BuildContext context, String title) {
   return AppBar(
+    surfaceTintColor: Colors.transparent,
+    elevation: 0,
     leading: Padding(
       padding: const EdgeInsetsDirectional.only(start: AppPadding.small),
       child: IconButton(

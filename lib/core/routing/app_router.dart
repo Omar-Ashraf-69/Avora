@@ -1,4 +1,5 @@
 import 'package:avora/core/routing/app_routes.dart';
+import 'package:avora/features/auth/presentation/views/widgets/forgot_password/forgot_password_view.dart';
 import 'package:avora/features/chat/presentation/views/chat_room_view.dart';
 import 'package:avora/features/groups/presentation/views/widgets/create_group_view.dart';
 import 'package:avora/features/profile/presentation/views/edit_profile_view.dart';
@@ -31,6 +32,8 @@ class AppRouter {
         return _buildRoute(const CreateGroupView());
       case AppRoutes.chatRoom:
         return _buildRoute(const ChatRoomView(userName: "Andrew Ainsley"));
+      case AppRoutes.forgotPassword:
+        return _buildRoute(const ForgotPasswordView());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

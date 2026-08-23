@@ -52,6 +52,22 @@
   "offline": "Offline",
   "recently": "recently",
   "last_seen": "Last seen",
-  "type_a_message": "Type a message..."
+  "type_a_message": "Type a message...",
+  "forgot_password": "Forgot Password?",
+  "login_with_google": "Login with Google",
+  "or": "Or",
+  "enter_your_email_address": "Enter your email address",
+  "send": "Send",
+  "enter_your_password": "Enter your password",
+  "please_enter_a_valid_email": "Please enter a valid email",
+  "please_enter_a_valid_password": "Please enter a valid password",
+  "please_enter_a_valid_name": "Please enter a valid name",
+  "back_to_login": "Back to Login",
+  "email_address": "Email address",
+  "no_worries_enter_your_email_address": "No worries! Enter your email address and\nwe’ll send you a link to reset your password.",
+  "send_rest_link":"Send Reset Link",
+  "password_reset_link_sent_successfully":"Password reset link sent successfully!",
+  "check_your_inbox": "Check your inbox",
+  "we_will_send_you_a_link_to_reset_your_password": "We’ll send a password reset link to the email you provide."
 
 }

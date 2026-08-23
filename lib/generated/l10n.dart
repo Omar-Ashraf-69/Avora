@@ -444,6 +444,156 @@ class S {
       args: [],
     );
   }
+
+  /// `Forgot Password?`
+  String get forgot_password {
+    return Intl.message(
+      'Forgot Password?',
+      name: 'forgot_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Login with Google`
+  String get login_with_google {
+    return Intl.message(
+      'Login with Google',
+      name: 'login_with_google',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Or`
+  String get or {
+    return Intl.message('Or', name: 'or', desc: '', args: []);
+  }
+
+  /// `Enter your email address`
+  String get enter_your_email_address {
+    return Intl.message(
+      'Enter your email address',
+      name: 'enter_your_email_address',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send`
+  String get send {
+    return Intl.message('Send', name: 'send', desc: '', args: []);
+  }
+
+  /// `Enter your password`
+  String get enter_your_password {
+    return Intl.message(
+      'Enter your password',
+      name: 'enter_your_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter a valid email`
+  String get please_enter_a_valid_email {
+    return Intl.message(
+      'Please enter a valid email',
+      name: 'please_enter_a_valid_email',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter a valid password`
+  String get please_enter_a_valid_password {
+    return Intl.message(
+      'Please enter a valid password',
+      name: 'please_enter_a_valid_password',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter a valid name`
+  String get please_enter_a_valid_name {
+    return Intl.message(
+      'Please enter a valid name',
+      name: 'please_enter_a_valid_name',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Back to Login`
+  String get back_to_login {
+    return Intl.message(
+      'Back to Login',
+      name: 'back_to_login',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Email address`
+  String get email_address {
+    return Intl.message(
+      'Email address',
+      name: 'email_address',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No worries! Enter your email address and\nwe’ll send you a link to reset your password.`
+  String get no_worries_enter_your_email_address {
+    return Intl.message(
+      'No worries! Enter your email address and\nwe’ll send you a link to reset your password.',
+      name: 'no_worries_enter_your_email_address',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Send Reset Link`
+  String get send_rest_link {
+    return Intl.message(
+      'Send Reset Link',
+      name: 'send_rest_link',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Password reset link sent successfully!`
+  String get password_reset_link_sent_successfully {
+    return Intl.message(
+      'Password reset link sent successfully!',
+      name: 'password_reset_link_sent_successfully',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Check your inbox`
+  String get check_your_inbox {
+    return Intl.message(
+      'Check your inbox',
+      name: 'check_your_inbox',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `We’ll send a password reset link to the email you provide.`
+  String get we_will_send_you_a_link_to_reset_your_password {
+    return Intl.message(
+      'We’ll send a password reset link to the email you provide.',
+      name: 'we_will_send_you_a_link_to_reset_your_password',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

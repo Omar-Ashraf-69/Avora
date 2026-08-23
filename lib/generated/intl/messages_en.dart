@@ -28,9 +28,13 @@ class MessageLookup extends MessageLookupByLibrary {
       "Already have an account?",
     ),
     "are_you_sure": MessageLookupByLibrary.simpleMessage("Are you sure?"),
+    "back_to_login": MessageLookupByLibrary.simpleMessage("Back to Login"),
     "bio": MessageLookupByLibrary.simpleMessage("Bio"),
     "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
     "chats": MessageLookupByLibrary.simpleMessage("Chats"),
+    "check_your_inbox": MessageLookupByLibrary.simpleMessage(
+      "Check your inbox",
+    ),
     "choose_people_from": MessageLookupByLibrary.simpleMessage(
       "Choose people from your chats to add to the group",
     ),
@@ -56,6 +60,13 @@ class MessageLookup extends MessageLookupByLibrary {
       "Edit your profile",
     ),
     "email": MessageLookupByLibrary.simpleMessage("Email"),
+    "email_address": MessageLookupByLibrary.simpleMessage("Email address"),
+    "enter_your_email_address": MessageLookupByLibrary.simpleMessage(
+      "Enter your email address",
+    ),
+    "enter_your_password": MessageLookupByLibrary.simpleMessage(
+      "Enter your password",
+    ),
     "enter_your_phone_number": MessageLookupByLibrary.simpleMessage(
       "Enter your phone number",
     ),
@@ -63,6 +74,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Fill your profile",
     ),
     "fisrt_name": MessageLookupByLibrary.simpleMessage("Fisrt name"),
+    "forgot_password": MessageLookupByLibrary.simpleMessage("Forgot Password?"),
     "get_your_friends_to": MessageLookupByLibrary.simpleMessage(
       "Get your friends and family together to share your thoughts and ideas",
     ),
@@ -72,21 +84,43 @@ class MessageLookup extends MessageLookupByLibrary {
     "login_into_your_account": MessageLookupByLibrary.simpleMessage(
       "Login into your account",
     ),
+    "login_with_google": MessageLookupByLibrary.simpleMessage(
+      "Login with Google",
+    ),
     "logout": MessageLookupByLibrary.simpleMessage("Logout"),
     "nick_name": MessageLookupByLibrary.simpleMessage("NickName"),
     "no": MessageLookupByLibrary.simpleMessage("No"),
+    "no_worries_enter_your_email_address": MessageLookupByLibrary.simpleMessage(
+      "No worries! Enter your email address and\nwe’ll send you a link to reset your password.",
+    ),
     "offline": MessageLookupByLibrary.simpleMessage("Offline"),
     "online": MessageLookupByLibrary.simpleMessage("Online"),
+    "or": MessageLookupByLibrary.simpleMessage("Or"),
     "otp_code_verification": MessageLookupByLibrary.simpleMessage(
       "OTP Code Verification",
     ),
     "password": MessageLookupByLibrary.simpleMessage("Password"),
+    "password_reset_link_sent_successfully":
+        MessageLookupByLibrary.simpleMessage(
+          "Password reset link sent successfully!",
+        ),
     "phone_number": MessageLookupByLibrary.simpleMessage("Phone number"),
+    "please_enter_a_valid_email": MessageLookupByLibrary.simpleMessage(
+      "Please enter a valid email",
+    ),
+    "please_enter_a_valid_name": MessageLookupByLibrary.simpleMessage(
+      "Please enter a valid name",
+    ),
+    "please_enter_a_valid_password": MessageLookupByLibrary.simpleMessage(
+      "Please enter a valid password",
+    ),
     "qr_code": MessageLookupByLibrary.simpleMessage("QR Code"),
     "recently": MessageLookupByLibrary.simpleMessage("recently"),
     "resend_code_in": MessageLookupByLibrary.simpleMessage("Resend Code in "),
     "save_changes": MessageLookupByLibrary.simpleMessage("Save changes"),
     "search": MessageLookupByLibrary.simpleMessage("Search"),
+    "send": MessageLookupByLibrary.simpleMessage("Send"),
+    "send_rest_link": MessageLookupByLibrary.simpleMessage("Send Reset Link"),
     "settings": MessageLookupByLibrary.simpleMessage("Settings"),
     "sign_up": MessageLookupByLibrary.simpleMessage("Sign Up"),
     "start": MessageLookupByLibrary.simpleMessage("Start"),
@@ -100,6 +134,10 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "type_a_message": MessageLookupByLibrary.simpleMessage("Type a message..."),
     "verify": MessageLookupByLibrary.simpleMessage("Verify"),
+    "we_will_send_you_a_link_to_reset_your_password":
+        MessageLookupByLibrary.simpleMessage(
+          "We’ll send a password reset link to the email you provide.",
+        ),
     "welcome": MessageLookupByLibrary.simpleMessage("Welcome"),
     "yes": MessageLookupByLibrary.simpleMessage("Yes"),
     "your_account_has_been_created": MessageLookupByLibrary.simpleMessage(
