@@ -1019,6 +1019,16 @@ class S {
       args: [],
     );
   }
+
+  /// `User already exists`
+  String get user_already_exists {
+    return Intl.message(
+      'User already exists',
+      name: 'user_already_exists',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

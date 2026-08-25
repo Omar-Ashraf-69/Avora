@@ -45,6 +45,8 @@ class SupabaseExceptionMapper {
 
       case 'validation_failed':
         return S.current.invalid_credentials;
+      case "user_already_exists":
+        return S.current.user_already_exists;
     }
 
     switch (statusCode) {
@@ -69,14 +71,14 @@ class SupabaseExceptionMapper {
       case 504:
         return S.current.service_unavailable;
     }
-
+    switch (message) {
+      case "Failed to sign in with Google.":
+        return S.current.google_sign_in_cancelled;
+    }
     return S.current.unexpected_error;
   }
 
-  static String mapDatabaseException({
-    String? code,
-    String? message,
-  }) {
+  static String mapDatabaseException({String? code, String? message}) {
     switch (code) {
       case '42501':
         return S.current.permission_denied;
@@ -95,10 +97,7 @@ class SupabaseExceptionMapper {
     }
   }
 
-  static String mapStorageException({
-    String? statusCode,
-    String? message,
-  }) {
+  static String mapStorageException({String? statusCode, String? message}) {
     switch (statusCode) {
       case '400':
         return S.current.storage_error;

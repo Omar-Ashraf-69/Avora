@@ -118,7 +118,8 @@
   "phone_not_confirmed": "Your phone number is not confirmed",
   "google_sign_in_cancelled": "Google sign-in was cancelled by the user",
   "unexpected_error_in_supabase_auth": "Unexpected error in SupabaseAuthService",
-  "unexpected_data_base_error": "Unexpected database error"
+  "unexpected_data_base_error": "Unexpected database error",
+  "user_already_exists": "User already exists"
 
   
 

@@ -142,10 +142,10 @@ class AuthRepositoryImpl implements AuthRepository {
       return Right(userModel);
     } on CustomException catch (e) {
       log('AuthRepoImpl.$methodName', error: e);
-      await _remoteDataSource.deleteCurrentUser();
+      //await _remoteDataSource.deleteCurrentUser();
       return Left(ServerFailure(e.message));
     } catch (e, stackTrace) {
-      await _remoteDataSource.deleteCurrentUser();
+      //await _remoteDataSource.deleteCurrentUser();
       log('AuthRepoImpl.$methodName', error: e, stackTrace: stackTrace);
       return Left(ServerFailure(S.current.unexpected_error));
     }

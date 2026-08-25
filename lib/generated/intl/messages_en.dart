@@ -246,6 +246,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "unexpected_error_in_supabase_auth": MessageLookupByLibrary.simpleMessage(
       "Unexpected error in SupabaseAuthService",
     ),
+    "user_already_exists": MessageLookupByLibrary.simpleMessage(
+      "User already exists",
+    ),
     "user_disabled": MessageLookupByLibrary.simpleMessage(
       "This account has been disabled",
     ),

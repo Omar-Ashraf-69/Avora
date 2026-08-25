@@ -1,5 +1,7 @@
+import 'package:avora/core/funcs/loading_dialoag.dart';
 import 'package:avora/core/helper/app_regex.dart';
 import 'package:avora/core/helper/custom_toast.dart';
+import 'package:avora/core/helper/extenstions.dart';
 import 'package:avora/core/helper/spacing.dart';
 import 'package:avora/core/routing/app_routes.dart';
 import 'package:avora/core/widgets/app_text_form_field.dart';
@@ -67,15 +69,17 @@ class _SingUpFormSectionState extends State<SingUpFormSection> {
   Widget build(BuildContext context) {
     return BlocListener<AuthCubit, AuthState>(
       listener: (context, state) {
+        if (state is AuthLoading) {
+          loadingDialog(context);
+        }
         if (state is AuthError) {
+          context.pop();
           ToastNoContext.showColoredToast(message: state.message);
         }
 
         if (state is Authenticated) {
-          Navigator.pushReplacementNamed(
-            context,
-            AppRoutes.fillYourProfile,
-          );
+          context.pop();
+          Navigator.pushReplacementNamed(context, AppRoutes.fillYourProfile);
         }
       },
       child: Form(

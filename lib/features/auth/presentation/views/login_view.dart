@@ -1,4 +1,5 @@
 import 'package:avora/core/constants/assets.dart';
+import 'package:avora/core/funcs/loading_dialoag.dart';
 import 'package:avora/core/helper/custom_toast.dart';
 import 'package:avora/core/helper/extenstions.dart';
 import 'package:avora/core/helper/spacing.dart';
@@ -43,11 +44,13 @@ class LoginView extends StatelessWidget {
                 verticalSpace(28),
                 BlocListener<AuthCubit, AuthState>(
                   listener: (context, state) {
-                    if (state is AuthError) {
+                    if (state is AuthLoading) {
+                      loadingDialog(context);
+                    } else if (state is AuthError) {
+                      context.pop();
                       ToastNoContext.showColoredToast(message: state.message);
-                    }
-
-                    if (state is Authenticated) {
+                    } else if (state is Authenticated) {
+                      context.pop();
                       Navigator.pushReplacementNamed(context, AppRoutes.home);
                     }
                   },

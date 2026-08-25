@@ -25,7 +25,7 @@ class ToastNoContext {
     Fluttertoast.showToast(
       msg: message,
       toastLength: Toast.LENGTH_SHORT,
-      backgroundColor: AppColors.lightBlue,
+      backgroundColor: AppColors.mainBlue,
       textColor: Colors.white,
     );
   }
