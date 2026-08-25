@@ -959,6 +959,66 @@ class S {
       args: [],
     );
   }
+
+  /// `The request timed out. Please try again`
+  String get request_timeout {
+    return Intl.message(
+      'The request timed out. Please try again',
+      name: 'request_timeout',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your email address is not confirmed`
+  String get email_not_confirmed {
+    return Intl.message(
+      'Your email address is not confirmed',
+      name: 'email_not_confirmed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Your phone number is not confirmed`
+  String get phone_not_confirmed {
+    return Intl.message(
+      'Your phone number is not confirmed',
+      name: 'phone_not_confirmed',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Google sign-in was cancelled by the user`
+  String get google_sign_in_cancelled {
+    return Intl.message(
+      'Google sign-in was cancelled by the user',
+      name: 'google_sign_in_cancelled',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unexpected error in SupabaseAuthService`
+  String get unexpected_error_in_supabase_auth {
+    return Intl.message(
+      'Unexpected error in SupabaseAuthService',
+      name: 'unexpected_error_in_supabase_auth',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Unexpected database error`
+  String get unexpected_data_base_error {
+    return Intl.message(
+      'Unexpected database error',
+      name: 'unexpected_data_base_error',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

@@ -1,13 +1,17 @@
-import 'package:avora/features/auth/data/datasources/auth_remote_data_source.dart';
+import 'package:avora/core/services/auth/auth_remote_data_source_repo.dart';
+import 'package:avora/core/services/auth/auth_remote_data_source_repo_impl.dart';
+import 'package:avora/core/services/auth/supabase_auth_service.dart';
 import 'package:avora/features/auth/data/repos/auth_repo_impl.dart';
 import 'package:avora/features/auth/domain/repos/auth_repo.dart';
 import 'package:avora/features/auth/domain/use_cases/get_current_user.dart';
 import 'package:avora/features/auth/domain/use_cases/sign_in_with_email.dart';
+import 'package:avora/features/auth/domain/use_cases/sign_in_with_google.dart';
 import 'package:avora/features/auth/domain/use_cases/sign_out.dart';
 import 'package:avora/features/auth/domain/use_cases/sign_up_with_email.dart';
 import 'package:avora/features/auth/presentation/cubit/auth_cubit.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -24,14 +28,23 @@ Future<void> setupGetIt() async {
 
 void _registerAuth() {
   getIt.registerFactory(() => AuthCubit());
+  getIt.registerLazySingleton<GoogleSignIn>(() => GoogleSignIn.instance);
+  getIt.registerLazySingleton<SupabaseAuthService>(
+    () => SupabaseAuthService(
+      supabase: getIt<SupabaseClient>(),
+      googleSignIn: getIt<GoogleSignIn>(),
+    ),
+  );
+
   // Auth Data Source
-  getIt.registerLazySingleton<AuthRemoteDataSource>(
-    () => AuthRemoteDataSource(getIt<SupabaseClient>()),
+  getIt.registerLazySingleton<AuthRemoteDataSourceRepo>(
+    () =>
+        AuthRemoteDataSourceRepoImpl(authService: getIt<SupabaseAuthService>()),
   );
 
   // Auth Repository
   getIt.registerLazySingleton<AuthRepository>(
-    () => AuthRepositoryImpl(getIt<AuthRemoteDataSource>()),
+    () => AuthRepositoryImpl(getIt<AuthRemoteDataSourceRepo>()),
   );
 
   getIt.registerLazySingleton(
@@ -44,6 +57,10 @@ void _registerAuth() {
   );
   getIt.registerLazySingleton(
     () => SignUpWithEmailAndPasswordUseCase(getIt<AuthRepository>()),
+  );
+
+  getIt.registerLazySingleton<SignInWithGoogleUseCase>(
+    () => SignInWithGoogleUseCase(getIt<AuthRepository>()),
   );
 }
 

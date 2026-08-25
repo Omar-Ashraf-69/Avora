@@ -112,7 +112,13 @@
   "storage_quota_exceeded": "The storage quota has been exceeded",
   "operation_failed_retry": "The operation failed. Please try again",
   "file_corrupted": "The file is corrupted",
-  "storage_error": "An error occurred while uploading or downloading the file"
+  "storage_error": "An error occurred while uploading or downloading the file",
+  "request_timeout": "The request timed out. Please try again",
+  "email_not_confirmed": "Your email address is not confirmed",
+  "phone_not_confirmed": "Your phone number is not confirmed",
+  "google_sign_in_cancelled": "Google sign-in was cancelled by the user",
+  "unexpected_error_in_supabase_auth": "Unexpected error in SupabaseAuthService",
+  "unexpected_data_base_error": "Unexpected database error"
 
   
 

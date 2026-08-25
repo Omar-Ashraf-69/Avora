@@ -1,3 +1,4 @@
+import 'package:avora/features/auth/data/models/user_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 sealed class AuthState {
@@ -8,8 +9,13 @@ class AuthInitial extends AuthState {
   const AuthInitial();
 }
 
-class Authenticated extends AuthState {
+class CurrentUser extends AuthState {
   final User user;
+  const CurrentUser({required this.user});
+}
+
+class Authenticated extends AuthState {
+  final UserModel user;
   const Authenticated({required this.user});
 }
 

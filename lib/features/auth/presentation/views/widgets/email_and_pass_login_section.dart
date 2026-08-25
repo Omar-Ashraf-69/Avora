@@ -46,10 +46,9 @@ class _EmailAndPassLoginSectionState extends State<EmailAndPassLoginSection> {
           ToastNoContext.showColoredToast(message: state.message);
         }
         if (state is Authenticated) {
-          Navigator.pushNamedAndRemoveUntil(
+          Navigator.pushReplacementNamed(
             context,
             AppRoutes.home,
-            (route) => false,
           );
         }
       },

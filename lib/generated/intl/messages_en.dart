@@ -101,6 +101,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "email_already_in_use": MessageLookupByLibrary.simpleMessage(
       "This email address is already in use",
     ),
+    "email_not_confirmed": MessageLookupByLibrary.simpleMessage(
+      "Your email address is not confirmed",
+    ),
     "enter_your_email_address": MessageLookupByLibrary.simpleMessage(
       "Enter your email address",
     ),
@@ -126,6 +129,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "forgot_password": MessageLookupByLibrary.simpleMessage("Forgot Password?"),
     "get_your_friends_to": MessageLookupByLibrary.simpleMessage(
       "Get your friends and family together to share your thoughts and ideas",
+    ),
+    "google_sign_in_cancelled": MessageLookupByLibrary.simpleMessage(
+      "Google sign-in was cancelled by the user",
     ),
     "groups": MessageLookupByLibrary.simpleMessage("Groups"),
     "invalid_credentials": MessageLookupByLibrary.simpleMessage(
@@ -171,6 +177,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "permission_denied": MessageLookupByLibrary.simpleMessage(
       "You don\'t have permission to perform this operation",
     ),
+    "phone_not_confirmed": MessageLookupByLibrary.simpleMessage(
+      "Your phone number is not confirmed",
+    ),
     "phone_number": MessageLookupByLibrary.simpleMessage("Phone number"),
     "please_enter_a_valid_email": MessageLookupByLibrary.simpleMessage(
       "Please enter a valid email",
@@ -184,6 +193,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "privacy_policy": MessageLookupByLibrary.simpleMessage("Privacy Policy"),
     "qr_code": MessageLookupByLibrary.simpleMessage("QR Code"),
     "recently": MessageLookupByLibrary.simpleMessage("recently"),
+    "request_timeout": MessageLookupByLibrary.simpleMessage(
+      "The request timed out. Please try again",
+    ),
     "requires_recent_login": MessageLookupByLibrary.simpleMessage(
       "Please sign in again and try again",
     ),
@@ -225,8 +237,14 @@ class MessageLookup extends MessageLookupByLibrary {
       "Too many attempts. Please try again later",
     ),
     "type_a_message": MessageLookupByLibrary.simpleMessage("Type a message..."),
+    "unexpected_data_base_error": MessageLookupByLibrary.simpleMessage(
+      "Unexpected database error",
+    ),
     "unexpected_error": MessageLookupByLibrary.simpleMessage(
       "An unexpected error occurred. Please try again",
+    ),
+    "unexpected_error_in_supabase_auth": MessageLookupByLibrary.simpleMessage(
+      "Unexpected error in SupabaseAuthService",
     ),
     "user_disabled": MessageLookupByLibrary.simpleMessage(
       "This account has been disabled",

@@ -72,10 +72,9 @@ class _SingUpFormSectionState extends State<SingUpFormSection> {
         }
 
         if (state is Authenticated) {
-          Navigator.pushNamedAndRemoveUntil(
+          Navigator.pushReplacementNamed(
             context,
             AppRoutes.fillYourProfile,
-            (route) => false,
           );
         }
       },
