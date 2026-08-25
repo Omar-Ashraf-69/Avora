@@ -13,6 +13,6 @@ abstract class AuthRepository {
 
   User? getCurrentUser();
 
-  Future<void> deleteCurrentUser();
-  Future<void> signOut();
+  Future<Either<Failure, void>> deleteCurrentUser();
+  Future<Either<Failure, void>> signOut();
 }

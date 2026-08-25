@@ -3,6 +3,7 @@ import 'package:avora/core/services/auth/auth_remote_data_source_repo_impl.dart'
 import 'package:avora/core/services/auth/supabase_auth_service.dart';
 import 'package:avora/features/auth/data/repos/auth_repo_impl.dart';
 import 'package:avora/features/auth/domain/repos/auth_repo.dart';
+import 'package:avora/features/auth/domain/use_cases/delete_current_user.dart';
 import 'package:avora/features/auth/domain/use_cases/get_current_user.dart';
 import 'package:avora/features/auth/domain/use_cases/sign_in_with_email.dart';
 import 'package:avora/features/auth/domain/use_cases/sign_in_with_google.dart';
@@ -61,6 +62,10 @@ void _registerAuth() {
 
   getIt.registerLazySingleton<SignInWithGoogleUseCase>(
     () => SignInWithGoogleUseCase(getIt<AuthRepository>()),
+  );
+
+  getIt.registerLazySingleton<DeleteCurrentUserUseCase>(
+    () => DeleteCurrentUserUseCase(getIt<AuthRepository>()),
   );
 }
 

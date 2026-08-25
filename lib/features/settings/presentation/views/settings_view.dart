@@ -1,7 +1,11 @@
+import 'package:avora/core/helper/custom_toast.dart';
 import 'package:avora/core/helper/extenstions.dart';
 import 'package:avora/core/routing/app_routes.dart';
 import 'package:avora/core/themes/app_colors.dart';
+import 'package:avora/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:avora/features/auth/presentation/cubit/auth_state.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hugeicons/hugeicons.dart';
 
@@ -207,10 +211,24 @@ class _SettingsOptionsCard extends StatelessWidget {
 
           const _CustomDivider(),
 
-          const _SettingsNavigationTile(
-            icon: Icons.logout,
-            title: 'Logout',
-            iconColor: Colors.red,
+          BlocListener<AuthCubit, AuthState>(
+            listener: (context, state) {
+              if (state is AuthError) {
+                ToastNoContext.showColoredToast(message: state.message);
+              }
+
+              if (state is AuthUnauthenticated) {
+                context.pushReplacementNamed(AppRoutes.login);
+              }
+            },
+            child: _SettingsNavigationTile(
+              icon: Icons.logout,
+              title: 'Logout',
+              iconColor: Colors.red,
+              onTap: () {
+                context.read<AuthCubit>().signOut();
+              },
+            ),
           ),
         ],
       ),
@@ -249,12 +267,13 @@ class _SettingsNavigationTile extends StatelessWidget {
   final String title;
   final Color? iconColor;
   final Widget? trailing;
-
+  final void Function()? onTap;
   const _SettingsNavigationTile({
     required this.icon,
     required this.title,
     this.iconColor,
     this.trailing,
+    this.onTap,
   });
 
   @override
@@ -267,7 +286,7 @@ class _SettingsNavigationTile extends StatelessWidget {
         style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
       ),
       trailing: trailing,
-      onTap: () {},
+      onTap: onTap,
     );
   }
 }

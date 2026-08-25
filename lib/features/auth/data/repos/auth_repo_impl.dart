@@ -15,8 +15,11 @@ class AuthRepositoryImpl implements AuthRepository {
   final AuthRemoteDataSourceRepo _remoteDataSource;
 
   @override
-  Future<void> signOut() {
-    return _remoteDataSource.signOut();
+  Future<Either<Failure, void>> signOut() async {
+    return _executeVoidOperation(
+      () => _remoteDataSource.signOut(),
+      methodName: "signOut",
+    );
   }
 
   @override
@@ -61,8 +64,27 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<void> deleteCurrentUser() async {
-    return await _remoteDataSource.deleteCurrentUser();
+  Future<Either<Failure, void>> deleteCurrentUser() async {
+    return await _executeVoidOperation(
+      () => _remoteDataSource.deleteCurrentUser(),
+      methodName: "deleteCurrentUser",
+    );
+  }
+
+  Future<Either<Failure, void>> _executeVoidOperation(
+    Future<void> Function() operation, {
+    required String methodName,
+  }) async {
+    try {
+      await operation();
+      return const Right(null);
+    } on CustomException catch (e) {
+      log('AuthRepoImpl.$methodName', error: e);
+      return Left(ServerFailure(e.message));
+    } catch (e, stackTrace) {
+      log('AuthRepoImpl.$methodName', error: e, stackTrace: stackTrace);
+      return Left(ServerFailure(S.current.unexpected_error));
+    }
   }
 
   Future<Either<Failure, UserModel>> _executeSignInOperation(

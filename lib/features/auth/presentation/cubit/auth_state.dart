@@ -23,6 +23,10 @@ class AuthUnauthenticated extends AuthState {
   const AuthUnauthenticated();
 }
 
+class UserDeleted extends AuthState {
+  const UserDeleted();
+}
+
 class AuthLoading extends AuthState {
   const AuthLoading();
 }

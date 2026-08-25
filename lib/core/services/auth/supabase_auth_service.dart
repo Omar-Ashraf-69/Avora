@@ -3,14 +3,12 @@ import 'dart:developer';
 import 'package:avora/core/error/exceptions.dart';
 import 'package:avora/core/error/supabase_exception_mapper.dart';
 import 'package:avora/generated/l10n.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class SupabaseAuthService {
-  SupabaseAuthService({
-    required this._supabase,
-    required this._googleSignIn,
-  });
+  SupabaseAuthService({required this._supabase, required this._googleSignIn});
 
   final SupabaseClient _supabase;
   final GoogleSignIn _googleSignIn;
@@ -73,20 +71,37 @@ class SupabaseAuthService {
 
   Future<AuthResponse> signInWithGoogle() async {
     return _execute(() async {
-      final googleUser = await _googleSignIn.authenticate();
+      final webClientId = dotenv.env['GOOGLE_WEB_CLIENT_ID'] ?? '';
+      final iosClientId = dotenv.env['GOOGLE_IOS_CLIENT_ID'] ?? '';
 
-      final googleAuth = googleUser.authentication;
-      final idToken = googleAuth.idToken;
+      final scopes = ['email', 'profile'];
+
+      await _googleSignIn.initialize(
+        serverClientId: webClientId,
+        clientId: iosClientId,
+      );
+
+      final googleUser = await _googleSignIn.attemptLightweightAuthentication();
+
+      if (googleUser == null) {
+        throw AuthException('Failed to sign in with Google.');
+      }
+
+      final authorization =
+          await googleUser.authorizationClient.authorizationForScopes(scopes) ??
+          await googleUser.authorizationClient.authorizeScopes(scopes);
+
+      final idToken = googleUser.authentication.idToken;
 
       if (idToken == null) {
-        throw CustomException(message: S.current.unexpected_error);
+        throw AuthException('No ID Token found.');
       }
 
       final response = await _auth.signInWithIdToken(
         provider: OAuthProvider.google,
         idToken: idToken,
+        accessToken: authorization.accessToken,
       );
-
       if (response.user == null) {
         throw CustomException(message: S.current.unexpected_error);
       }
@@ -101,10 +116,16 @@ class SupabaseAuthService {
 
   Future<void> deleteCurrentUser() async {
     return _execute(() async {
-      await _auth.admin.deleteUser(currentUser!.id);
-      //await _supabase.functions.invoke(
-      //   'delete-account',
-      // );
+      // await _auth.admin.deleteUser(currentUser!.id);
+      final res = await _supabase.functions.invoke(
+        'delete-account',
+        method: HttpMethod.post,
+        headers: {
+          'Authorization': 'Bearer ${_auth.currentSession!.accessToken}',
+        },
+        body: {},
+      );
+      log("deleteCurrentUser: ${res.data}");
     });
   }
 
@@ -114,10 +135,7 @@ class SupabaseAuthService {
 
   Future<void> signOut() async {
     return _execute(() async {
-      await Future.wait([
-        _auth.signOut(),
-        _googleSignIn.signOut(),
-      ]);
+      await Future.wait([_auth.signOut(), _googleSignIn.signOut()]);
     });
   }
 

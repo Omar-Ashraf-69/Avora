@@ -1,5 +1,6 @@
 import 'package:avora/core/di/dependecny_injection.dart';
 import 'package:avora/features/auth/domain/repos/auth_repo.dart';
+import 'package:avora/features/auth/domain/use_cases/delete_current_user.dart';
 import 'package:avora/features/auth/domain/use_cases/get_current_user.dart';
 import 'package:avora/features/auth/domain/use_cases/sign_in_with_email.dart';
 import 'package:avora/features/auth/domain/use_cases/sign_in_with_google.dart';
@@ -72,5 +73,12 @@ class AuthCubit extends Cubit<AuthState> {
       (l) => emit(AuthError(l.message)),
       (r) => emit(Authenticated(user: r)),
     );
+  }
+
+  Future<void> deleteCurrentUser() async{
+   final res =  await DeleteCurrentUserUseCase(
+      getIt<AuthRepository>(),
+    ).call();
+    res.fold((l) => emit(AuthError(l.message)), (r) => emit(const UserDeleted()));
   }
 }
