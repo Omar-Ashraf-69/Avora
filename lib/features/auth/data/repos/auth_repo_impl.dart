@@ -71,6 +71,26 @@ class AuthRepositoryImpl implements AuthRepository {
     );
   }
 
+  @override
+  Future<Either<Failure, void>> sendPasswordResetEmail({
+    required String email,
+  }) async {
+    return await _executeVoidOperation(
+      () => _remoteDataSource.sendPasswordResetEmail(email: email),
+      methodName: 'sendPasswordResetEmail',
+    );
+  }
+
+  @override
+  Future<Either<Failure, void>> updatePassword({
+    required String password,
+  }) async {
+    return await _executeVoidOperation(
+      () => _remoteDataSource.updatePassword(password: password),
+      methodName: 'updatePassword',
+    );
+  }
+
   Future<Either<Failure, void>> _executeVoidOperation(
     Future<void> Function() operation, {
     required String methodName,

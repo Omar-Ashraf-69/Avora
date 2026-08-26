@@ -19,4 +19,13 @@ abstract class AuthRemoteDataSourceRepo {
   Future<UserModel> signInWithGoogle();
 
   Future<void> signOut();
+
+
+   Future<void> sendPasswordResetEmail({
+    required String email,
+  });
+
+  Future<void> updatePassword({
+    required String password,
+  });
 }

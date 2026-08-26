@@ -44,6 +44,16 @@ class AuthRemoteDataSourceRepoImpl implements AuthRemoteDataSourceRepo {
   }
 
   @override
+  Future<void> sendPasswordResetEmail({required String email}) async {
+    return await authService.resetPassword(email: email);
+  }
+
+  @override
+  Future<void> updatePassword({required String password}) async {
+    return await authService.updatePassword(password: password);
+  }
+
+  @override
   Future<void> signOut() async {
     await authService.signOut();
   }

@@ -9,4 +9,6 @@ class AppRoutes {
   static const String createGroup = 'createGroup';
   static const String chatRoom = 'chatRoom';
   static const String forgotPassword = 'forgotPassword';
+    static const String resetPassword = 'resetPassword';
+
 }

@@ -1,5 +1,9 @@
+import 'package:avora/core/di/dependecny_injection.dart';
 import 'package:avora/core/routing/app_routes.dart';
+import 'package:avora/features/auth/presentation/fortgot_pass_cubit/forgot_pass_cubit.dart';
+import 'package:avora/features/auth/presentation/reset_pass_cubit/reset_pass_cubit.dart';
 import 'package:avora/features/auth/presentation/views/widgets/forgot_password/forgot_password_view.dart';
+import 'package:avora/features/auth/presentation/views/widgets/forgot_password/reset_pass_screen.dart';
 import 'package:avora/features/chat/presentation/views/chat_room_view.dart';
 import 'package:avora/features/groups/presentation/views/widgets/create_group_view.dart';
 import 'package:avora/features/profile/presentation/views/edit_profile_view.dart';
@@ -10,6 +14,7 @@ import 'package:avora/features/auth/presentation/views/sign_up_view.dart';
 import 'package:avora/features/home/presentation/views/home_view.dart';
 import 'package:avora/features/qr/presentation/views/qr_code_view.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppRouter {
   Route? onGenerateRoute(RouteSettings settings) {
@@ -33,7 +38,20 @@ class AppRouter {
       case AppRoutes.chatRoom:
         return _buildRoute(const ChatRoomView(userName: "Andrew Ainsley"));
       case AppRoutes.forgotPassword:
-        return _buildRoute(const ForgotPasswordView());
+        return _buildRoute(
+          BlocProvider(
+            create: (context) => getIt<ForgotPassCubit>(),
+            child: const ForgotPasswordView(),
+          ),
+        );
+
+        case AppRoutes.resetPassword:
+        return _buildRoute(
+          BlocProvider(
+            create: (context) => getIt<ResetPassCubit>(),
+            child: const ResetPasswordScreen(),
+          ),
+        );
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

@@ -5,11 +5,15 @@ import 'package:avora/features/auth/data/repos/auth_repo_impl.dart';
 import 'package:avora/features/auth/domain/repos/auth_repo.dart';
 import 'package:avora/features/auth/domain/use_cases/delete_current_user.dart';
 import 'package:avora/features/auth/domain/use_cases/get_current_user.dart';
+import 'package:avora/features/auth/domain/use_cases/send_password_reset.dart';
 import 'package:avora/features/auth/domain/use_cases/sign_in_with_email.dart';
 import 'package:avora/features/auth/domain/use_cases/sign_in_with_google.dart';
 import 'package:avora/features/auth/domain/use_cases/sign_out.dart';
 import 'package:avora/features/auth/domain/use_cases/sign_up_with_email.dart';
+import 'package:avora/features/auth/domain/use_cases/update_password.dart';
 import 'package:avora/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:avora/features/auth/presentation/fortgot_pass_cubit/forgot_pass_cubit.dart';
+import 'package:avora/features/auth/presentation/reset_pass_cubit/reset_pass_cubit.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -66,6 +70,22 @@ void _registerAuth() {
 
   getIt.registerLazySingleton<DeleteCurrentUserUseCase>(
     () => DeleteCurrentUserUseCase(getIt<AuthRepository>()),
+  );
+
+  getIt.registerLazySingleton<SendPasswordResetEmailUseCase>(
+    () => SendPasswordResetEmailUseCase(getIt<AuthRepository>()),
+  );
+
+  getIt.registerLazySingleton<UpdatePasswordUseCase>(
+    () => UpdatePasswordUseCase(getIt<AuthRepository>()),
+  );
+
+  getIt.registerFactory<ForgotPassCubit>(
+    () => ForgotPassCubit(sendPasswordResetEmailUseCase:  getIt<SendPasswordResetEmailUseCase>()),
+  );
+
+  getIt.registerFactory<ResetPassCubit>(
+    () => ResetPassCubit(updatePasswordUseCase:  getIt<UpdatePasswordUseCase>()),
   );
 }
 

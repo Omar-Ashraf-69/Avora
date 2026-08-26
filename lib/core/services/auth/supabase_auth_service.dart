@@ -65,6 +65,17 @@ class SupabaseAuthService {
     });
   }
 
+  Future<void> resetPassword({required String email}) async {
+    return _execute(() async {
+      await _auth.resetPasswordForEmail(email);
+    });
+  }
+
+  Future<void> updatePassword({required String password}) async {
+    return _execute(() async {
+      await _auth.updateUser(UserAttributes(password: password));
+    });
+  }
   // ---------------------------------------------------------------------------
   // Google
   // ---------------------------------------------------------------------------
