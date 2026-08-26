@@ -11,7 +11,6 @@ class AppInitializer {
   Future<void> initialize() async {
     WidgetsFlutterBinding.ensureInitialized();
     await ScreenUtil.ensureScreenSize();
-    await setupGetIt();
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
     );
@@ -20,9 +19,12 @@ class AppInitializer {
       url: dotenv.env['SUPABASE_URL'] ?? "",
       publishableKey: dotenv.env['SUPABASE_PUBLISHABLE_KEY'] ?? "",
     );
+    await setupGetIt();
   }
 
   String getInitialRoute() {
+    final session = getIt<SupabaseClient>().auth.currentSession;
+    if (session != null) return AppRoutes.home;
     return AppRoutes.login;
   }
 

@@ -1,6 +1,5 @@
 import 'package:avora/core/di/dependecny_injection.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefHelper {
@@ -9,8 +8,8 @@ class SharedPrefHelper {
   static SharedPreferences get _prefs =>
       getIt<SharedPreferences>();
 
-  static FlutterSecureStorage get _secureStorage =>
-      getIt<FlutterSecureStorage>();
+  // static FlutterSecureStorage get _secureStorage =>
+  //     getIt<FlutterSecureStorage>();
 
   /// Saves a value in SharedPreferences.
   static Future<void> setData(
@@ -76,44 +75,4 @@ class SharedPrefHelper {
   static List<String> getStringList(String key) =>
       _prefs.getStringList(key) ?? [];
 
-  // -------------------------
-  // Secure Storage
-  // -------------------------
-
-  static Future<void> setSecuredString(
-    String key,
-    String value,
-  ) async {
-    debugPrint('Saving secured value: $key');
-
-    await _secureStorage.write(
-      key: key,
-      value: value,
-    );
-  }
-
-  static Future<String> getSecuredString(
-    String key,
-  ) async {
-    debugPrint('Reading secured value: $key');
-
-    return await _secureStorage.read(
-          key: key,
-        ) ??
-        '';
-  }
-
-  static Future<void> removeSecuredData(
-    String key,
-  ) async {
-    debugPrint('Removing secured value: $key');
-
-    await _secureStorage.delete(key: key);
-  }
-
-  static Future<void> clearAllSecuredData() async {
-    debugPrint('Clearing secure storage');
-
-    await _secureStorage.deleteAll();
-  }
 }

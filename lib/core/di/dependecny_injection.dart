@@ -11,10 +11,9 @@ import 'package:avora/features/auth/domain/use_cases/sign_in_with_google.dart';
 import 'package:avora/features/auth/domain/use_cases/sign_out.dart';
 import 'package:avora/features/auth/domain/use_cases/sign_up_with_email.dart';
 import 'package:avora/features/auth/domain/use_cases/update_password.dart';
-import 'package:avora/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:avora/features/auth/presentation/auth_cubit/auth_cubit.dart';
 import 'package:avora/features/auth/presentation/fortgot_pass_cubit/forgot_pass_cubit.dart';
 import 'package:avora/features/auth/presentation/reset_pass_cubit/reset_pass_cubit.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -26,13 +25,22 @@ Future<void> setupGetIt() async {
   // Shared Preferences
   await _registerSharedPreferences();
   //Secure Storage
-  _registerSecureStorage();
+  // _registerSecureStorage();
   _registerSupabase();
   _registerAuth();
 }
 
 void _registerAuth() {
-  getIt.registerFactory(() => AuthCubit());
+  getIt.registerFactory(
+    () => AuthCubit(
+      getCurrentUserUseCase: getIt<GetCurrentUserUseCase>(),
+      signInWithEmailUseCase: getIt<SignInWithEmailAndPasswordUseCase>(),
+      signInWithGoogleUseCase: getIt<SignInWithGoogleUseCase>(),
+      signUpWithEmailUseCase: getIt<SignUpWithEmailAndPasswordUseCase>(),
+      signOutUseCase: getIt<SignOutUseCase>(),
+      deleteCurrentUserUseCase: getIt<DeleteCurrentUserUseCase>(),
+    ),
+  );
   getIt.registerLazySingleton<GoogleSignIn>(() => GoogleSignIn.instance);
   getIt.registerLazySingleton<SupabaseAuthService>(
     () => SupabaseAuthService(
@@ -81,17 +89,14 @@ void _registerAuth() {
   );
 
   getIt.registerFactory<ForgotPassCubit>(
-    () => ForgotPassCubit(sendPasswordResetEmailUseCase:  getIt<SendPasswordResetEmailUseCase>()),
+    () => ForgotPassCubit(
+      sendPasswordResetEmailUseCase: getIt<SendPasswordResetEmailUseCase>(),
+    ),
   );
 
   getIt.registerFactory<ResetPassCubit>(
-    () => ResetPassCubit(updatePasswordUseCase:  getIt<UpdatePasswordUseCase>()),
+    () => ResetPassCubit(updatePasswordUseCase: getIt<UpdatePasswordUseCase>()),
   );
-}
-
-void _registerSecureStorage() {
-  const flutterSecureStorage = FlutterSecureStorage();
-  getIt.registerSingleton<FlutterSecureStorage>(flutterSecureStorage);
 }
 
 Future<void> _registerSharedPreferences() async {
@@ -101,5 +106,5 @@ Future<void> _registerSharedPreferences() async {
 
 void _registerSupabase() {
   // Supabase
-  getIt.registerLazySingleton<SupabaseClient>(() => Supabase.instance.client);
+  getIt.registerSingleton<SupabaseClient>(Supabase.instance.client);
 }

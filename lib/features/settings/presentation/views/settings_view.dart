@@ -1,9 +1,10 @@
+import 'package:avora/core/funcs/loading_dialoag.dart';
 import 'package:avora/core/helper/custom_toast.dart';
 import 'package:avora/core/helper/extenstions.dart';
 import 'package:avora/core/routing/app_routes.dart';
 import 'package:avora/core/themes/app_colors.dart';
-import 'package:avora/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:avora/features/auth/presentation/cubit/auth_state.dart';
+import 'package:avora/features/auth/presentation/auth_cubit/auth_cubit.dart';
+import 'package:avora/features/auth/presentation/auth_cubit/auth_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -213,11 +214,16 @@ class _SettingsOptionsCard extends StatelessWidget {
 
           BlocListener<AuthCubit, AuthState>(
             listener: (context, state) {
+              if (state is AuthLoading) {
+                loadingDialog(context);
+              }
               if (state is AuthError) {
+                Navigator.of(context, rootNavigator: true).pop();
                 ToastNoContext.showColoredToast(message: state.message);
               }
 
-              if (state is AuthUnauthenticated) {
+              if (state is Unauthenticated) {
+                Navigator.of(context, rootNavigator: true).pop();
                 context.pushReplacementNamed(AppRoutes.login);
               }
             },
@@ -225,8 +231,8 @@ class _SettingsOptionsCard extends StatelessWidget {
               icon: Icons.logout,
               title: 'Logout',
               iconColor: Colors.red,
-              onTap: () {
-                context.read<AuthCubit>().signOut();
+              onTap: () async{
+                await context.read<AuthCubit>().signOut();
               },
             ),
           ),

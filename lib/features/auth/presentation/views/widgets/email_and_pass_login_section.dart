@@ -1,9 +1,6 @@
-import 'package:avora/core/helper/custom_toast.dart';
 import 'package:avora/core/helper/spacing.dart';
-import 'package:avora/core/routing/app_routes.dart';
 import 'package:avora/core/widgets/custom_button.dart';
-import 'package:avora/features/auth/presentation/cubit/auth_cubit.dart';
-import 'package:avora/features/auth/presentation/cubit/auth_state.dart';
+import 'package:avora/features/auth/presentation/auth_cubit/auth_cubit.dart';
 import 'package:avora/features/auth/presentation/views/widgets/forgot_pass.dart';
 import 'package:avora/features/auth/presentation/views/widgets/login_text_fields_sections.dart';
 import 'package:avora/generated/l10n.dart';
@@ -40,36 +37,23 @@ class _EmailAndPassLoginSectionState extends State<EmailAndPassLoginSection> {
 
   @override
   Widget build(BuildContext context) {
-    return BlocListener<AuthCubit, AuthState>(
-      listener: (context, state) {
-        if (state is AuthError) {
-          ToastNoContext.showColoredToast(message: state.message);
-        }
-        if (state is Authenticated) {
-          Navigator.pushReplacementNamed(
-            context,
-            AppRoutes.home,
-          );
-        }
-      },
-      child: Form(
-        key: _formKey,
-        autovalidateMode: _autoValidateMode,
-        child: Column(
-          children: [
-            LoginTextFieldsSection(
-              emailController: _emailController,
-              passwordController: _passwordController,
-              emailFocusNode: _emailFocusNode,
-              passwordFocusNode: _passwordFocusNode,
-              submit: (_) => _submit(),
-            ),
-            verticalSpace(16),
-            const ForgetPassWidget(),
-            verticalSpace(20),
-            CustomButton(label: S.of(context).login, onPressed: _submit),
-          ],
-        ),
+    return Form(
+      key: _formKey,
+      autovalidateMode: _autoValidateMode,
+      child: Column(
+        children: [
+          LoginTextFieldsSection(
+            emailController: _emailController,
+            passwordController: _passwordController,
+            emailFocusNode: _emailFocusNode,
+            passwordFocusNode: _passwordFocusNode,
+            submit: (_) => _submit(),
+          ),
+          verticalSpace(16),
+          const ForgetPassWidget(),
+          verticalSpace(20),
+          CustomButton(label: S.of(context).login, onPressed: _submit),
+        ],
       ),
     );
   }

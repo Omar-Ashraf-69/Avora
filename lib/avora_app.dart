@@ -1,6 +1,7 @@
+import 'package:avora/core/di/dependecny_injection.dart';
 import 'package:avora/core/localization/locale_provider.dart';
 import 'package:avora/core/routing/app_router.dart';
-import 'package:avora/features/auth/presentation/cubit/auth_cubit.dart';
+import 'package:avora/features/auth/presentation/auth_cubit/auth_cubit.dart';
 import 'package:avora/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -22,9 +23,8 @@ class AvoraApp extends StatelessWidget {
     return ScreenUtilInit(
       designSize: const Size(375, 812),
       minTextAdapt: true,
-
       child: BlocProvider(
-        create: (context) => AuthCubit(),
+        create: (context) => getIt<AuthCubit>(),
         child: MaterialApp(
           title: 'Avora',
           debugShowCheckedModeBanner: false,
