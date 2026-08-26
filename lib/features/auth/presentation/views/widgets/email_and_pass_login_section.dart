@@ -66,7 +66,7 @@ class _EmailAndPassLoginSectionState extends State<EmailAndPassLoginSection> {
       return;
     }
     context.read<AuthCubit>().signInWithEmail(
-      email: _emailController.text.trim(),
+      email: _emailController.text.trim().toLowerCase(),
       password: _passwordController.text,
     );
   }

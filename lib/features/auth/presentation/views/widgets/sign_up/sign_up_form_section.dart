@@ -16,12 +16,14 @@ class SingUpFormSection extends StatefulWidget {
 
 class _SingUpFormSectionState extends State<SingUpFormSection> {
   bool isObscureText = true;
+  bool isObscureConfirmText = true;
 
   bool hasLowercase = false;
   bool hasUppercase = false;
   bool hasSpecialCharacters = false;
   bool hasNumber = false;
   bool hasMinLength = false;
+  AutovalidateMode _autoValidateMode = AutovalidateMode.disabled;
 
   late TextEditingController passwordController;
   late TextEditingController confirmPasswordController;
@@ -64,6 +66,7 @@ class _SingUpFormSectionState extends State<SingUpFormSection> {
   Widget build(BuildContext context) {
     return Form(
       key: _formKey,
+      autovalidateMode: _autoValidateMode,
       child: Column(
         children: [
           AppTextFormField(
@@ -102,23 +105,22 @@ class _SingUpFormSectionState extends State<SingUpFormSection> {
           AppTextFormField(
             controller: confirmPasswordController,
             hintText: S.of(context).confirm_password,
-            isObscureText: isObscureText,
-    
+            isObscureText: isObscureConfirmText,
+
             suffixIcon: GestureDetector(
               onTap: () {
                 setState(() {
-                  isObscureText = !isObscureText;
+                  isObscureConfirmText = !isObscureConfirmText;
                 });
               },
               child: Icon(
-                isObscureText ? Icons.visibility_off : Icons.visibility,
+                isObscureConfirmText ? Icons.visibility_off : Icons.visibility,
               ),
             ),
             validator: (value) {
               if (value == null ||
                   value.isEmpty ||
                   value != passwordController.text) {
-                setState(() {});
                 return S.of(context).passwords_do_not_match;
               }
             },
@@ -144,11 +146,15 @@ class _SingUpFormSectionState extends State<SingUpFormSection> {
   }
 
   void validateThenDoSingUp(BuildContext context) {
-    if (_formKey.currentState!.validate()) {
-      context.read<AuthCubit>().signUpNewUser(
-        email: emailController.text,
-        password: passwordController.text,
-      );
+    if (!_formKey.currentState!.validate()) {
+      setState(() {
+        _autoValidateMode = AutovalidateMode.onUserInteraction;
+      });
+      return;
     }
+    context.read<AuthCubit>().signUpNewUser(
+      email: emailController.text.trim().toLowerCase(),
+      password: passwordController.text,
+    );
   }
 }
