@@ -1,12 +1,10 @@
-import 'package:avora/core/funcs/loading_dialoag.dart';
-import 'package:avora/core/helper/custom_toast.dart';
+import 'package:avora/core/di/dependecny_injection.dart';
 import 'package:avora/core/helper/extenstions.dart';
 import 'package:avora/core/routing/app_routes.dart';
 import 'package:avora/core/themes/app_colors.dart';
-import 'package:avora/features/auth/presentation/auth_cubit/auth_cubit.dart';
-import 'package:avora/features/auth/presentation/auth_cubit/auth_state.dart';
+import 'package:avora/features/auth/domain/repos/auth_repo.dart';
+import 'package:avora/features/auth/domain/use_cases/sign_out.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:hugeicons/hugeicons.dart';
 
@@ -212,29 +210,15 @@ class _SettingsOptionsCard extends StatelessWidget {
 
           const _CustomDivider(),
 
-          BlocListener<AuthCubit, AuthState>(
-            listener: (context, state) {
-              if (state is AuthLoading) {
-                loadingDialog(context);
-              }
-              if (state is AuthError) {
-                Navigator.of(context, rootNavigator: true).pop();
-                ToastNoContext.showColoredToast(message: state.message);
-              }
-
-              if (state is Unauthenticated) {
-                Navigator.of(context, rootNavigator: true).pop();
-                context.pushReplacementNamed(AppRoutes.login);
-              }
+          _SettingsNavigationTile(
+            icon: Icons.logout,
+            title: 'Logout',
+            iconColor: Colors.red,
+            onTap: () async {
+              //await context.read<AuthCubit>().signOut();
+              await SignOutUseCase(getIt<AuthRepository>()).call();
+              
             },
-            child: _SettingsNavigationTile(
-              icon: Icons.logout,
-              title: 'Logout',
-              iconColor: Colors.red,
-              onTap: () async{
-                await context.read<AuthCubit>().signOut();
-              },
-            ),
           ),
         ],
       ),

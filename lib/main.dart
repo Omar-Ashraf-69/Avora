@@ -13,7 +13,6 @@ void main() async {
       create: (context) => LocaleProvider(),
       child: AvoraApp(
         appRouter: AppRouter(),
-        initialRoute: initializer.getInitialRoute(),
       ),
     ),
   );

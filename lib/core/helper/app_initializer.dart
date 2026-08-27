@@ -1,15 +1,17 @@
 import 'package:avora/core/di/dependecny_injection.dart';
+import 'package:avora/core/helper/custom_bloc_observer.dart';
 import 'package:avora/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:avora/core/routing/app_routes.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class AppInitializer {
   Future<void> initialize() async {
     WidgetsFlutterBinding.ensureInitialized();
+    Bloc.observer = CustomBlocObserver();
     await ScreenUtil.ensureScreenSize();
     await Firebase.initializeApp(
       options: DefaultFirebaseOptions.currentPlatform,
@@ -20,12 +22,6 @@ class AppInitializer {
       publishableKey: dotenv.env['SUPABASE_PUBLISHABLE_KEY'] ?? "",
     );
     await setupGetIt();
-  }
-
-  String getInitialRoute() {
-    final session = getIt<SupabaseClient>().auth.currentSession;
-    if (session != null) return AppRoutes.home;
-    return AppRoutes.login;
   }
 
   Future<void> loadEnv() async {

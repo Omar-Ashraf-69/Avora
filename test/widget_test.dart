@@ -7,7 +7,6 @@
 
 import 'package:avora/avora_app.dart';
 import 'package:avora/core/routing/app_router.dart';
-import 'package:avora/core/routing/app_routes.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -17,7 +16,6 @@ void main() {
     // Build our app and trigger a frame.
     await tester.pumpWidget( AvoraApp(
       appRouter: AppRouter(),
-      initialRoute: AppRoutes.login,
     ));
 
 

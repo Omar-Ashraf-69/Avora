@@ -1,7 +1,8 @@
+import 'package:avora/core/auth/cubit/session_cubit.dart';
 import 'package:avora/core/di/dependecny_injection.dart';
 import 'package:avora/core/localization/locale_provider.dart';
 import 'package:avora/core/routing/app_router.dart';
-import 'package:avora/features/auth/presentation/auth_cubit/auth_cubit.dart';
+import 'package:avora/core/routing/app_start_view.dart';
 import 'package:avora/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -10,13 +11,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 class AvoraApp extends StatelessWidget {
-  const AvoraApp({
-    super.key,
-    required this._appRouter,
-    required this.initialRoute,
-  });
+  const AvoraApp({super.key, required this._appRouter});
   final AppRouter _appRouter;
-  final String initialRoute;
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
@@ -24,7 +20,7 @@ class AvoraApp extends StatelessWidget {
       designSize: const Size(375, 812),
       minTextAdapt: true,
       child: BlocProvider(
-        create: (context) => getIt<AuthCubit>(),
+        create: (context) => getIt<SessionCubit>()..initialize(),
         child: MaterialApp(
           title: 'Avora',
           debugShowCheckedModeBanner: false,
@@ -34,14 +30,15 @@ class AvoraApp extends StatelessWidget {
             GlobalWidgetsLocalizations.delegate,
             GlobalCupertinoLocalizations.delegate,
           ],
+          supportedLocales: S.delegate.supportedLocales,
           locale: Provider.of<LocaleProvider>(context).locale,
           theme: ThemeData(
             scaffoldBackgroundColor: Colors.white,
             appBarTheme: AppBarTheme(backgroundColor: Colors.white),
           ),
-          initialRoute: initialRoute,
           onGenerateRoute: _appRouter.onGenerateRoute,
-          supportedLocales: S.delegate.supportedLocales,
+
+          home: const AppStartView(),
         ),
       ),
     );

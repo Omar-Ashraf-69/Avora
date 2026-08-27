@@ -20,7 +20,10 @@ class AppRouter {
   Route? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case AppRoutes.login:
-        return _buildRoute(const LoginView());
+        return _buildRoute(
+          const LoginView(),
+        );
+
       case AppRoutes.signUp:
         return _buildRoute(const SignUpView());
       case AppRoutes.otp:
@@ -45,13 +48,15 @@ class AppRouter {
           ),
         );
 
-        case AppRoutes.resetPassword:
+      case AppRoutes.resetPassword:
         return _buildRoute(
           BlocProvider(
             create: (context) => getIt<ResetPassCubit>(),
             child: const ResetPasswordScreen(),
           ),
         );
+
+      //? Unknown Route
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

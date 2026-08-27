@@ -3,7 +3,7 @@ import 'package:avora/core/helper/extenstions.dart';
 import 'package:avora/core/helper/spacing.dart';
 import 'package:avora/core/routing/app_routes.dart';
 import 'package:avora/core/themes/padding.dart';
-import 'package:avora/features/auth/presentation/auth_cubit/auth_cubit.dart';
+import 'package:avora/features/auth/presentation/login_cubit/login_cubit.dart';
 import 'package:avora/features/auth/presentation/views/widgets/auth_header.dart';
 import 'package:avora/features/auth/presentation/views/widgets/custom_divider.dart';
 import 'package:avora/features/auth/presentation/views/widgets/email_and_pass_login_section.dart';
@@ -44,7 +44,7 @@ class LoginViewBody extends StatelessWidget {
                 verticalSpace(28),
                 SignButtonWidget(
                   onPressed: () async {
-                    await context.read<AuthCubit>().signInWithGoogle();
+                    await context.read<LoginCubit>().signInWithGoogle();
                   },
                   icon: Assets.imagesSvgsGoogleIcon,
                   buttonLabel: S.of(context).login_with_google,

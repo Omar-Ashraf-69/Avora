@@ -1,3 +1,4 @@
+import 'package:avora/core/auth/cubit/session_cubit.dart';
 import 'package:avora/core/services/auth/auth_remote_data_source_repo.dart';
 import 'package:avora/core/services/auth/auth_remote_data_source_repo_impl.dart';
 import 'package:avora/core/services/auth/supabase_auth_service.dart';
@@ -11,7 +12,7 @@ import 'package:avora/features/auth/domain/use_cases/sign_in_with_google.dart';
 import 'package:avora/features/auth/domain/use_cases/sign_out.dart';
 import 'package:avora/features/auth/domain/use_cases/sign_up_with_email.dart';
 import 'package:avora/features/auth/domain/use_cases/update_password.dart';
-import 'package:avora/features/auth/presentation/auth_cubit/auth_cubit.dart';
+import 'package:avora/features/auth/presentation/login_cubit/login_cubit.dart';
 import 'package:avora/features/auth/presentation/fortgot_pass_cubit/forgot_pass_cubit.dart';
 import 'package:avora/features/auth/presentation/reset_pass_cubit/reset_pass_cubit.dart';
 import 'package:get_it/get_it.dart';
@@ -31,16 +32,6 @@ Future<void> setupGetIt() async {
 }
 
 void _registerAuth() {
-  getIt.registerFactory(
-    () => AuthCubit(
-      getCurrentUserUseCase: getIt<GetCurrentUserUseCase>(),
-      signInWithEmailUseCase: getIt<SignInWithEmailAndPasswordUseCase>(),
-      signInWithGoogleUseCase: getIt<SignInWithGoogleUseCase>(),
-      signUpWithEmailUseCase: getIt<SignUpWithEmailAndPasswordUseCase>(),
-      signOutUseCase: getIt<SignOutUseCase>(),
-      deleteCurrentUserUseCase: getIt<DeleteCurrentUserUseCase>(),
-    ),
-  );
   getIt.registerLazySingleton<GoogleSignIn>(() => GoogleSignIn.instance);
   getIt.registerLazySingleton<SupabaseAuthService>(
     () => SupabaseAuthService(
@@ -88,6 +79,18 @@ void _registerAuth() {
     () => UpdatePasswordUseCase(getIt<AuthRepository>()),
   );
 
+  //? Global Session
+
+  getIt.registerLazySingleton<SessionCubit>(
+    () => SessionCubit(supabase: getIt<SupabaseClient>()),
+  );
+  //? Login Cubit
+  getIt.registerFactory(
+    () => LoginCubit(
+      signInWithEmailUseCase: getIt<SignInWithEmailAndPasswordUseCase>(),
+      signInWithGoogleUseCase: getIt<SignInWithGoogleUseCase>(),
+    ),
+  );
   getIt.registerFactory<ForgotPassCubit>(
     () => ForgotPassCubit(
       sendPasswordResetEmailUseCase: getIt<SendPasswordResetEmailUseCase>(),
