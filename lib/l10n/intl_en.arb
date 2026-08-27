@@ -13,8 +13,8 @@
   "verify": "Verify",
   "fill_your_profile": "Fill your profile",
   "con": "Continue",
-  "fisrt_name": "Fisrt name",
-  "nick_name": "NickName",
+  "name": "Your full name",
+  "user_name": "User name",
   "email": "Email",
   "date_of_birth": "Date of birth",
   "about": "About",
@@ -119,7 +119,8 @@
   "google_sign_in_cancelled": "Google sign-in was cancelled by the user",
   "unexpected_error_in_supabase_auth": "Unexpected error in SupabaseAuthService",
   "unexpected_data_base_error": "Unexpected database error",
-  "user_already_exists": "User already exists"
+  "user_already_exists": "User already exists",
+  "loading": "loading"
 
   
 

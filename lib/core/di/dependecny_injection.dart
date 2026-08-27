@@ -2,6 +2,8 @@ import 'package:avora/core/auth/cubit/session_cubit.dart';
 import 'package:avora/core/services/auth/auth_remote_data_source_repo.dart';
 import 'package:avora/core/services/auth/auth_remote_data_source_repo_impl.dart';
 import 'package:avora/core/services/auth/supabase_auth_service.dart';
+import 'package:avora/core/services/database/data_base_service.dart';
+import 'package:avora/core/services/database/supabase_data_base_service.dart';
 import 'package:avora/features/auth/data/repos/auth_repo_impl.dart';
 import 'package:avora/features/auth/domain/repos/auth_repo.dart';
 import 'package:avora/features/auth/domain/use_cases/delete_current_user.dart';
@@ -16,6 +18,14 @@ import 'package:avora/features/auth/presentation/login_cubit/login_cubit.dart';
 import 'package:avora/features/auth/presentation/fortgot_pass_cubit/forgot_pass_cubit.dart';
 import 'package:avora/features/auth/presentation/reset_pass_cubit/reset_pass_cubit.dart';
 import 'package:avora/features/auth/presentation/sign_up_cubit/sign_up_cubit.dart';
+import 'package:avora/features/profile/data/data_sources/profile_remote_data_source.dart';
+import 'package:avora/features/profile/data/data_sources/profile_remote_data_source_impl.dart';
+import 'package:avora/features/profile/data/repos/profile_repo_impl.dart';
+import 'package:avora/features/profile/domain/repos/profile_repo.dart';
+import 'package:avora/features/profile/domain/use_cases/create_profile.dart';
+import 'package:avora/features/profile/domain/use_cases/get_profile.dart';
+import 'package:avora/features/profile/domain/use_cases/update_profile.dart';
+import 'package:avora/features/profile/presentation/cubits/fill_your_profile/fill_your_profile_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -30,7 +40,62 @@ Future<void> setupGetIt() async {
   // _registerSecureStorage();
   _registerSupabase();
   _registerAuth();
+  _registerDatabase();
+
+    _registerProfile();
+
 }
+
+
+void _registerDatabase() {
+  getIt.registerLazySingleton<DatabaseService>(
+    () => SupabaseDatabaseService(
+      supabase: getIt<SupabaseClient>(),
+    ),
+  );
+}
+void _registerProfile() {
+  getIt.registerLazySingleton<ProfileRemoteDataSource>(
+    () => ProfileRemoteDataSourceImpl(
+      databaseService: getIt<DatabaseService>(),
+      authRemoteDataSource: getIt<AuthRemoteDataSourceRepo>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<ProfileRepository>(
+    () => ProfileRepositoryImpl(
+      getIt<ProfileRemoteDataSource>(),
+    ),
+  );
+
+  getIt.registerLazySingleton(
+    () => CreateProfileUseCase(
+      getIt<ProfileRepository>(),
+    ),
+  );
+
+  getIt.registerLazySingleton(
+    () => GetCurrentProfileUseCase(
+      getIt<ProfileRepository>(),
+    ),
+  );
+
+  getIt.registerLazySingleton(
+    () => UpdateProfileUseCase(
+      getIt<ProfileRepository>(),
+    ),
+  );
+
+  getIt.registerFactory(
+    () => ProfileCubit(
+      createProfileUseCase: getIt<CreateProfileUseCase>(),
+      
+    ),
+  );
+}
+
+
+
 
 void _registerAuth() {
   getIt.registerLazySingleton<GoogleSignIn>(() => GoogleSignIn.instance);

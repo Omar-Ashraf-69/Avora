@@ -125,7 +125,6 @@ class MessageLookup extends MessageLookupByLibrary {
     "fill_your_profile": MessageLookupByLibrary.simpleMessage(
       "Fill your profile",
     ),
-    "fisrt_name": MessageLookupByLibrary.simpleMessage("Fisrt name"),
     "forgot_password": MessageLookupByLibrary.simpleMessage("Forgot Password?"),
     "get_your_friends_to": MessageLookupByLibrary.simpleMessage(
       "Get your friends and family together to share your thoughts and ideas",
@@ -138,6 +137,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "The email or password is incorrect",
     ),
     "last_seen": MessageLookupByLibrary.simpleMessage("Last seen"),
+    "loading": MessageLookupByLibrary.simpleMessage("loading"),
     "login": MessageLookupByLibrary.simpleMessage("Login"),
     "login_into_your_account": MessageLookupByLibrary.simpleMessage(
       "Login into your account",
@@ -146,7 +146,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "Login with Google",
     ),
     "logout": MessageLookupByLibrary.simpleMessage("Logout"),
-    "nick_name": MessageLookupByLibrary.simpleMessage("NickName"),
+    "name": MessageLookupByLibrary.simpleMessage("Your full name"),
     "no": MessageLookupByLibrary.simpleMessage("No"),
     "no_worries_enter_your_email_address": MessageLookupByLibrary.simpleMessage(
       "No worries! Enter your email address and\nwe’ll send you a link to reset your password.",
@@ -252,6 +252,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "user_disabled": MessageLookupByLibrary.simpleMessage(
       "This account has been disabled",
     ),
+    "user_name": MessageLookupByLibrary.simpleMessage("User name"),
     "user_not_found": MessageLookupByLibrary.simpleMessage(
       "No account found with this email address",
     ),

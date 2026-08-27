@@ -7,6 +7,7 @@ import 'package:avora/features/auth/presentation/views/widgets/forgot_password/f
 import 'package:avora/features/auth/presentation/views/widgets/forgot_password/reset_pass_screen.dart';
 import 'package:avora/features/chat/presentation/views/chat_room_view.dart';
 import 'package:avora/features/groups/presentation/views/widgets/create_group_view.dart';
+import 'package:avora/features/profile/presentation/cubits/fill_your_profile/fill_your_profile_cubit.dart';
 import 'package:avora/features/profile/presentation/views/edit_profile_view.dart';
 import 'package:avora/features/profile/presentation/views/fill_your_profile_view.dart';
 import 'package:avora/features/auth/presentation/views/login_view.dart';
@@ -33,7 +34,12 @@ class AppRouter {
       case AppRoutes.otp:
         return _buildRoute(const OtpVerificationView());
       case AppRoutes.fillYourProfile:
-        return _buildRoute(const FillYourProfileView());
+        return _buildRoute(
+          BlocProvider(
+            create: (_) => getIt<ProfileCubit>(),
+            child: const FillYourProfileView(),
+          ),
+        );
       case AppRoutes.home:
         return _buildRoute(const HomeView());
       case AppRoutes.editProfile:

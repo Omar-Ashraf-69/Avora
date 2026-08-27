@@ -15,8 +15,8 @@ class EditProfileFieldsSection extends StatelessWidget {
           initialValue: 'Evin',
           decoration: editProfileTextFieldDecoration(
             context,
-            S.of(context).nick_name,
-            S.of(context).nick_name,
+            S.of(context).user_name,
+            S.of(context).user_name,
           ),
         ),
 

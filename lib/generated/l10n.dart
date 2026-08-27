@@ -165,14 +165,14 @@ class S {
     return Intl.message('Continue', name: 'con', desc: '', args: []);
   }
 
-  /// `Fisrt name`
-  String get fisrt_name {
-    return Intl.message('Fisrt name', name: 'fisrt_name', desc: '', args: []);
+  /// `Your full name`
+  String get name {
+    return Intl.message('Your full name', name: 'name', desc: '', args: []);
   }
 
-  /// `NickName`
-  String get nick_name {
-    return Intl.message('NickName', name: 'nick_name', desc: '', args: []);
+  /// `User name`
+  String get user_name {
+    return Intl.message('User name', name: 'user_name', desc: '', args: []);
   }
 
   /// `Email`
@@ -1028,6 +1028,11 @@ class S {
       desc: '',
       args: [],
     );
+  }
+
+  /// `loading`
+  String get loading {
+    return Intl.message('loading', name: 'loading', desc: '', args: []);
   }
 }
 
