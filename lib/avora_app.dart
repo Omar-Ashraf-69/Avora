@@ -20,7 +20,7 @@ class AvoraApp extends StatelessWidget {
       designSize: const Size(375, 812),
       minTextAdapt: true,
       child: BlocProvider(
-        create: (context) => getIt<SessionCubit>()..initialize(),
+        create: (context) => getIt<SessionCubit>(),
         child: MaterialApp(
           title: 'Avora',
           debugShowCheckedModeBanner: false,

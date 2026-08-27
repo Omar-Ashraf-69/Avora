@@ -15,6 +15,7 @@ import 'package:avora/features/auth/domain/use_cases/update_password.dart';
 import 'package:avora/features/auth/presentation/login_cubit/login_cubit.dart';
 import 'package:avora/features/auth/presentation/fortgot_pass_cubit/forgot_pass_cubit.dart';
 import 'package:avora/features/auth/presentation/reset_pass_cubit/reset_pass_cubit.dart';
+import 'package:avora/features/auth/presentation/sign_up_cubit/sign_up_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -81,8 +82,8 @@ void _registerAuth() {
 
   //? Global Session
 
-  getIt.registerLazySingleton<SessionCubit>(
-    () => SessionCubit(supabase: getIt<SupabaseClient>()),
+  getIt.registerSingleton<SessionCubit>(
+    SessionCubit(supabase: getIt<SupabaseClient>()),
   );
   //? Login Cubit
   getIt.registerFactory(
@@ -91,6 +92,13 @@ void _registerAuth() {
       signInWithGoogleUseCase: getIt<SignInWithGoogleUseCase>(),
     ),
   );
+
+  //? SignUp Cubit
+  getIt.registerFactory<SignUpCubit>(
+    () =>
+        SignUpCubit(signUpUseCase: getIt<SignUpWithEmailAndPasswordUseCase>()),
+  );
+
   getIt.registerFactory<ForgotPassCubit>(
     () => ForgotPassCubit(
       sendPasswordResetEmailUseCase: getIt<SendPasswordResetEmailUseCase>(),

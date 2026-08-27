@@ -7,7 +7,9 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 class SessionCubit extends Cubit<SessionState> {
   SessionCubit({
     required this._supabase,
-  })  : super(const SessionInitial());
+  })  : super(const SessionInitial()){
+    initialize();
+  }
 
   final SupabaseClient _supabase;
 

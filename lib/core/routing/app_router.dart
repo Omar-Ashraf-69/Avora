@@ -2,6 +2,7 @@ import 'package:avora/core/di/dependecny_injection.dart';
 import 'package:avora/core/routing/app_routes.dart';
 import 'package:avora/features/auth/presentation/fortgot_pass_cubit/forgot_pass_cubit.dart';
 import 'package:avora/features/auth/presentation/reset_pass_cubit/reset_pass_cubit.dart';
+import 'package:avora/features/auth/presentation/sign_up_cubit/sign_up_cubit.dart';
 import 'package:avora/features/auth/presentation/views/widgets/forgot_password/forgot_password_view.dart';
 import 'package:avora/features/auth/presentation/views/widgets/forgot_password/reset_pass_screen.dart';
 import 'package:avora/features/chat/presentation/views/chat_room_view.dart';
@@ -20,12 +21,15 @@ class AppRouter {
   Route? onGenerateRoute(RouteSettings settings) {
     switch (settings.name) {
       case AppRoutes.login:
-        return _buildRoute(
-          const LoginView(),
-        );
+        return _buildRoute(const LoginView());
 
       case AppRoutes.signUp:
-        return _buildRoute(const SignUpView());
+        return _buildRoute(
+          BlocProvider(
+            create: (_) => getIt<SignUpCubit>(),
+            child: const SignUpView(),
+          ),
+        );
       case AppRoutes.otp:
         return _buildRoute(const OtpVerificationView());
       case AppRoutes.fillYourProfile:

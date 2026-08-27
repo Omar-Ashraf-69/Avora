@@ -14,9 +14,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginViewBody extends StatelessWidget {
-  const LoginViewBody({
-    super.key,
-  });
+  const LoginViewBody({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +34,7 @@ class LoginViewBody extends StatelessWidget {
                   title: S.of(context).dont_have_an_account,
                   actionText: S.of(context).sign_up,
                   onTap: () {
-                    context.pushReplacementNamed(AppRoutes.signUp);
+                    context.pushNamed(AppRoutes.signUp);
                   },
                 ),
                 verticalSpace(24),

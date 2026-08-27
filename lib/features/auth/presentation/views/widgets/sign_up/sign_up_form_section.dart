@@ -2,9 +2,11 @@ import 'package:avora/core/helper/app_regex.dart';
 import 'package:avora/core/helper/spacing.dart';
 import 'package:avora/core/widgets/app_text_form_field.dart';
 import 'package:avora/core/widgets/custom_button.dart';
+import 'package:avora/features/auth/presentation/sign_up_cubit/sign_up_cubit.dart';
 import 'package:avora/features/auth/presentation/views/widgets/sign_up/password_validations.dart';
 import 'package:avora/generated/l10n.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SingUpFormSection extends StatefulWidget {
   const SingUpFormSection({super.key});
@@ -153,9 +155,9 @@ class _SingUpFormSectionState extends State<SingUpFormSection> {
       return;
     }
 
-    // context.read<AuthCubit>().signUpNewUser(
-    //   email: emailController.text.trim().toLowerCase(),
-    //   password: passwordController.text,
-    // );
+    context.read<SignUpCubit>().signUp(
+      email: emailController.text.trim().toLowerCase(),
+      password: passwordController.text,
+    );
   }
 }
