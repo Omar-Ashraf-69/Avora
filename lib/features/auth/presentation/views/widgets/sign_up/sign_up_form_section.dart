@@ -96,7 +96,9 @@ class _SingUpFormSectionState extends State<SingUpFormSection> {
               ),
             ),
             validator: (value) {
-              if (value == null || value.isEmpty) {
+              if (value == null ||
+                  value.isEmpty ||
+                  !AppRegex.isPasswordValid(passwordController.text)) {
                 return S.of(context).please_enter_a_valid_password;
               }
             },
@@ -152,6 +154,7 @@ class _SingUpFormSectionState extends State<SingUpFormSection> {
       });
       return;
     }
+
     context.read<AuthCubit>().signUpNewUser(
       email: emailController.text.trim().toLowerCase(),
       password: passwordController.text,

@@ -25,7 +25,7 @@ class SignUpView extends StatelessWidget {
           ToastNoContext.showColoredToast(message: state.message);
         } else if (state is Authenticated) {
           Navigator.of(context, rootNavigator: true).pop();
-          Navigator.pushReplacementNamed(context, AppRoutes.home);
+          Navigator.pushReplacementNamed(context, AppRoutes.fillYourProfile);
         }
       },
       child: Scaffold(
