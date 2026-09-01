@@ -1,19 +1,46 @@
-sealed class SessionState {
+import 'package:avora/features/profile/domain/entities/profile_entity.dart';
+import 'package:equatable/equatable.dart';
+
+sealed class SessionState extends Equatable {
   const SessionState();
+
+  @override
+  List<Object?> get props => [];
 }
 
-final class SessionInitial extends SessionState {
+class SessionInitial extends SessionState {
   const SessionInitial();
 }
 
-final class SessionLoading extends SessionState {
+class SessionLoading extends SessionState {
   const SessionLoading();
 }
 
-final class SessionAuthenticated extends SessionState {
-  const SessionAuthenticated();
-}
-
-final class SessionUnauthenticated extends SessionState {
+class SessionUnauthenticated extends SessionState {
   const SessionUnauthenticated();
 }
+
+class SessionProfileIncomplete extends SessionState {
+  const SessionProfileIncomplete();
+}
+
+class SessionAuthenticated extends SessionState {
+  final ProfileEntity profile;
+
+  const SessionAuthenticated({
+    required this.profile,
+  });
+
+  @override
+  List<Object?> get props => [profile];
+}
+
+class SessionFailure extends SessionState {
+  final String message;
+
+  const SessionFailure(this.message);
+
+  @override
+  List<Object?> get props => [message];
+}
+

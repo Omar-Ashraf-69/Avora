@@ -1,4 +1,5 @@
 import 'package:avora/core/auth/cubit/session_cubit.dart';
+import 'package:avora/core/routing/app_router.dart';
 import 'package:avora/core/services/auth/auth_remote_data_source_repo.dart';
 import 'package:avora/core/services/auth/auth_remote_data_source_repo_impl.dart';
 import 'package:avora/core/services/auth/supabase_auth_service.dart';
@@ -23,6 +24,7 @@ import 'package:avora/features/profile/data/data_sources/profile_remote_data_sou
 import 'package:avora/features/profile/data/repos/profile_repo_impl.dart';
 import 'package:avora/features/profile/domain/repos/profile_repo.dart';
 import 'package:avora/features/profile/domain/use_cases/create_profile.dart';
+import 'package:avora/features/profile/domain/use_cases/get_current_profile.dart';
 import 'package:avora/features/profile/domain/use_cases/get_profile.dart';
 import 'package:avora/features/profile/domain/use_cases/update_profile.dart';
 import 'package:avora/features/profile/presentation/cubits/fill_your_profile/fill_your_profile_cubit.dart';
@@ -36,16 +38,17 @@ final getIt = GetIt.instance;
 Future<void> setupGetIt() async {
   // Shared Preferences
   await _registerSharedPreferences();
+  _registerRouter();
   //Secure Storage
   // _registerSecureStorage();
   _registerSupabase();
-  _registerAuth();
   _registerDatabase();
-
-    _registerProfile();
-
+  _registerProfile();
+  _registerAuth();
 }
 
+void _registerRouter() =>
+    getIt.registerLazySingleton<AppRouter>(() => AppRouter());
 
 void _registerDatabase() {
   getIt.registerLazySingleton<DatabaseService>(
@@ -69,33 +72,21 @@ void _registerProfile() {
   );
 
   getIt.registerLazySingleton(
-    () => CreateProfileUseCase(
-      getIt<ProfileRepository>(),
-    ),
+    () => CreateProfileUseCase(getIt<ProfileRepository>()),
   );
 
   getIt.registerLazySingleton(
-    () => GetCurrentProfileUseCase(
-      getIt<ProfileRepository>(),
-    ),
+    () => GetCurrentProfileUseCase(getIt<ProfileRepository>()),
   );
 
   getIt.registerLazySingleton(
-    () => UpdateProfileUseCase(
-      getIt<ProfileRepository>(),
-    ),
+    () => UpdateProfileUseCase(getIt<ProfileRepository>()),
   );
 
   getIt.registerFactory(
-    () => ProfileCubit(
-      createProfileUseCase: getIt<CreateProfileUseCase>(),
-      
-    ),
+    () => ProfileCubit(createProfileUseCase: getIt<CreateProfileUseCase>()),
   );
 }
-
-
-
 
 void _registerAuth() {
   getIt.registerLazySingleton<GoogleSignIn>(() => GoogleSignIn.instance);
@@ -145,10 +136,18 @@ void _registerAuth() {
     () => UpdatePasswordUseCase(getIt<AuthRepository>()),
   );
 
+  getIt.registerLazySingleton<GetProfileUseCase>(
+    () => GetProfileUseCase(getIt<ProfileRepository>()),
+  );
+
   //? Global Session
 
   getIt.registerSingleton<SessionCubit>(
-    SessionCubit(supabase: getIt<SupabaseClient>()),
+    SessionCubit(
+      supabase: getIt<SupabaseClient>(),
+      authRepository: getIt<AuthRepository>(),
+      getProfileUseCase: getIt<GetProfileUseCase>(),
+    ),
   );
   //? Login Cubit
   getIt.registerFactory(

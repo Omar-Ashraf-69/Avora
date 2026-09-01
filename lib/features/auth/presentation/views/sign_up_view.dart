@@ -2,7 +2,6 @@ import 'package:avora/core/funcs/loading_dialoag.dart';
 import 'package:avora/core/helper/custom_toast.dart';
 import 'package:avora/core/helper/extenstions.dart';
 import 'package:avora/core/helper/spacing.dart';
-import 'package:avora/core/routing/app_routes.dart';
 import 'package:avora/features/auth/presentation/sign_up_cubit/sign_up_cubit.dart';
 import 'package:avora/features/auth/presentation/sign_up_cubit/sign_up_state.dart';
 import 'package:avora/features/auth/presentation/views/widgets/auth_view_body.dart';
@@ -28,7 +27,7 @@ class SignUpView extends StatelessWidget {
 
         if (state is SignUpSuccess) {
           Navigator.of(context, rootNavigator: true).pop();
-          context.pushNamedAndRemoveAll(AppRoutes.fillYourProfile);
+          //context.pushNamedAndRemoveAll(AppRoutes.fillYourProfile);
           //! SessionCubit will receive SIGNED_IN.
         }
       },

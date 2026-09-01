@@ -3,14 +3,12 @@ import 'package:avora/features/profile/domain/entities/profile_entity.dart';
 import 'package:avora/features/profile/domain/repos/profile_repo.dart';
 import 'package:dartz/dartz.dart';
 
-class GetProfileUseCase {
-  const GetProfileUseCase(this._repository);
+class GetCurrentProfileUseCase {
+  GetCurrentProfileUseCase(this._repository);
 
   final ProfileRepository _repository;
 
-  Future<Either<Failure, ProfileEntity?>> call({
-    required String userId,
-  }) {
-    return _repository.getProfile(userId: userId);
+  Future<Either<Failure, ProfileEntity>> call() {
+    return _repository.getCurrentProfile();
   }
 }

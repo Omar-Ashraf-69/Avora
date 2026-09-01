@@ -6,7 +6,9 @@ abstract class ProfileRepository {
   Future<Either<Failure, ProfileEntity>> createProfile({
     required ProfileEntity profile,
   });
-
+Future<Either<Failure, ProfileEntity?>> getProfile({
+    required String userId,
+  });
   Future<Either<Failure, ProfileEntity>> getCurrentProfile();
 
   Future<Either<Failure, ProfileEntity>> updateProfile({

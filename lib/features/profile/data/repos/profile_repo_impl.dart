@@ -113,4 +113,36 @@ class ProfileRepositoryImpl implements ProfileRepository {
       );
     }
   }
+
+  @override
+Future<Either<Failure, ProfileEntity?>> getProfile({
+  required String userId,
+}) async {
+  try {
+    final profileModel = await _remoteDataSource.getProfile(
+      userId: userId,
+    );
+
+    if (profileModel == null) {
+      return const Right(null);
+    }
+
+    return Right(profileModel.toEntity());
+  } on CustomException catch (e) {
+    log(
+      'ProfileRepositoryImpl.getProfile',
+      error: e,
+    );
+
+    return Left(ServerFailure(e.message));
+  } catch (e, stackTrace) {
+    log(
+      'ProfileRepositoryImpl.getProfile',
+      error: e,
+      stackTrace: stackTrace,
+    );
+
+    return Left(ServerFailure(S.current.unexpected_error));
+  }
+}
 }

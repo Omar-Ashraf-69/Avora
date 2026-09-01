@@ -1,4 +1,5 @@
 class AppRoutes {
+  static const String splash = 'splash';
   static const String login = 'login';
   static const String signUp = 'signUp';
   static const String otp = 'otp';
@@ -9,6 +10,5 @@ class AppRoutes {
   static const String createGroup = 'createGroup';
   static const String chatRoom = 'chatRoom';
   static const String forgotPassword = 'forgotPassword';
-    static const String resetPassword = 'resetPassword';
-
+  static const String resetPassword = 'resetPassword';
 }

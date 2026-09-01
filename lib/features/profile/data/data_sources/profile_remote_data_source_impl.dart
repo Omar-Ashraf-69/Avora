@@ -98,4 +98,20 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
 
     return ProfileModel.fromJson(response);
   }
+
+  @override
+  Future<ProfileModel?> getProfile({
+    required String userId,
+  }) async {
+    final data = await databaseService.getById(
+      table: 'profiles',
+      id: userId,
+    );
+
+    if (data == null) {
+      return null;
+    }
+
+    return ProfileModel.fromJson(data);
+  }
 }

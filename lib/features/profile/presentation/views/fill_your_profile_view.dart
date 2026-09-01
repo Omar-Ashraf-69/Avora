@@ -1,3 +1,4 @@
+import 'package:avora/core/auth/cubit/session_cubit.dart';
 import 'package:avora/core/constants/app_spacing.dart';
 import 'package:avora/core/funcs/congratulations_dialog.dart';
 import 'package:avora/core/helper/spacing.dart';
@@ -33,14 +34,11 @@ class _FillYourProfileViewState extends State<FillYourProfileView> {
   @override
   void initState() {
     super.initState();
-
     nameController = TextEditingController();
     usernameController = TextEditingController();
     phoneController = TextEditingController();
     emailController = TextEditingController();
-
     aboutController = TextEditingController();
-
     _loadCurrentUserEmail();
   }
 
@@ -66,9 +64,15 @@ class _FillYourProfileViewState extends State<FillYourProfileView> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<ProfileCubit, ProfileState>(
-      listener: (context, state) {
+      listener: (context, state) async {
         if (state is ProfileCreated) {
-          congratulationsDialog(context);
+          await congratulationsDialog(context);
+
+          if (!context.mounted) return; // Future.delayed(
+          //   const Duration(seconds: 7),
+          //   () => Navigator.of(context, rootNavigator: true).pop(),
+          // );
+          context.read<SessionCubit>().checkSession();
         }
 
         if (state is ProfileFailure) {
@@ -97,7 +101,6 @@ class _FillYourProfileViewState extends State<FillYourProfileView> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   const ProfileAvatarPicker(),
-
                   ProfileFieldsSection(
                     nameController: nameController,
                     usernameController: usernameController,
@@ -105,13 +108,10 @@ class _FillYourProfileViewState extends State<FillYourProfileView> {
                     emailController: emailController,
                     aboutController: aboutController,
                   ),
-
                   verticalSpace(AppSpacing.md),
-
                   BlocBuilder<ProfileCubit, ProfileState>(
                     builder: (context, state) {
                       final isLoading = state is ProfileLoading;
-
                       return CustomButton(
                         label: isLoading
                             ? S.of(context).loading
@@ -120,7 +120,6 @@ class _FillYourProfileViewState extends State<FillYourProfileView> {
                       );
                     },
                   ),
-
                   verticalSpace(AppSpacing.xs),
                 ],
               ),

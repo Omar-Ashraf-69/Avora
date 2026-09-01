@@ -1,4 +1,5 @@
 import 'package:avora/avora_app.dart';
+import 'package:avora/core/di/dependecny_injection.dart';
 import 'package:avora/core/helper/app_initializer.dart';
 import 'package:avora/core/localization/locale_provider.dart';
 import 'package:avora/core/routing/app_router.dart';
@@ -11,9 +12,7 @@ void main() async {
   runApp(
     ChangeNotifierProvider(
       create: (context) => LocaleProvider(),
-      child: AvoraApp(
-        appRouter: AppRouter(),
-      ),
+      child: AvoraApp(appRouter: getIt<AppRouter>()),
     ),
   );
 }
