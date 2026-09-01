@@ -133,6 +133,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Google sign-in was cancelled by the user",
     ),
     "groups": MessageLookupByLibrary.simpleMessage("Groups"),
+    "invalidPhone": MessageLookupByLibrary.simpleMessage(
+      "Please enter a valid phone number",
+    ),
     "invalid_credentials": MessageLookupByLibrary.simpleMessage(
       "The email or password is incorrect",
     ),
@@ -177,10 +180,16 @@ class MessageLookup extends MessageLookupByLibrary {
     "permission_denied": MessageLookupByLibrary.simpleMessage(
       "You don\'t have permission to perform this operation",
     ),
+    "phoneRequired": MessageLookupByLibrary.simpleMessage(
+      "Phone number is required",
+    ),
     "phone_not_confirmed": MessageLookupByLibrary.simpleMessage(
       "Your phone number is not confirmed",
     ),
     "phone_number": MessageLookupByLibrary.simpleMessage("Phone number"),
+    "phone_number_already_exists": MessageLookupByLibrary.simpleMessage(
+      "Phone number already exists",
+    ),
     "please_enter_a_valid_email": MessageLookupByLibrary.simpleMessage(
       "Please enter a valid email",
     ),
@@ -255,6 +264,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "user_name": MessageLookupByLibrary.simpleMessage("User name"),
     "user_not_found": MessageLookupByLibrary.simpleMessage(
       "No account found with this email address",
+    ),
+    "username_already_exists": MessageLookupByLibrary.simpleMessage(
+      "Username already exists",
     ),
     "verify": MessageLookupByLibrary.simpleMessage("Verify"),
     "we_will_send_you_a_link_to_reset_your_password":

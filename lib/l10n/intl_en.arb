@@ -120,7 +120,11 @@
   "unexpected_error_in_supabase_auth": "Unexpected error in SupabaseAuthService",
   "unexpected_data_base_error": "Unexpected database error",
   "user_already_exists": "User already exists",
-  "loading": "loading"
+  "loading": "loading",
+  "phone_number_already_exists" : "Phone number already exists",
+  "username_already_exists" : "Username already exists",
+  "phoneRequired" : "Phone number is required",
+  "invalidPhone" : "Please enter a valid phone number"
 
   
 

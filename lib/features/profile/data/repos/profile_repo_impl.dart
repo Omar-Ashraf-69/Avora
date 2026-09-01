@@ -16,8 +16,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
   @override
   Future<Either<Failure, ProfileEntity>> createProfile({
-       required ProfileEntity profile,
-
+    required ProfileEntity profile,
   }) async {
     try {
       final model = await _remoteDataSource.createProfile(
@@ -33,10 +32,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
       return Right(model.toEntity());
     } on CustomException catch (e) {
-      log(
-        'ProfileRepositoryImpl.createProfile',
-        error: e,
-      );
+      log('ProfileRepositoryImpl.createProfile', error: e);
 
       return Left(ServerFailure(e.message));
     } catch (e, stackTrace) {
@@ -46,9 +42,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
         stackTrace: stackTrace,
       );
 
-      return Left(
-        ServerFailure(S.current.unexpected_error),
-      );
+      return Left(ServerFailure(S.current.unexpected_error));
     }
   }
 
@@ -59,10 +53,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
       return Right(model.toEntity());
     } on CustomException catch (e) {
-      log(
-        'ProfileRepositoryImpl.getCurrentProfile',
-        error: e,
-      );
+      log('ProfileRepositoryImpl.getCurrentProfile', error: e);
 
       return Left(ServerFailure(e.message));
     } catch (e, stackTrace) {
@@ -72,9 +63,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
         stackTrace: stackTrace,
       );
 
-      return Left(
-        ServerFailure(S.current.unexpected_error),
-      );
+      return Left(ServerFailure(S.current.unexpected_error));
     }
   }
 
@@ -95,10 +84,7 @@ class ProfileRepositoryImpl implements ProfileRepository {
 
       return Right(model.toEntity());
     } on CustomException catch (e) {
-      log(
-        'ProfileRepositoryImpl.updateProfile',
-        error: e,
-      );
+      log('ProfileRepositoryImpl.updateProfile', error: e);
 
       return Left(ServerFailure(e.message));
     } catch (e, stackTrace) {
@@ -108,41 +94,30 @@ class ProfileRepositoryImpl implements ProfileRepository {
         stackTrace: stackTrace,
       );
 
-      return Left(
-        ServerFailure(S.current.unexpected_error),
-      );
+      return Left(ServerFailure(S.current.unexpected_error));
     }
   }
 
   @override
-Future<Either<Failure, ProfileEntity?>> getProfile({
-  required String userId,
-}) async {
-  try {
-    final profileModel = await _remoteDataSource.getProfile(
-      userId: userId,
-    );
+  Future<Either<Failure, ProfileEntity?>> getProfile({
+    required String userId,
+  }) async {
+    try {
+      final profileModel = await _remoteDataSource.getProfile(userId: userId);
 
-    if (profileModel == null) {
-      return const Right(null);
+      if (profileModel == null) {
+        return const Right(null);
+      }
+
+      return Right(profileModel.toEntity());
+    } on CustomException catch (e) {
+      log('ProfileRepositoryImpl.getProfile', error: e);
+
+      return Left(ServerFailure(e.message));
+    } catch (e, stackTrace) {
+      log('ProfileRepositoryImpl.getProfile', error: e, stackTrace: stackTrace);
+
+      return Left(ServerFailure(S.current.unexpected_error));
     }
-
-    return Right(profileModel.toEntity());
-  } on CustomException catch (e) {
-    log(
-      'ProfileRepositoryImpl.getProfile',
-      error: e,
-    );
-
-    return Left(ServerFailure(e.message));
-  } catch (e, stackTrace) {
-    log(
-      'ProfileRepositoryImpl.getProfile',
-      error: e,
-      stackTrace: stackTrace,
-    );
-
-    return Left(ServerFailure(S.current.unexpected_error));
   }
-}
 }

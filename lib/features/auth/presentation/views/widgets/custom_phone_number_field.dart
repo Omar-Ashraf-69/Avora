@@ -1,4 +1,5 @@
 import 'package:avora/core/funcs/custom_field_decoration.dart';
+import 'package:avora/core/funcs/phone_formater.dart';
 import 'package:avora/core/themes/app_text_styles.dart';
 import 'package:avora/generated/l10n.dart';
 import 'package:flutter/material.dart';
@@ -11,7 +12,6 @@ class CustomPhoneNumberField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InternationalPhoneNumberInput(
-      
       textFieldController: controller,
       onInputChanged: (PhoneNumber number) {},
       onFieldSubmitted: (String value) {},
@@ -36,8 +36,20 @@ class CustomPhoneNumberField extends StatelessWidget {
         leadingPadding: 24,
         trailingSpace: false,
         useEmoji: false,
+        showFlags: true,
       ),
       ignoreBlank: false,
+      countries: ['EG'],
+      validator: (value) {
+        if (value == null || value.trim().isEmpty) {
+          return S.of(context).phoneRequired;
+        }
+
+        if (!PhoneNumberFormatter.isValidEgyptianPhone(value)) {
+          return S.of(context).invalidPhone;
+        }
+        return null;
+      },
       autoValidateMode: AutovalidateMode.disabled,
       selectorTextStyle: TextStyle(color: Colors.black),
       initialValue: PhoneNumber(isoCode: 'EG'),

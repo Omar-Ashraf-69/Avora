@@ -2,6 +2,7 @@ import 'package:avora/core/auth/cubit/session_cubit.dart';
 import 'package:avora/core/constants/app_spacing.dart';
 import 'package:avora/core/di/dependecny_injection.dart';
 import 'package:avora/core/funcs/congratulations_dialog.dart';
+import 'package:avora/core/funcs/phone_formater.dart';
 import 'package:avora/core/helper/custom_toast.dart';
 import 'package:avora/core/helper/spacing.dart';
 import 'package:avora/core/themes/app_text_styles.dart';
@@ -146,7 +147,9 @@ class _FillYourProfileViewState extends State<FillYourProfileView> {
       id: currentUser.id,
       name: nameController.text.trim(),
       username: usernameController.text.trim().toLowerCase(),
-      phoneNumber: phoneController.text.trim(),
+      phoneNumber: PhoneNumberFormatter.normalizeEgyptianPhone(
+        phoneController.text,
+      ),
       email: emailController.text.trim().toLowerCase(),
       about: aboutController.text.trim().isEmpty
           ? null

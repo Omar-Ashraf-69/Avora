@@ -1034,6 +1034,46 @@ class S {
   String get loading {
     return Intl.message('loading', name: 'loading', desc: '', args: []);
   }
+
+  /// `Phone number already exists`
+  String get phone_number_already_exists {
+    return Intl.message(
+      'Phone number already exists',
+      name: 'phone_number_already_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Username already exists`
+  String get username_already_exists {
+    return Intl.message(
+      'Username already exists',
+      name: 'username_already_exists',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Phone number is required`
+  String get phoneRequired {
+    return Intl.message(
+      'Phone number is required',
+      name: 'phoneRequired',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please enter a valid phone number`
+  String get invalidPhone {
+    return Intl.message(
+      'Please enter a valid phone number',
+      name: 'invalidPhone',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

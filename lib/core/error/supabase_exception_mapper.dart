@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:avora/generated/l10n.dart';
 
 class SupabaseExceptionMapper {
@@ -79,6 +81,19 @@ class SupabaseExceptionMapper {
   }
 
   static String mapDatabaseException({String? code, String? message}) {
+    log(
+      'SupabaseExceptionMapper.mapDatabaseException',
+      error: 'code: $code, message: $message',
+    );
+    if (message != null) {
+      if (message.contains('profiles_phone_number_key')) {
+        return S.current.phone_number_already_exists;
+      }
+
+      if (message.contains('username')) {
+        return S.current.username_already_exists;
+      }
+    }
     switch (code) {
       case '42501':
         return S.current.permission_denied;
