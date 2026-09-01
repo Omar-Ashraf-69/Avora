@@ -1,9 +1,12 @@
 import 'package:avora/core/auth/cubit/session_cubit.dart';
 import 'package:avora/core/constants/app_spacing.dart';
+import 'package:avora/core/di/dependecny_injection.dart';
 import 'package:avora/core/funcs/congratulations_dialog.dart';
+import 'package:avora/core/helper/custom_toast.dart';
 import 'package:avora/core/helper/spacing.dart';
 import 'package:avora/core/themes/app_text_styles.dart';
 import 'package:avora/core/widgets/custom_button.dart';
+import 'package:avora/features/auth/domain/repos/auth_repo.dart';
 import 'package:avora/features/auth/presentation/views/widgets/auth_body.dart';
 import 'package:avora/features/profile/domain/entities/profile_entity.dart';
 import 'package:avora/features/profile/presentation/cubits/fill_your_profile/fill_your_profile_cubit.dart';
@@ -13,7 +16,6 @@ import 'package:avora/features/profile/presentation/views/widgets/profile_fields
 import 'package:avora/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 
 class FillYourProfileView extends StatefulWidget {
   const FillYourProfileView({super.key});
@@ -43,7 +45,7 @@ class _FillYourProfileViewState extends State<FillYourProfileView> {
   }
 
   void _loadCurrentUserEmail() {
-    final user = Supabase.instance.client.auth.currentUser;
+    final user = getIt<AuthRepository>().getCurrentUser();
 
     if (user != null) {
       emailController.text = user.email ?? '';
@@ -64,21 +66,15 @@ class _FillYourProfileViewState extends State<FillYourProfileView> {
   @override
   Widget build(BuildContext context) {
     return BlocListener<ProfileCubit, ProfileState>(
-      listener: (context, state) async {
+      listener: (context, state) {
         if (state is ProfileCreated) {
-          await congratulationsDialog(context);
+          congratulationsDialog(context);
 
-          if (!context.mounted) return; // Future.delayed(
-          //   const Duration(seconds: 7),
-          //   () => Navigator.of(context, rootNavigator: true).pop(),
-          // );
-          context.read<SessionCubit>().checkSession();
+          context.read<SessionCubit>().startProfileCompletion();
         }
 
         if (state is ProfileFailure) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.message)));
+          ToastNoContext.showColoredToast(message: state.message);
         }
       },
       child: Scaffold(
@@ -138,7 +134,7 @@ class _FillYourProfileViewState extends State<FillYourProfileView> {
       return;
     }
 
-    final currentUser = Supabase.instance.client.auth.currentUser;
+    final currentUser = getIt<AuthRepository>().getCurrentUser();
 
     if (currentUser == null) {
       return;

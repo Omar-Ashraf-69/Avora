@@ -29,6 +29,28 @@ class SessionCubit extends Cubit<SessionState> {
     );
   }
 
+  Future<void> startProfileCompletion() async {
+  emit(const SessionCompletingProfile());
+
+  final result = await _getProfileUseCase.call(
+    userId: _authRepository.getCurrentUser()!.id,
+  );
+
+  result.fold(
+    (failure) => emit(SessionFailure(failure.message)),
+    (profile) async {
+      if (profile == null) {
+        emit(const SessionProfileIncomplete());
+        return;
+      }
+    
+      await Future.delayed(const Duration(seconds: 3));
+
+      emit(SessionAuthenticated(profile: profile));
+    },
+  );
+}
+
   Future<void> checkSession() async {
     // If state is already resolved to the same state, avoid triggering redundant re-loading
     if (state is SessionLoading) return;

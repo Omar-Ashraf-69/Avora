@@ -44,3 +44,6 @@ class SessionFailure extends SessionState {
   List<Object?> get props => [message];
 }
 
+class SessionCompletingProfile extends SessionState {
+  const SessionCompletingProfile();
+}
