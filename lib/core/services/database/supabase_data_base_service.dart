@@ -114,6 +114,23 @@ class SupabaseDatabaseService implements DatabaseService {
     );
   }
 
+  @override
+Future<dynamic> rpc({
+  required String functionName,
+  Map<String, dynamic>? params,
+}) async {
+
+  return await _execute<dynamic>(
+    operation: 'rpc',
+    action: () async {
+      return await _supabase.rpc(
+      functionName,
+      params: params,
+    );
+    },
+  );
+  }
+
   Future<T> _execute<T>({
     required String operation,
     required Future<T> Function() action,

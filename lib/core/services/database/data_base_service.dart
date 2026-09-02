@@ -29,4 +29,10 @@ abstract class DatabaseService {
     required String table,
     required String id,
   });
+
+  Future<dynamic> rpc({
+  required String functionName,
+  Map<String, dynamic>? params,
+});
+
 }
