@@ -16,50 +16,34 @@ class SupabaseDatabaseService implements DatabaseService {
     required String table,
     required String id,
   }) async {
-    try {
-      final response = await _supabase
-          .from(table)
-          .select()
-          .eq('id', id)
-          .maybeSingle();
+    return await _execute<Map<String, dynamic>?>(
+      operation: 'getById',
+      action: () async {
+        final response = await _supabase
+            .from(table)
+            .select()
+            .eq('id', id)
+            .maybeSingle();
 
-      return response;
-    } on PostgrestException catch (e, stackTrace) {
-      log('SupabaseDatabaseService.getById', error: e, stackTrace: stackTrace);
-
-      throw CustomException(
-        message: SupabaseExceptionMapper.mapDatabaseException(
-          code: e.code,
-          message: e.message,
-        ),
-      );
-    } catch (e, stackTrace) {
-      log(S.current.unexpected_data_base_error, error: e, stackTrace: stackTrace);
-
-      throw CustomException(message: S.current.unexpected_error);
-    }
+        return response;
+      },
+    );
   }
 
   @override
   Future<bool> exists({required String table, required String id}) async {
-    try {
-      final response = await _supabase
-          .from(table)
-          .select('id')
-          .eq('id', id)
-          .maybeSingle();
+    return await _execute<bool>(
+      operation: 'exists',
+      action: () async {
+        final response = await _supabase
+            .from(table)
+            .select('id')
+            .eq('id', id)
+            .maybeSingle();
 
-      return response != null;
-    } on PostgrestException catch (e, stackTrace) {
-      log('SupabaseDatabaseService.exists', error: e, stackTrace: stackTrace);
-
-      throw CustomException(
-        message: SupabaseExceptionMapper.mapDatabaseException(
-          code: e.code,
-          message: e.message,
-        ),
-      );
-    }
+        return response != null;
+      },
+    );
   }
 
   @override
@@ -67,24 +51,18 @@ class SupabaseDatabaseService implements DatabaseService {
     required String table,
     required Map<String, dynamic> data,
   }) async {
-    try {
-      final response = await _supabase
-          .from(table)
-          .insert(data)
-          .select()
-          .single();
+    return await _execute<Map<String, dynamic>>(
+      operation: 'insert',
+      action: () async {
+        final response = await _supabase
+            .from(table)
+            .insert(data)
+            .select()
+            .single();
 
-      return response;
-    } on PostgrestException catch (e, stackTrace) {
-      log('SupabaseDatabaseService.insert', error: e, stackTrace: stackTrace);
-
-      throw CustomException(
-        message: SupabaseExceptionMapper.mapDatabaseException(
-          code: e.code,
-          message: e.message,
-        ),
-      );
-    }
+        return response;
+      },
+    );
   }
 
   @override
@@ -93,41 +71,29 @@ class SupabaseDatabaseService implements DatabaseService {
     required String id,
     required Map<String, dynamic> data,
   }) async {
-    try {
-      final response = await _supabase
-          .from(table)
-          .update(data)
-          .eq('id', id)
-          .select()
-          .single();
+    return await _execute<Map<String, dynamic>>(
+      operation: 'update',
+      action: () async {
+        final response = await _supabase
+            .from(table)
+            .update(data)
+            .eq('id', id)
+            .select()
+            .single();
 
-      return response;
-    } on PostgrestException catch (e, stackTrace) {
-      log('SupabaseDatabaseService.update', error: e, stackTrace: stackTrace);
-
-      throw CustomException(
-        message: SupabaseExceptionMapper.mapDatabaseException(
-          code: e.code,
-          message: e.message,
-        ),
-      );
-    }
+        return response;
+      },
+    );
   }
 
   @override
   Future<void> delete({required String table, required String id}) async {
-    try {
-      await _supabase.from(table).delete().eq('id', id);
-    } on PostgrestException catch (e, stackTrace) {
-      log('SupabaseDatabaseService.delete', error: e, stackTrace: stackTrace);
-
-      throw CustomException(
-        message: SupabaseExceptionMapper.mapDatabaseException(
-          code: e.code,
-          message: e.message,
-        ),
-      );
-    }
+    return await _execute<void>(
+      operation: 'delete',
+      action: () async {
+        await _supabase.from(table).delete().eq('id', id);
+      },
+    );
   }
 
   @override
@@ -135,18 +101,31 @@ class SupabaseDatabaseService implements DatabaseService {
     required String table,
     Map<String, dynamic>? filters,
   }) async {
+    return await _execute<List<Map<String, dynamic>>>(
+      operation: 'get',
+      action: () async {
+        dynamic query = _supabase.from(table).select();
+        filters?.forEach((column, value) {
+          query = query.eq(column, value);
+        });
+        final response = await query;
+        return List<Map<String, dynamic>>.from(response);
+      },
+    );
+  }
+
+  Future<T> _execute<T>({
+    required String operation,
+    required Future<T> Function() action,
+  }) async {
     try {
-      dynamic query = _supabase.from(table).select();
-
-      filters?.forEach((column, value) {
-        query = query.eq(column, value);
-      });
-
-      final response = await query;
-
-      return List<Map<String, dynamic>>.from(response);
+      return await action();
     } on PostgrestException catch (e, stackTrace) {
-      log('SupabaseDatabaseService.get', error: e, stackTrace: stackTrace);
+      log(
+        'SupabaseDatabaseService.$operation',
+        error: e,
+        stackTrace: stackTrace,
+      );
 
       throw CustomException(
         message: SupabaseExceptionMapper.mapDatabaseException(
@@ -154,6 +133,14 @@ class SupabaseDatabaseService implements DatabaseService {
           message: e.message,
         ),
       );
+    } catch (e, stackTrace) {
+      log(
+        'SupabaseDatabaseService.$operation',
+        error: e,
+        stackTrace: stackTrace,
+      );
+
+      throw CustomException(message: S.current.unexpected_error);
     }
   }
 }

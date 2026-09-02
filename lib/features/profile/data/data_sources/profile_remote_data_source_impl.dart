@@ -4,6 +4,7 @@ import 'package:avora/core/services/database/data_base_service.dart';
 import 'package:avora/features/profile/data/data_sources/profile_remote_data_source.dart';
 import 'package:avora/features/profile/data/models/create_profile_model.dart';
 import 'package:avora/features/profile/data/models/profile_model.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   ProfileRemoteDataSourceImpl({
@@ -16,53 +17,34 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
 
   static const String _table = 'profiles';
 
-  @override
-  Future<ProfileModel> createProfile(
-    CreateProfileModel profile,
-  ) async {
+  User _requireCurrentUser() {
     final user = authRemoteDataSource.getCurrentUser();
 
     if (user == null) {
-      throw const CustomException(
-        message: 
-        'User is not authenticated.',
-      );
+      throw const CustomException(message: 'User is not authenticated.');
     }
 
-    final data = {
-      'id': user.id,
-      ...profile.toJson(),
-    };
+    return user;
+  }
 
-    final response = await databaseService.insert(
-      table: _table,
-      data: data,
-    );
+  @override
+  Future<ProfileModel> createProfile(CreateProfileModel profile) async {
+    final user = _requireCurrentUser();
+
+    final data = {'id': user.id, ...profile.toJson()};
+
+    final response = await databaseService.insert(table: _table, data: data);
 
     return ProfileModel.fromJson(response);
   }
 
   @override
   Future<ProfileModel> getCurrentProfile() async {
-    final user = authRemoteDataSource.getCurrentUser();
-
-    if (user == null) {
-      throw const CustomException(
-        message: 
-        'User is not authenticated.',
-      );
-    }
-
-    final response = await databaseService.getById(
-      table: _table,
-      id: user.id,
-    );
+    final user = _requireCurrentUser();
+    final response = await databaseService.getById(table: _table, id: user.id);
 
     if (response == null) {
-      throw const CustomException(
-        message: 
-        'Profile not found.',
-      );
+      throw const CustomException(message: 'Profile not found.');
     }
 
     return ProfileModel.fromJson(response);
@@ -75,15 +57,7 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
     String? about,
     String? avatarUrl,
   }) async {
-    final user = authRemoteDataSource.getCurrentUser();
-
-    if (user == null) {
-      throw const CustomException(
-        message: 
-        'User is not authenticated.',
-      );
-    }
-
+    final user = _requireCurrentUser();
     final response = await databaseService.update(
       table: _table,
       id: user.id,
@@ -100,13 +74,8 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
   }
 
   @override
-  Future<ProfileModel?> getProfile({
-    required String userId,
-  }) async {
-    final data = await databaseService.getById(
-      table: 'profiles',
-      id: userId,
-    );
+  Future<ProfileModel?> getProfile({required String userId}) async {
+    final data = await databaseService.getById(table: _table, id: userId);
 
     if (data == null) {
       return null;

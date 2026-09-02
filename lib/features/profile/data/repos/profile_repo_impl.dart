@@ -18,53 +18,35 @@ class ProfileRepositoryImpl implements ProfileRepository {
   Future<Either<Failure, ProfileEntity>> createProfile({
     required ProfileEntity profile,
   }) async {
-    try {
-      final model = await _remoteDataSource.createProfile(
-        CreateProfileModel(
-          username: profile.username,
-          name: profile.name,
-          phoneNumber: profile.phoneNumber,
-          email: profile.email,
-          about: profile.about,
-          avatarUrl: profile.avatarUrl,
-        ),
-      );
+    return await _execute<ProfileEntity>(
+      operation: 'createProfile',
+      action: () async {
+        final model = await _remoteDataSource.createProfile(
+          CreateProfileModel(
+            username: profile.username,
+            name: profile.name,
+            phoneNumber: profile.phoneNumber,
+            email: profile.email,
+            about: profile.about,
+            avatarUrl: profile.avatarUrl,
+          ),
+        );
 
-      return Right(model.toEntity());
-    } on CustomException catch (e) {
-      log('ProfileRepositoryImpl.createProfile', error: e);
-
-      return Left(ServerFailure(e.message));
-    } catch (e, stackTrace) {
-      log(
-        'ProfileRepositoryImpl.createProfile',
-        error: e,
-        stackTrace: stackTrace,
-      );
-
-      return Left(ServerFailure(S.current.unexpected_error));
-    }
+        return model.toEntity();
+      },
+    );
   }
 
   @override
   Future<Either<Failure, ProfileEntity>> getCurrentProfile() async {
-    try {
-      final model = await _remoteDataSource.getCurrentProfile();
+    return await _execute<ProfileEntity>(
+      operation: 'getCurrentProfile',
+      action: () async {
+        final model = await _remoteDataSource.getCurrentProfile();
 
-      return Right(model.toEntity());
-    } on CustomException catch (e) {
-      log('ProfileRepositoryImpl.getCurrentProfile', error: e);
-
-      return Left(ServerFailure(e.message));
-    } catch (e, stackTrace) {
-      log(
-        'ProfileRepositoryImpl.getCurrentProfile',
-        error: e,
-        stackTrace: stackTrace,
-      );
-
-      return Left(ServerFailure(S.current.unexpected_error));
-    }
+        return model.toEntity();
+      },
+    );
   }
 
   @override
@@ -74,48 +56,47 @@ class ProfileRepositoryImpl implements ProfileRepository {
     String? about,
     String? avatarUrl,
   }) async {
-    try {
-      final model = await _remoteDataSource.updateProfile(
-        username: username,
-        name: name,
-        about: about,
-        avatarUrl: avatarUrl,
-      );
+    return await _execute<ProfileEntity>(
+      operation: 'updateProfile',
+      action: () async {
+        final model = await _remoteDataSource.updateProfile(
+          username: username,
+          name: name,
+          about: about,
+          avatarUrl: avatarUrl,
+        );
 
-      return Right(model.toEntity());
-    } on CustomException catch (e) {
-      log('ProfileRepositoryImpl.updateProfile', error: e);
-
-      return Left(ServerFailure(e.message));
-    } catch (e, stackTrace) {
-      log(
-        'ProfileRepositoryImpl.updateProfile',
-        error: e,
-        stackTrace: stackTrace,
-      );
-
-      return Left(ServerFailure(S.current.unexpected_error));
-    }
+        return model.toEntity();
+      },
+    );
   }
 
   @override
   Future<Either<Failure, ProfileEntity?>> getProfile({
     required String userId,
   }) async {
+    return await _execute<ProfileEntity?>(
+      operation: 'getProfile',
+      action: () async {
+        final model = await _remoteDataSource.getProfile(userId: userId);
+
+        return model?.toEntity();
+      },
+    );
+  }
+
+  Future<Either<Failure, T>> _execute<T>({
+    required String operation,
+    required Future<T> Function() action,
+  }) async {
     try {
-      final profileModel = await _remoteDataSource.getProfile(userId: userId);
-
-      if (profileModel == null) {
-        return const Right(null);
-      }
-
-      return Right(profileModel.toEntity());
+      return Right(await action());
     } on CustomException catch (e) {
-      log('ProfileRepositoryImpl.getProfile', error: e);
+      log('ProfileRepositoryImpl.$operation', error: e);
 
       return Left(ServerFailure(e.message));
     } catch (e, stackTrace) {
-      log('ProfileRepositoryImpl.getProfile', error: e, stackTrace: stackTrace);
+      log('ProfileRepositoryImpl.$operation', error: e, stackTrace: stackTrace);
 
       return Left(ServerFailure(S.current.unexpected_error));
     }
