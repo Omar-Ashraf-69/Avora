@@ -74,7 +74,9 @@ class AppRouter {
         return _buildRoute(const CreateGroupView());
 
       case AppRoutes.chatRoom:
-        return _buildRoute(const ChatRoomView(userName: "Andrew Ainsley"));
+        final conversationId = settings.arguments as String;
+
+        return _buildRoute(ChatRoomView(conversationId: conversationId));
 
       case AppRoutes.forgotPassword:
         return _buildRoute(

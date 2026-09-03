@@ -4,6 +4,8 @@ import 'package:avora/core/services/database/data_base_service.dart';
 import 'package:avora/features/profile/data/data_sources/profile_remote_data_source.dart';
 import 'package:avora/features/profile/data/models/create_profile_model.dart';
 import 'package:avora/features/profile/data/models/profile_model.dart';
+import 'package:avora/features/profile/data/models/public_profile_model.dart';
+import 'package:avora/features/profile/domain/entities/user_identifier.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
@@ -82,5 +84,24 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
     }
 
     return ProfileModel.fromJson(data);
+  }
+
+  @override
+  Future<PublicProfileModel?> findUser({required UserIdentifier identifier}) async {
+    final result = await databaseService.rpc(
+      functionName: 'find_user_by_identifier',
+      params: {
+        'p_identifier_type': identifier.type.name,
+        'p_identifier': identifier.value,
+      },
+    );
+
+    if (result is! List || result.isEmpty) {
+      return null;
+    }
+
+    final user = result.first as Map<String, dynamic>;
+
+    return PublicProfileModel.fromJson(user);
   }
 }

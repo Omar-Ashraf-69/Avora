@@ -1,5 +1,7 @@
 import 'package:avora/core/error/failures.dart';
 import 'package:avora/features/profile/domain/entities/profile_entity.dart';
+import 'package:avora/features/profile/domain/entities/public_profile_entity.dart';
+import 'package:avora/features/profile/domain/entities/user_identifier.dart';
 import 'package:dartz/dartz.dart';
 
 abstract class ProfileRepository {
@@ -17,4 +19,8 @@ Future<Either<Failure, ProfileEntity?>> getProfile({
     String? about,
     String? avatarUrl,
   });
+
+  Future<Either<Failure, PublicProfileEntity?>> findUser({
+  required UserIdentifier identifier,
+});
 }

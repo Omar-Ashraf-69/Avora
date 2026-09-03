@@ -5,6 +5,8 @@ import 'package:avora/core/error/failures.dart';
 import 'package:avora/features/profile/data/data_sources/profile_remote_data_source.dart';
 import 'package:avora/features/profile/data/models/create_profile_model.dart';
 import 'package:avora/features/profile/domain/entities/profile_entity.dart';
+import 'package:avora/features/profile/domain/entities/public_profile_entity.dart';
+import 'package:avora/features/profile/domain/entities/user_identifier.dart';
 import 'package:avora/features/profile/domain/repos/profile_repo.dart';
 import 'package:avora/generated/l10n.dart';
 import 'package:dartz/dartz.dart';
@@ -85,6 +87,21 @@ class ProfileRepositoryImpl implements ProfileRepository {
     );
   }
 
+  @override
+Future<Either<Failure, PublicProfileEntity?>> findUser({
+  required UserIdentifier identifier,
+}) async {
+  return await _execute<PublicProfileEntity?>(
+    operation: 'findUser',
+    action: () async {
+      final model = await _remoteDataSource.findUser(identifier: identifier);
+
+      return model?.toEntity();
+    },
+  );
+  
+}
+
   Future<Either<Failure, T>> _execute<T>({
     required String operation,
     required Future<T> Function() action,
@@ -101,4 +118,5 @@ class ProfileRepositoryImpl implements ProfileRepository {
       return Left(ServerFailure(S.current.unexpected_error));
     }
   }
+
 }

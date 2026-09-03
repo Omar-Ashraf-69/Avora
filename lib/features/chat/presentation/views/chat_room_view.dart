@@ -12,14 +12,14 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class ChatRoomView extends StatefulWidget {
   const ChatRoomView({
     super.key,
-    required this.userName,
+  required this.conversationId,
     this.userImage =
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVfMoUD1O9jVxSKrF3EFoS1k55PyUrojQ5Py3z-1oKQ95qlm0ozgY3YCpLl-UUkFf9D9fUjcCZyRVy5ls9GcUtzK9O2X9W1TCZmgmWFcxEUA&s=10",
     this.isOnline = false,
     this.lastSeen,
   });
 
-  final String userName;
+  final String conversationId;
   final String? userImage;
   final bool isOnline;
   final String? lastSeen;

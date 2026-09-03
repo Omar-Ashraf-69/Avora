@@ -30,6 +30,7 @@ import 'package:avora/features/profile/data/data_sources/profile_remote_data_sou
 import 'package:avora/features/profile/data/repos/profile_repo_impl.dart';
 import 'package:avora/features/profile/domain/repos/profile_repo.dart';
 import 'package:avora/features/profile/domain/use_cases/create_profile.dart';
+import 'package:avora/features/profile/domain/use_cases/find_user.dart';
 import 'package:avora/features/profile/domain/use_cases/get_current_profile.dart';
 import 'package:avora/features/profile/domain/use_cases/get_profile.dart';
 import 'package:avora/features/profile/domain/use_cases/update_profile.dart';
@@ -85,6 +86,10 @@ void _registerProfile() {
 
   getIt.registerLazySingleton(
     () => UpdateProfileUseCase(getIt<ProfileRepository>()),
+  );
+
+  getIt.registerLazySingleton(
+    () => FindUserUseCase(getIt<ProfileRepository>()),
   );
 
   getIt.registerFactory(
@@ -195,6 +200,7 @@ void _registerConversation() {
   );
   getIt.registerFactory<ConversationCubit>(
     () => ConversationCubit(
+      findUserUseCase: getIt<FindUserUseCase>(),
       createDirectConversationUseCase: getIt<CreateDirectConversationUseCase>(),
     ),
   );

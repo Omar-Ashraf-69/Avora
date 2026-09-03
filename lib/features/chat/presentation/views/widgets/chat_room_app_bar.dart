@@ -44,7 +44,14 @@ class ChatRoomAppBar extends StatelessWidget {
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(widget.userName, style: TextStyles.semiBold16),
+              SizedBox(
+                width: context.width * 0.5,
+                child: Text(
+                  widget.conversationId,
+                  style: TextStyles.semiBold16,
+                  overflow: TextOverflow.ellipsis,
+                ),
+              ),
               verticalSpace(2),
               Text(
                 widget.isOnline

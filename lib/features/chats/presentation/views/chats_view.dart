@@ -1,3 +1,4 @@
+import 'package:avora/core/helper/custom_toast.dart';
 import 'package:avora/core/helper/extenstions.dart';
 import 'package:avora/core/helper/spacing.dart';
 import 'package:avora/core/routing/app_routes.dart';
@@ -8,6 +9,7 @@ import 'package:avora/features/chats/presentation/cubits/conversation_cubit/conv
 import 'package:avora/features/chats/presentation/views/widgets/chats_room_tile.dart';
 import 'package:avora/features/chats/presentation/views/widgets/chats_search_field.dart';
 import 'package:avora/features/chats/presentation/views/widgets/new_chat_bottom_sheet.dart';
+import 'package:avora/features/profile/domain/entities/user_identifier.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:hugeicons/hugeicons.dart';
@@ -27,10 +29,14 @@ class ChatsView extends StatelessWidget {
             onStartChat: (phoneNumber) {
               //! TODO: Find user by phone number.
               //! TODO: Navigate to ChatRoomView.
-              context.read<ConversationCubit>().createDirectConversation(
-                otherUserId: "dc512ee6-f3a5-4c74-8bf4-599af10ec978",
-              );
+
               debugPrint('Start chat with: $phoneNumber');
+              context.read<ConversationCubit>().startDirectConversation(
+                identifier: UserIdentifier(
+                  type: UserIdentifierType.phone,
+                  value: phoneNumber,
+                ),
+              );
             },
           );
         },
@@ -62,12 +68,15 @@ class ChatsView extends StatelessWidget {
             BlocListener<ConversationCubit, ConversationState>(
               listener: (context, state) {
                 if (state is DirectConversationCreated) {
+                  context.pushNamed(
+                    AppRoutes.chatRoom,
+                    arguments: state.conversationId,
+                  );
                   debugPrint('Conversation created: ${state.conversationId}');
-
                   // Navigation will go here later.
                 }
-
                 if (state is ConversationFailure) {
+                  ToastNoContext.showColoredToast(message: state.message);
                   debugPrint('Conversation creation failed: ${state.message}');
                 }
               },
@@ -75,7 +84,10 @@ class ChatsView extends StatelessWidget {
                 child: ListView.builder(
                   itemCount: 12,
                   itemBuilder: (context, index) => GestureDetector(
-                    onTap: () => context.pushNamed(AppRoutes.chatRoom),
+                    onTap: () => context.pushNamed(
+                      AppRoutes.chatRoom,
+                      arguments: 'conversationId_$index',
+                    ),
                     child: const ChatRoomTile(),
                   ),
                 ),
