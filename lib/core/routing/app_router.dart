@@ -11,6 +11,7 @@ import 'package:avora/features/auth/presentation/views/sign_up_view.dart';
 import 'package:avora/features/auth/presentation/views/widgets/forgot_password/forgot_password_view.dart';
 import 'package:avora/features/auth/presentation/views/widgets/forgot_password/reset_pass_screen.dart';
 import 'package:avora/features/chat/presentation/views/chat_room_view.dart';
+import 'package:avora/features/chats/presentation/cubits/conversation_cubit/conversation_cubit.dart';
 import 'package:avora/features/groups/presentation/views/widgets/create_group_view.dart';
 import 'package:avora/features/home/presentation/views/home_view.dart';
 import 'package:avora/features/profile/presentation/cubits/fill_your_profile/fill_your_profile_cubit.dart';
@@ -56,7 +57,12 @@ class AppRouter {
         );
 
       case AppRoutes.home:
-        return _buildRoute(const HomeView());
+        return _buildRoute(
+          BlocProvider(
+            create: (_) => getIt<ConversationCubit>(),
+            child: const HomeView(),
+          ),
+        );
 
       case AppRoutes.editProfile:
         return _buildRoute(const EditProfileView());

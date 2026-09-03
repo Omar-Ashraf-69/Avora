@@ -19,6 +19,12 @@ import 'package:avora/features/auth/presentation/login_cubit/login_cubit.dart';
 import 'package:avora/features/auth/presentation/fortgot_pass_cubit/forgot_pass_cubit.dart';
 import 'package:avora/features/auth/presentation/reset_pass_cubit/reset_pass_cubit.dart';
 import 'package:avora/features/auth/presentation/sign_up_cubit/sign_up_cubit.dart';
+import 'package:avora/features/chats/data/data_source/conversation_remote_data_source.dart';
+import 'package:avora/features/chats/data/data_source/conversation_remote_data_source_impl.dart';
+import 'package:avora/features/chats/data/repos/conversation_repository_impl.dart';
+import 'package:avora/features/chats/domain/repos/conversation_repository.dart';
+import 'package:avora/features/chats/domain/use_case/create_direct_conversation.dart';
+import 'package:avora/features/chats/presentation/cubits/conversation_cubit/conversation_cubit.dart';
 import 'package:avora/features/profile/data/data_sources/profile_remote_data_source.dart';
 import 'package:avora/features/profile/data/data_sources/profile_remote_data_source_impl.dart';
 import 'package:avora/features/profile/data/repos/profile_repo_impl.dart';
@@ -45,6 +51,7 @@ Future<void> setupGetIt() async {
   _registerDatabase();
   _registerProfile();
   _registerAuth();
+  _registerConversation();
 }
 
 void _registerRouter() =>
@@ -52,11 +59,10 @@ void _registerRouter() =>
 
 void _registerDatabase() {
   getIt.registerLazySingleton<DatabaseService>(
-    () => SupabaseDatabaseService(
-      supabase: getIt<SupabaseClient>(),
-    ),
+    () => SupabaseDatabaseService(supabase: getIt<SupabaseClient>()),
   );
 }
+
 void _registerProfile() {
   getIt.registerLazySingleton<ProfileRemoteDataSource>(
     () => ProfileRemoteDataSourceImpl(
@@ -66,9 +72,7 @@ void _registerProfile() {
   );
 
   getIt.registerLazySingleton<ProfileRepository>(
-    () => ProfileRepositoryImpl(
-      getIt<ProfileRemoteDataSource>(),
-    ),
+    () => ProfileRepositoryImpl(getIt<ProfileRemoteDataSource>()),
   );
 
   getIt.registerLazySingleton(
@@ -171,6 +175,28 @@ void _registerAuth() {
 
   getIt.registerFactory<ResetPassCubit>(
     () => ResetPassCubit(updatePasswordUseCase: getIt<UpdatePasswordUseCase>()),
+  );
+}
+
+void _registerConversation() {
+  getIt.registerLazySingleton<ConversationRemoteDataSource>(
+    () => ConversationRemoteDataSourceImpl(
+      authRemoteDataSource: getIt<AuthRemoteDataSourceRepo>(),
+      databaseService: getIt<DatabaseService>(),
+    ),
+  );
+
+  getIt.registerLazySingleton<ConversationRepository>(
+    () => ConversationRepositoryImpl(getIt<ConversationRemoteDataSource>()),
+  );
+
+  getIt.registerLazySingleton<CreateDirectConversationUseCase>(
+    () => CreateDirectConversationUseCase(getIt<ConversationRepository>()),
+  );
+  getIt.registerFactory<ConversationCubit>(
+    () => ConversationCubit(
+      createDirectConversationUseCase: getIt<CreateDirectConversationUseCase>(),
+    ),
   );
 }
 
