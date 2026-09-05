@@ -106,6 +106,8 @@ class SupabaseExceptionMapper {
 
       case 'PGRST116':
         return S.current.data_not_found;
+      case 'P0001':
+        return S.current.cannot_chat_with_yourself;
 
       default:
         return S.current.database_error;

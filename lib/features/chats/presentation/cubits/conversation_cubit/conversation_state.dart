@@ -13,17 +13,13 @@ final class ConversationLoading extends ConversationState {
 }
 
 final class DirectConversationCreated extends ConversationState {
-  const DirectConversationCreated({
-    required this.conversationId,
-  });
+  const DirectConversationCreated({required this.conversationId});
 
   final String conversationId;
 }
 
 final class ConversationFailure extends ConversationState {
-  const ConversationFailure({
-    required this.message,
-  });
+  const ConversationFailure({required this.message});
 
   final String message;
 }

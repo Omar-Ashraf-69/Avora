@@ -1074,6 +1074,16 @@ class S {
       args: [],
     );
   }
+
+  /// `You cannot chat with yourself`
+  String get cannot_chat_with_yourself {
+    return Intl.message(
+      'You cannot chat with yourself',
+      name: 'cannot_chat_with_yourself',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

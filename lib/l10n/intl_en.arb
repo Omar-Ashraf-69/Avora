@@ -124,7 +124,8 @@
   "phone_number_already_exists" : "Phone number already exists",
   "username_already_exists" : "Username already exists",
   "phoneRequired" : "Phone number is required",
-  "invalidPhone" : "Please enter a valid phone number"
+  "invalidPhone" : "Please enter a valid phone number",
+  "cannot_chat_with_yourself": "You cannot chat with yourself"  
 
   
 

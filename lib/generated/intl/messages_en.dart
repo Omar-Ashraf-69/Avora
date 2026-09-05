@@ -50,6 +50,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "By Signing up, you agree to our",
     ),
     "cancel": MessageLookupByLibrary.simpleMessage("Cancel"),
+    "cannot_chat_with_yourself": MessageLookupByLibrary.simpleMessage(
+      "You cannot chat with yourself",
+    ),
     "chats": MessageLookupByLibrary.simpleMessage("Chats"),
     "check_your_inbox": MessageLookupByLibrary.simpleMessage(
       "Check your inbox",
