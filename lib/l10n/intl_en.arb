@@ -125,7 +125,14 @@
   "username_already_exists" : "Username already exists",
   "phoneRequired" : "Phone number is required",
   "invalidPhone" : "Please enter a valid phone number",
-  "cannot_chat_with_yourself": "You cannot chat with yourself"  
+  "cannot_chat_with_yourself": "You cannot chat with yourself",
+  "find_someone_by_username_or_phone_number": "Find someone by username or phone number",
+  "new_chat": "New Chat",
+  "at_username": "@username",
+  "username": "Username",
+  "starting": "Starting...",
+  "searching": "Searching...",
+  "start_chat": "Start Chat"
 
   
 

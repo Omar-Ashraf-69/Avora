@@ -1,3 +1,4 @@
+import 'package:avora/core/funcs/phone_formater.dart';
 import 'package:avora/core/helper/app_regex.dart';
 import 'package:avora/generated/l10n.dart';
 
@@ -23,4 +24,39 @@ class AppValidators {
     }
     return null;
   }
+
+
+  static String? validatePhone(String? value) {
+    final phoneNumber = value?.trim() ?? '';
+
+    if (phoneNumber.isEmpty) {
+      return 'Enter a phone number';
+    }
+
+    if (!PhoneNumberFormatter.isValidEgyptianPhone(phoneNumber)) {
+      return 'Enter a valid Egyptian phone number';
+    }
+
+    return null;
+  }
+
+  static String? validateUsername(String? value) {
+    var username = value?.trim() ?? '';
+
+    if (username.isEmpty) {
+      return 'Enter a username';
+    }
+
+    // Allow the user to type @username.
+    username = username.replaceFirst('@', '');
+
+    final validPattern = RegExp(r'^[a-zA-Z0-9_.]{2,30}$');
+
+    if (!validPattern.hasMatch(username)) {
+      return 'Username must be 2-30 characters';
+    }
+
+    return null;
+  }
+
 }

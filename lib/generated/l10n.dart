@@ -1084,6 +1084,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Find someone by username or phone number`
+  String get find_someone_by_username_or_phone_number {
+    return Intl.message(
+      'Find someone by username or phone number',
+      name: 'find_someone_by_username_or_phone_number',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `New Chat`
+  String get new_chat {
+    return Intl.message('New Chat', name: 'new_chat', desc: '', args: []);
+  }
+
+  /// `@username`
+  String get at_username {
+    return Intl.message('@username', name: 'at_username', desc: '', args: []);
+  }
+
+  /// `Username`
+  String get username {
+    return Intl.message('Username', name: 'username', desc: '', args: []);
+  }
+
+  /// `Starting...`
+  String get starting {
+    return Intl.message('Starting...', name: 'starting', desc: '', args: []);
+  }
+
+  /// `Searching...`
+  String get searching {
+    return Intl.message('Searching...', name: 'searching', desc: '', args: []);
+  }
+
+  /// `Start Chat`
+  String get start_chat {
+    return Intl.message('Start Chat', name: 'start_chat', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

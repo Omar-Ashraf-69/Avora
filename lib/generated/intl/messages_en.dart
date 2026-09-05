@@ -44,6 +44,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "at_least_8_characters": MessageLookupByLibrary.simpleMessage(
       "At least 8 characters",
     ),
+    "at_username": MessageLookupByLibrary.simpleMessage("@username"),
     "back_to_login": MessageLookupByLibrary.simpleMessage("Back to Login"),
     "bio": MessageLookupByLibrary.simpleMessage("Bio"),
     "by_siging_up": MessageLookupByLibrary.simpleMessage(
@@ -128,6 +129,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "fill_your_profile": MessageLookupByLibrary.simpleMessage(
       "Fill your profile",
     ),
+    "find_someone_by_username_or_phone_number":
+        MessageLookupByLibrary.simpleMessage(
+          "Find someone by username or phone number",
+        ),
     "forgot_password": MessageLookupByLibrary.simpleMessage("Forgot Password?"),
     "get_your_friends_to": MessageLookupByLibrary.simpleMessage(
       "Get your friends and family together to share your thoughts and ideas",
@@ -153,6 +158,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "logout": MessageLookupByLibrary.simpleMessage("Logout"),
     "name": MessageLookupByLibrary.simpleMessage("Your full name"),
+    "new_chat": MessageLookupByLibrary.simpleMessage("New Chat"),
     "no": MessageLookupByLibrary.simpleMessage("No"),
     "no_worries_enter_your_email_address": MessageLookupByLibrary.simpleMessage(
       "No worries! Enter your email address and\nwe’ll send you a link to reset your password.",
@@ -217,6 +223,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "save_changes": MessageLookupByLibrary.simpleMessage("Save changes"),
     "search": MessageLookupByLibrary.simpleMessage("Search"),
+    "searching": MessageLookupByLibrary.simpleMessage("Searching..."),
     "send": MessageLookupByLibrary.simpleMessage("Send"),
     "send_rest_link": MessageLookupByLibrary.simpleMessage("Send Reset Link"),
     "service_unavailable": MessageLookupByLibrary.simpleMessage(
@@ -231,8 +238,10 @@ class MessageLookup extends MessageLookupByLibrary {
     "start_a_converstion": MessageLookupByLibrary.simpleMessage(
       "Start a conversation with your friends and family ",
     ),
+    "start_chat": MessageLookupByLibrary.simpleMessage("Start Chat"),
     "start_new_chat": MessageLookupByLibrary.simpleMessage("Start New Chat"),
     "start_new_group": MessageLookupByLibrary.simpleMessage("Start New Group"),
+    "starting": MessageLookupByLibrary.simpleMessage("Starting..."),
     "storage_error": MessageLookupByLibrary.simpleMessage(
       "An error occurred while uploading or downloading the file",
     ),
@@ -268,6 +277,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "user_not_found": MessageLookupByLibrary.simpleMessage(
       "No account found with this email address",
     ),
+    "username": MessageLookupByLibrary.simpleMessage("Username"),
     "username_already_exists": MessageLookupByLibrary.simpleMessage(
       "Username already exists",
     ),
