@@ -330,10 +330,10 @@ class S {
     );
   }
 
-  /// `Start a conversation with your friends and family `
+  /// `Start a conversation `
   String get start_a_converstion {
     return Intl.message(
-      'Start a conversation with your friends and family ',
+      'Start a conversation ',
       name: 'start_a_converstion',
       desc: '',
       args: [],
@@ -1123,6 +1123,16 @@ class S {
   /// `Start Chat`
   String get start_chat {
     return Intl.message('Start Chat', name: 'start_chat', desc: '', args: []);
+  }
+
+  /// `with your friends and family`
+  String get with_your_friends_and_family {
+    return Intl.message(
+      'with your friends and family',
+      name: 'with_your_friends_and_family',
+      desc: '',
+      args: [],
+    );
   }
 }
 

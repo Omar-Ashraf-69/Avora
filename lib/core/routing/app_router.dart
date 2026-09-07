@@ -1,6 +1,6 @@
 import 'package:avora/core/di/dependecny_injection.dart';
 import 'package:avora/core/routing/app_routes.dart';
-import 'package:avora/core/themes/app_colors.dart';
+import 'package:avora/core/widgets/custom_loading_indecator.dart';
 import 'package:avora/features/auth/presentation/fortgot_pass_cubit/forgot_pass_cubit.dart';
 import 'package:avora/features/auth/presentation/login_cubit/login_cubit.dart';
 import 'package:avora/features/auth/presentation/reset_pass_cubit/reset_pass_cubit.dart';
@@ -11,6 +11,7 @@ import 'package:avora/features/auth/presentation/views/sign_up_view.dart';
 import 'package:avora/features/auth/presentation/views/widgets/forgot_password/forgot_password_view.dart';
 import 'package:avora/features/auth/presentation/views/widgets/forgot_password/reset_pass_screen.dart';
 import 'package:avora/features/chat/presentation/views/chat_room_view.dart';
+import 'package:avora/features/chats/presentation/cubits/chats_cubit/chats_cubit.dart';
 import 'package:avora/features/chats/presentation/cubits/conversation_cubit/conversation_cubit.dart';
 import 'package:avora/features/groups/presentation/views/widgets/create_group_view.dart';
 import 'package:avora/features/home/presentation/views/home_view.dart';
@@ -20,8 +21,6 @@ import 'package:avora/features/profile/presentation/views/fill_your_profile_view
 import 'package:avora/features/qr/presentation/views/qr_code_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class AppRouter {
   Route<dynamic>? onGenerateRoute(RouteSettings settings) {
@@ -58,8 +57,13 @@ class AppRouter {
 
       case AppRoutes.home:
         return _buildRoute(
-          BlocProvider(
-            create: (_) => getIt<ConversationCubit>(),
+          MultiBlocProvider(
+            providers: [
+              BlocProvider(create: (_) => getIt<ConversationCubit>()),
+              BlocProvider(
+                create: (_) => getIt<ChatsCubit>()..loadConversations(),
+              ),
+            ],
             child: const HomeView(),
           ),
         );
@@ -115,12 +119,7 @@ class SplashView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: LoadingAnimationWidget.beat(
-          color: AppColors.mainBlue,
-          size: 50.r,
-        ),
-      ),
+      body: CustomLoadingIndecator(),
     );
   }
 }

@@ -1,7 +1,6 @@
-import 'package:avora/core/error/exceptions.dart';
 import 'package:avora/core/services/auth/auth_remote_data_source_repo.dart';
 import 'package:avora/core/services/database/data_base_service.dart';
-import '../models/conversation_model.dart';
+import 'package:avora/features/chats/data/models/conversation_preview_model.dart';
 import 'conversation_remote_data_source.dart';
 
 class ConversationRemoteDataSourceImpl implements ConversationRemoteDataSource {
@@ -12,10 +11,7 @@ class ConversationRemoteDataSourceImpl implements ConversationRemoteDataSource {
 
   final DatabaseService databaseService;
   final AuthRemoteDataSourceRepo authRemoteDataSource;
-
-  static const String _conversationsTable = 'conversations';
-  static const String _membersTable = 'conversation_members';
-
+  
   @override
   Future<String> createDirectConversation({required String otherUserId}) async {
     final result = await databaseService.rpc(
@@ -27,39 +23,18 @@ class ConversationRemoteDataSourceImpl implements ConversationRemoteDataSource {
   }
 
   @override
-  Future<List<ConversationModel>> getUserConversations() async {
-    final user = authRemoteDataSource.getCurrentUser();
+  Future<List<ConversationPreviewModel>> getConversations() async {
+    final result = await databaseService.rpc(functionName: 'get_conversations');
 
-    if (user == null) {
-      throw const CustomException(message: 'User is not authenticated.');
-    }
-
-    final members = await databaseService.get(
-      table: _membersTable,
-      filters: {'user_id': user.id},
-    );
-
-    if (members.isEmpty) {
+    if (result is! List) {
       return [];
     }
 
-    final conversationIds = members
-        .map((member) => member['conversation_id'] as String)
+    return result
+        .map(
+          (json) =>
+              ConversationPreviewModel.fromJson(json as Map<String, dynamic>),
+        )
         .toList();
-
-    final conversations = <ConversationModel>[];
-
-    for (final conversationId in conversationIds) {
-      final data = await databaseService.getById(
-        table: _conversationsTable,
-        id: conversationId,
-      );
-
-      if (data != null) {
-        conversations.add(ConversationModel.fromJson(data));
-      }
-    }
-
-    return conversations;
   }
 }

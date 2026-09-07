@@ -37,7 +37,7 @@
   "no": "No",
   "qr_code": "QR Code",
   "start_new_chat": "Start New Chat",
-  "start_a_converstion": "Start a conversation with your friends and family ",
+  "start_a_converstion": "Start a conversation ",
   "to_share_your_thoughts_and_ideas": "to share your thoughts and ideas. ",
   "start": "Start",
   "welcome": "Welcome",
@@ -132,7 +132,8 @@
   "username": "Username",
   "starting": "Starting...",
   "searching": "Searching...",
-  "start_chat": "Start Chat"
+  "start_chat": "Start Chat",
+  "with_your_friends_and_family": "with your friends and family"
 
   
 

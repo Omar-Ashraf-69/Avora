@@ -236,7 +236,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "start": MessageLookupByLibrary.simpleMessage("Start"),
     "start_a_converstion": MessageLookupByLibrary.simpleMessage(
-      "Start a conversation with your friends and family ",
+      "Start a conversation ",
     ),
     "start_chat": MessageLookupByLibrary.simpleMessage("Start Chat"),
     "start_new_chat": MessageLookupByLibrary.simpleMessage("Start New Chat"),
@@ -290,6 +290,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "The password is too weak",
     ),
     "welcome": MessageLookupByLibrary.simpleMessage("Welcome"),
+    "with_your_friends_and_family": MessageLookupByLibrary.simpleMessage(
+      "with your friends and family",
+    ),
     "wrong_password": MessageLookupByLibrary.simpleMessage(
       "The password is incorrect",
     ),

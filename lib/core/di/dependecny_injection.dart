@@ -24,6 +24,8 @@ import 'package:avora/features/chats/data/data_source/conversation_remote_data_s
 import 'package:avora/features/chats/data/repos/conversation_repository_impl.dart';
 import 'package:avora/features/chats/domain/repos/conversation_repository.dart';
 import 'package:avora/features/chats/domain/use_case/create_direct_conversation.dart';
+import 'package:avora/features/chats/domain/use_case/get_conversations.dart';
+import 'package:avora/features/chats/presentation/cubits/chats_cubit/chats_cubit.dart';
 import 'package:avora/features/chats/presentation/cubits/conversation_cubit/conversation_cubit.dart';
 import 'package:avora/features/profile/data/data_sources/profile_remote_data_source.dart';
 import 'package:avora/features/profile/data/data_sources/profile_remote_data_source_impl.dart';
@@ -204,6 +206,19 @@ void _registerConversation() {
       createDirectConversationUseCase: getIt<CreateDirectConversationUseCase>(),
     ),
   );
+
+  getIt.registerLazySingleton<GetConversationsUseCase>(
+  () => GetConversationsUseCase(
+    getIt<ConversationRepository>(),
+  ),
+);
+
+getIt.registerFactory<ChatsCubit>(
+  () => ChatsCubit(
+    getConversationsUseCase: getIt<GetConversationsUseCase>(),
+  ),
+);
+
 }
 
 Future<void> _registerSharedPreferences() async {
