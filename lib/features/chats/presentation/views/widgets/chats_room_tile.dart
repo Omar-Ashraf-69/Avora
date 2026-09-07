@@ -1,6 +1,9 @@
+import 'package:avora/core/di/dependecny_injection.dart';
+import 'package:avora/core/helper/extenstions.dart';
 import 'package:avora/core/helper/spacing.dart';
 import 'package:avora/core/themes/app_colors.dart';
 import 'package:avora/core/themes/app_text_styles.dart';
+import 'package:avora/features/auth/domain/repos/auth_repo.dart';
 import 'package:avora/features/chats/domain/entities/conversation_preview_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -8,8 +11,13 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 class ChatRoomTile extends StatelessWidget {
   const ChatRoomTile({super.key, required this.conversation});
   final ConversationPreviewEntity conversation;
+
   @override
   Widget build(BuildContext context) {
+    final currentUserId = getIt<AuthRepository>().getCurrentUser()?.id;
+    final isLastMessageFromMe =
+        conversation.lastMessageSenderId == currentUserId;
+
     return ListTile(
       contentPadding: const EdgeInsets.all(0),
       leading: Stack(
@@ -45,7 +53,11 @@ class ChatRoomTile extends StatelessWidget {
         overflow: TextOverflow.ellipsis,
       ),
       subtitle: Text(
-        conversation.lastMessage ?? '',
+        conversation.lastMessage == null
+            ? ''
+            : isLastMessageFromMe
+            ? 'You: ${conversation.lastMessage}'
+            : conversation.lastMessage!,
         style: TextStyles.regular13,
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
@@ -54,7 +66,7 @@ class ChatRoomTile extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
           Text(
-            "2:30 PM",
+            conversation.lastMessageAt?.toLocalTimeLabel(context) ?? '',
             style: TextStyles.regular13.copyWith(color: AppColors.gray),
           ),
           verticalSpace(4),

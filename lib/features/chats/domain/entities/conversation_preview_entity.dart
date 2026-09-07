@@ -10,6 +10,7 @@ class ConversationPreviewEntity {
     this.lastMessageAt,
     this.unreadCount = 0,
     this.isOnline = false,
+    this.lastMessageSenderId,
   });
 
   final String conversationId;
@@ -17,6 +18,7 @@ class ConversationPreviewEntity {
 
   final String title;
   final String? avatarUrl;
+  final String? lastMessageSenderId;
 
   final String? lastMessage;
   final DateTime? lastMessageAt;

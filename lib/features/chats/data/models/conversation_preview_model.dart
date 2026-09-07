@@ -10,6 +10,7 @@ class ConversationPreviewModel {
     this.lastMessage,
     this.lastMessageAt,
     this.unreadCount = 0,
+    this.lastMessageSenderId,
   });
 
   final String conversationId;
@@ -17,28 +18,24 @@ class ConversationPreviewModel {
 
   final String title;
   final String? avatarUrl;
+  final String? lastMessageSenderId;
 
   final String? lastMessage;
   final DateTime? lastMessageAt;
 
   final int unreadCount;
 
-  factory ConversationPreviewModel.fromJson(
-    Map<String, dynamic> json,
-  ) {
+  factory ConversationPreviewModel.fromJson(Map<String, dynamic> json) {
     return ConversationPreviewModel(
       conversationId: json['conversation_id'] as String,
-      type: ConversationType.values.byName(
-        json['type'] as String,
-      ),
+      type: ConversationType.values.byName(json['type'] as String),
       title: json['title'] as String,
       avatarUrl: json['avatar_url'] as String?,
       lastMessage: json['last_message'] as String?,
       lastMessageAt: json['last_message_at'] != null
-          ? DateTime.parse(
-              json['last_message_at'] as String,
-            )
+          ? DateTime.parse(json['last_message_at'] as String)
           : null,
+      lastMessageSenderId: json['last_message_sender_id'] as String?,
       unreadCount: (json['unread_count'] as num?)?.toInt() ?? 0,
     );
   }
@@ -52,6 +49,7 @@ class ConversationPreviewModel {
       lastMessage: lastMessage,
       lastMessageAt: lastMessageAt,
       unreadCount: unreadCount,
+      lastMessageSenderId: lastMessageSenderId,
     );
   }
 }

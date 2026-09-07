@@ -63,4 +63,29 @@ class MessageRepositoryImpl implements MessageRepository {
       );
     }
   }
+
+  @override
+Future<Either<Failure, void>> markConversationAsRead({
+  required String conversationId,
+}) async {
+  try {
+    await remoteDataSource.markConversationAsRead(
+      conversationId: conversationId,
+    );
+
+    return const Right(null);
+  } on CustomException catch (e) {
+    return Left(
+      ServerFailure(
+         e.message,
+      ),
+    );
+  } catch (_) {
+    return Left(
+      ServerFailure(
+         S.current.unexpected_error,
+      ),
+    );
+  }
+}
 }

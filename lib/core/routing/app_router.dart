@@ -62,7 +62,14 @@ class AppRouter {
             providers: [
               BlocProvider(create: (_) => getIt<ConversationCubit>()),
               BlocProvider(
-                create: (_) => getIt<ChatsCubit>()..loadConversations(),
+                create: (context) {
+                  final cubit = getIt<ChatsCubit>();
+
+                  cubit.loadConversations();
+                  cubit.subscribeToConversationUpdates();
+
+                  return cubit;
+                },
               ),
             ],
             child: const HomeView(),

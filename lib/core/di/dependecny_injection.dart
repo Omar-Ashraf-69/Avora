@@ -32,6 +32,7 @@ import 'package:avora/features/chats/domain/repos/message_repository.dart';
 import 'package:avora/features/chats/domain/use_case/create_direct_conversation.dart';
 import 'package:avora/features/chats/domain/use_case/get_conversations.dart';
 import 'package:avora/features/chats/domain/use_case/get_messages_use_case.dart';
+import 'package:avora/features/chats/domain/use_case/mark_conversation_as_read_use_case.dart';
 import 'package:avora/features/chats/domain/use_case/send_text_message_use_case.dart';
 import 'package:avora/features/chats/presentation/cubits/chat_cubit/chat_cubit.dart';
 import 'package:avora/features/chats/presentation/cubits/chats_cubit/chats_cubit.dart';
@@ -220,8 +221,14 @@ void _registerConversation() {
     () => GetConversationsUseCase(getIt<ConversationRepository>()),
   );
 
+  getIt.registerLazySingleton<MarkConversationAsReadUseCase>(
+    () => MarkConversationAsReadUseCase(getIt<MessageRepository>()),
+  );
   getIt.registerFactory<ChatsCubit>(
-    () => ChatsCubit(getConversationsUseCase: getIt<GetConversationsUseCase>()),
+    () => ChatsCubit(
+      getConversationsUseCase: getIt<GetConversationsUseCase>(),
+      supabaseClient: getIt<SupabaseClient>(),
+    ),
   );
 
   getIt.registerLazySingleton<MessageRemoteDataSource>(
@@ -230,7 +237,6 @@ void _registerConversation() {
       authRepository: getIt<AuthRepository>(),
     ),
   );
-
   getIt.registerLazySingleton<MessageRepository>(
     () => MessageRepositoryImpl(getIt<MessageRemoteDataSource>()),
   );
@@ -250,6 +256,7 @@ void _registerConversation() {
       getMessagesUseCase: getIt<GetMessagesUseCase>(),
       sendTextMessageUseCase: getIt<SendTextMessageUseCase>(),
       messageRealtimeDataSource: getIt<MessageRealtimeDataSource>(),
+      markConversationAsReadUseCase: getIt<MarkConversationAsReadUseCase>(),
     ),
   );
 }

@@ -2,6 +2,7 @@ import 'package:avora/features/chats/data/data_source/message_realtime_data_sour
 import 'package:avora/features/chats/data/models/message_model.dart';
 import 'package:avora/features/chats/domain/entities/message_entity.dart';
 import 'package:avora/features/chats/domain/use_case/get_messages_use_case.dart';
+import 'package:avora/features/chats/domain/use_case/mark_conversation_as_read_use_case.dart';
 import 'package:avora/features/chats/domain/use_case/send_text_message_use_case.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -12,16 +13,15 @@ class ChatCubit extends Cubit<ChatState> {
     required this.getMessagesUseCase,
     required this.sendTextMessageUseCase,
     required this.messageRealtimeDataSource,
+    required this.markConversationAsReadUseCase,
   }) : super(const ChatInitial());
 
   final GetMessagesUseCase getMessagesUseCase;
   final SendTextMessageUseCase sendTextMessageUseCase;
-
+  final MarkConversationAsReadUseCase markConversationAsReadUseCase;
   final MessageRealtimeDataSource messageRealtimeDataSource;
 
-  String? _conversationId;
   Future<void> loadMessages({required String conversationId}) async {
-    _conversationId = conversationId;
 
     emit(const ChatLoading());
 
@@ -34,8 +34,13 @@ class ChatCubit extends Cubit<ChatState> {
       (messages) {
         emit(ChatLoaded(messages: messages));
         _subscribeToMessages(conversationId);
+        markConversationAsRead(conversationId: conversationId);
       },
     );
+  }
+
+  Future<void> markConversationAsRead({required String conversationId}) async {
+    await markConversationAsReadUseCase(conversationId: conversationId);
   }
 
   Future<void> sendTextMessage({
@@ -102,6 +107,7 @@ class ChatCubit extends Cubit<ChatState> {
     if (alreadyExists) return;
 
     emit(ChatLoaded(messages: [...currentState.messages, message]));
+    markConversationAsRead(conversationId: message.conversationId);
   }
 
   void _onMessageUpdated(MessageModel model) {

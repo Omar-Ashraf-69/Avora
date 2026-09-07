@@ -11,4 +11,8 @@ abstract class MessageRepository {
     required String conversationId,
     required String content,
   });
+
+  Future<Either<Failure, void>> markConversationAsRead({
+  required String conversationId,
+});
 }

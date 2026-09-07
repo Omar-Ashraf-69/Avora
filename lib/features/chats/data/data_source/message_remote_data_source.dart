@@ -9,4 +9,7 @@ abstract class MessageRemoteDataSource {
     required String conversationId,
     required String content,
   });
+   Future<void> markConversationAsRead({
+    required String conversationId,
+  });
 }

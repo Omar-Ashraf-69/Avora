@@ -61,4 +61,16 @@ class MessageRemoteDataSourceImpl implements MessageRemoteDataSource {
 
     return MessageModel.fromJson(result);
   }
+
+  @override
+Future<void> markConversationAsRead({
+  required String conversationId,
+}) async {
+  await databaseService.rpc(
+    functionName: 'mark_conversation_as_read',
+    params: {
+      'p_conversation_id': conversationId,
+    },
+  );
+}
 }
