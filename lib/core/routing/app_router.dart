@@ -11,6 +11,7 @@ import 'package:avora/features/auth/presentation/views/sign_up_view.dart';
 import 'package:avora/features/auth/presentation/views/widgets/forgot_password/forgot_password_view.dart';
 import 'package:avora/features/auth/presentation/views/widgets/forgot_password/reset_pass_screen.dart';
 import 'package:avora/features/chat/presentation/views/chat_room_view.dart';
+import 'package:avora/features/chats/presentation/cubits/chat_cubit/chat_cubit.dart';
 import 'package:avora/features/chats/presentation/cubits/chats_cubit/chats_cubit.dart';
 import 'package:avora/features/chats/presentation/cubits/conversation_cubit/conversation_cubit.dart';
 import 'package:avora/features/groups/presentation/views/widgets/create_group_view.dart';
@@ -80,7 +81,12 @@ class AppRouter {
       case AppRoutes.chatRoom:
         final conversationId = settings.arguments as String;
 
-        return _buildRoute(ChatRoomView(conversationId: conversationId));
+        return _buildRoute(
+          BlocProvider(
+            create: (context) => getIt<ChatCubit>(),
+            child: ChatRoomView(conversationId: conversationId),
+          ),
+        );
 
       case AppRoutes.forgotPassword:
         return _buildRoute(
@@ -118,8 +124,6 @@ class SplashView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: CustomLoadingIndecator(),
-    );
+    return Scaffold(body: CustomLoadingIndecator());
   }
 }

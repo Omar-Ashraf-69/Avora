@@ -1,18 +1,24 @@
+import 'package:avora/core/di/dependecny_injection.dart';
 import 'package:avora/core/helper/spacing.dart';
+import 'package:avora/core/themes/app_text_styles.dart';
 import 'package:avora/core/themes/padding.dart';
+import 'package:avora/features/auth/domain/repos/auth_repo.dart';
 import 'package:avora/features/chat/data/enums/message_status.dart';
 import 'package:avora/features/chat/data/models/chat_message_model.dart';
 import 'package:avora/features/chat/presentation/views/widgets/chat_Input.dart';
 import 'package:avora/features/chat/presentation/views/widgets/chat_room_app_bar.dart';
 import 'package:avora/features/chat/presentation/views/widgets/message_bubble.dart';
 import 'package:avora/features/chat/presentation/views/widgets/scroll_down_floating_action_button.dart';
+import 'package:avora/features/chats/domain/entities/message_entity.dart';
+import 'package:avora/features/chats/presentation/cubits/chat_cubit/chat_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ChatRoomView extends StatefulWidget {
   const ChatRoomView({
     super.key,
-  required this.conversationId,
+    required this.conversationId,
     this.userImage =
         "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVfMoUD1O9jVxSKrF3EFoS1k55PyUrojQ5Py3z-1oKQ95qlm0ozgY3YCpLl-UUkFf9D9fUjcCZyRVy5ls9GcUtzK9O2X9W1TCZmgmWFcxEUA&s=10",
     this.isOnline = false,
@@ -40,6 +46,9 @@ class _ChatRoomViewState extends State<ChatRoomView> {
     super.initState();
 
     _scrollController.addListener(_onScroll);
+    context.read<ChatCubit>().loadMessages(
+      conversationId: widget.conversationId,
+    );
   }
 
   @override
@@ -61,30 +70,37 @@ class _ChatRoomViewState extends State<ChatRoomView> {
         child: Column(
           children: [
             Expanded(
-              child: Stack(
-                children: [
-                  ListView.separated(
-                    controller: _scrollController,
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: AppPadding.medium,
-                      vertical: AppPadding.medium,
-                    ),
-                    itemCount: messages.length,
-                    reverse: true,
-                    separatorBuilder: (_, _) => verticalSpace(8),
-                    itemBuilder: (context, index) {
-                      final message = messages[messages.length - 1 - index];
+              child: BlocBuilder<ChatCubit, ChatState>(
+                builder: (context, state) {
+                  if (state is ChatLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
 
-                      return MessageBubble(message: message);
-                    },
-                  ),
-                  ScrollDownFloatingActionButton(
-                    onPressed: _scrollToBottom,
-                    showScrollToBottomButton: _showScrollToBottomButton,
-                  ),
-                ],
+                  if (state is ChatFailure) {
+                    return Center(child: Text(state.message));
+                  }
+
+                  if (state is ChatLoaded) {
+                    if (state.messages.isEmpty) {
+                      return Center(
+                        child: Text(
+                          "No messages yet. Start the conversation!",
+                          style: TextStyles.regular16,
+                        ),
+                      );
+                    }
+                    return _buildMessageList(state.messages);
+                  }
+
+                  if (state is ChatSending) {
+                    return _buildMessageList(state.messages);
+                  }
+
+                  return const SizedBox.shrink();
+                },
               ),
             ),
+
             ChatInput(
               controller: _messageController,
               onSend: _sendMessage,
@@ -93,6 +109,37 @@ class _ChatRoomViewState extends State<ChatRoomView> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget _buildMessageList(List<MessageEntity> messages) {
+    final currentUserId = getIt<AuthRepository>().getCurrentUser()!.id;
+
+    return Stack(
+      children: [
+        ListView.separated(
+          controller: _scrollController,
+          padding: const EdgeInsets.symmetric(
+            horizontal: AppPadding.medium,
+            vertical: AppPadding.medium,
+          ),
+          itemCount: messages.length,
+          reverse: true,
+          separatorBuilder: (_, _) => verticalSpace(8),
+          itemBuilder: (context, index) {
+            final message = messages[messages.length - 1 - index];
+
+            return MessageBubble(
+              message: message,
+              isMe: message.senderId == currentUserId,
+            );
+          },
+        ),
+        ScrollDownFloatingActionButton(
+          onPressed: _scrollToBottom,
+          showScrollToBottomButton: _showScrollToBottomButton,
+        ),
+      ],
     );
   }
 
@@ -134,7 +181,10 @@ class _ChatRoomViewState extends State<ChatRoomView> {
         ),
       );
     });
-
+    context.read<ChatCubit>().sendTextMessage(
+      conversationId: widget.conversationId,
+      content: text,
+    );
     _messageController.clear();
     // With reverse:true, bottom = 0.
     _scrollToBottom();

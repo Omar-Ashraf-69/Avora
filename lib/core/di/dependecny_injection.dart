@@ -21,10 +21,17 @@ import 'package:avora/features/auth/presentation/reset_pass_cubit/reset_pass_cub
 import 'package:avora/features/auth/presentation/sign_up_cubit/sign_up_cubit.dart';
 import 'package:avora/features/chats/data/data_source/conversation_remote_data_source.dart';
 import 'package:avora/features/chats/data/data_source/conversation_remote_data_source_impl.dart';
+import 'package:avora/features/chats/data/data_source/message_remote_data_source.dart';
+import 'package:avora/features/chats/data/data_source/message_remote_data_source_impl.dart';
 import 'package:avora/features/chats/data/repos/conversation_repository_impl.dart';
+import 'package:avora/features/chats/data/repos/message_repository_impl.dart';
 import 'package:avora/features/chats/domain/repos/conversation_repository.dart';
+import 'package:avora/features/chats/domain/repos/message_repository.dart';
 import 'package:avora/features/chats/domain/use_case/create_direct_conversation.dart';
 import 'package:avora/features/chats/domain/use_case/get_conversations.dart';
+import 'package:avora/features/chats/domain/use_case/get_messages_use_case.dart';
+import 'package:avora/features/chats/domain/use_case/send_text_message_use_case.dart';
+import 'package:avora/features/chats/presentation/cubits/chat_cubit/chat_cubit.dart';
 import 'package:avora/features/chats/presentation/cubits/chats_cubit/chats_cubit.dart';
 import 'package:avora/features/chats/presentation/cubits/conversation_cubit/conversation_cubit.dart';
 import 'package:avora/features/profile/data/data_sources/profile_remote_data_source.dart';
@@ -219,6 +226,40 @@ getIt.registerFactory<ChatsCubit>(
   ),
 );
 
+
+
+
+getIt.registerLazySingleton<MessageRemoteDataSource>(
+  () => MessageRemoteDataSourceImpl(
+    databaseService: getIt<DatabaseService>(),
+    authRepository: getIt<AuthRepository>(),
+    
+  ),
+);
+
+getIt.registerLazySingleton<MessageRepository>(
+  () => MessageRepositoryImpl(
+    getIt<MessageRemoteDataSource>(),
+  ),
+);
+
+getIt.registerLazySingleton<GetMessagesUseCase>(
+  () => GetMessagesUseCase(
+    getIt<MessageRepository>(),
+  ),
+);
+
+getIt.registerLazySingleton<SendTextMessageUseCase>(
+  () => SendTextMessageUseCase(
+    getIt<MessageRepository>(),
+  ),
+);
+getIt.registerFactory<ChatCubit>(
+  () => ChatCubit(
+    getMessagesUseCase: getIt<GetMessagesUseCase>(),
+    sendTextMessageUseCase: getIt<SendTextMessageUseCase>(),
+  ),
+);
 }
 
 Future<void> _registerSharedPreferences() async {
