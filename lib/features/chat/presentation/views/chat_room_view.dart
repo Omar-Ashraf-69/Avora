@@ -3,8 +3,6 @@ import 'package:avora/core/helper/spacing.dart';
 import 'package:avora/core/themes/app_text_styles.dart';
 import 'package:avora/core/themes/padding.dart';
 import 'package:avora/features/auth/domain/repos/auth_repo.dart';
-import 'package:avora/features/chat/data/enums/message_status.dart';
-import 'package:avora/features/chat/data/models/chat_message_model.dart';
 import 'package:avora/features/chat/presentation/views/widgets/chat_Input.dart';
 import 'package:avora/features/chat/presentation/views/widgets/chat_room_app_bar.dart';
 import 'package:avora/features/chat/presentation/views/widgets/message_bubble.dart';
@@ -29,6 +27,7 @@ class ChatRoomView extends StatefulWidget {
   final String? userImage;
   final bool isOnline;
   final String? lastSeen;
+  
 
   @override
   State<ChatRoomView> createState() => _ChatRoomViewState();
@@ -171,16 +170,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
 
     if (text.isEmpty) return;
 
-    setState(() {
-      messages.add(
-        ChatMessage(
-          text: text,
-          createdAt: DateTime.now().toUtc(),
-          isMe: true,
-          status: MessageStatus.delivered,
-        ),
-      );
-    });
+  
     context.read<ChatCubit>().sendTextMessage(
       conversationId: widget.conversationId,
       content: text,

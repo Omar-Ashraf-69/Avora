@@ -1,5 +1,6 @@
 import 'package:avora/core/themes/app_colors.dart';
 import 'package:avora/core/themes/app_text_styles.dart';
+import 'package:avora/features/chat/presentation/views/widgets/message_meta.dart';
 import 'package:avora/features/chats/domain/entities/message_entity.dart';
 import 'package:flutter/material.dart';
 
@@ -42,31 +43,10 @@ class MessageBubble extends StatelessWidget {
               ),
             ),
             const SizedBox(width: 8),
-            Text(
-              _formatTime(message.createdAt),
-              style: TextStyles.regular13.copyWith(
-                color: isMe ? Colors.white70 : AppColors.darkBlue,
-              ),
-            ),
+            MessageMeta(message: message, isMe: isMe),
           ],
         ),
       ),
     );
-  }
-
-  String _formatTime(DateTime dateTime) {
-    final localTime = dateTime.toLocal();
-
-    final hour = localTime.hour > 12
-        ? localTime.hour - 12
-        : localTime.hour == 0
-        ? 12
-        : localTime.hour;
-
-    final minute = localTime.minute.toString().padLeft(2, '0');
-
-    final period = localTime.hour >= 12 ? 'PM' : 'AM';
-
-    return '$hour:$minute $period';
   }
 }
