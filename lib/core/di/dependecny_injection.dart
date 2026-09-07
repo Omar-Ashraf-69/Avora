@@ -21,6 +21,8 @@ import 'package:avora/features/auth/presentation/reset_pass_cubit/reset_pass_cub
 import 'package:avora/features/auth/presentation/sign_up_cubit/sign_up_cubit.dart';
 import 'package:avora/features/chats/data/data_source/conversation_remote_data_source.dart';
 import 'package:avora/features/chats/data/data_source/conversation_remote_data_source_impl.dart';
+import 'package:avora/features/chats/data/data_source/message_realtime_data_source.dart';
+import 'package:avora/features/chats/data/data_source/message_realtime_data_source_impl.dart';
 import 'package:avora/features/chats/data/data_source/message_remote_data_source.dart';
 import 'package:avora/features/chats/data/data_source/message_remote_data_source_impl.dart';
 import 'package:avora/features/chats/data/repos/conversation_repository_impl.dart';
@@ -215,51 +217,41 @@ void _registerConversation() {
   );
 
   getIt.registerLazySingleton<GetConversationsUseCase>(
-  () => GetConversationsUseCase(
-    getIt<ConversationRepository>(),
-  ),
-);
+    () => GetConversationsUseCase(getIt<ConversationRepository>()),
+  );
 
-getIt.registerFactory<ChatsCubit>(
-  () => ChatsCubit(
-    getConversationsUseCase: getIt<GetConversationsUseCase>(),
-  ),
-);
+  getIt.registerFactory<ChatsCubit>(
+    () => ChatsCubit(getConversationsUseCase: getIt<GetConversationsUseCase>()),
+  );
 
+  getIt.registerLazySingleton<MessageRemoteDataSource>(
+    () => MessageRemoteDataSourceImpl(
+      databaseService: getIt<DatabaseService>(),
+      authRepository: getIt<AuthRepository>(),
+    ),
+  );
 
+  getIt.registerLazySingleton<MessageRepository>(
+    () => MessageRepositoryImpl(getIt<MessageRemoteDataSource>()),
+  );
 
+  getIt.registerLazySingleton<GetMessagesUseCase>(
+    () => GetMessagesUseCase(getIt<MessageRepository>()),
+  );
 
-getIt.registerLazySingleton<MessageRemoteDataSource>(
-  () => MessageRemoteDataSourceImpl(
-    databaseService: getIt<DatabaseService>(),
-    authRepository: getIt<AuthRepository>(),
-    
-  ),
-);
-
-getIt.registerLazySingleton<MessageRepository>(
-  () => MessageRepositoryImpl(
-    getIt<MessageRemoteDataSource>(),
-  ),
-);
-
-getIt.registerLazySingleton<GetMessagesUseCase>(
-  () => GetMessagesUseCase(
-    getIt<MessageRepository>(),
-  ),
-);
-
-getIt.registerLazySingleton<SendTextMessageUseCase>(
-  () => SendTextMessageUseCase(
-    getIt<MessageRepository>(),
-  ),
-);
-getIt.registerFactory<ChatCubit>(
-  () => ChatCubit(
-    getMessagesUseCase: getIt<GetMessagesUseCase>(),
-    sendTextMessageUseCase: getIt<SendTextMessageUseCase>(),
-  ),
-);
+  getIt.registerLazySingleton<SendTextMessageUseCase>(
+    () => SendTextMessageUseCase(getIt<MessageRepository>()),
+  );
+  getIt.registerLazySingleton<MessageRealtimeDataSource>(
+    () => MessageRealtimeDataSourceImpl(),
+  );
+  getIt.registerFactory<ChatCubit>(
+    () => ChatCubit(
+      getMessagesUseCase: getIt<GetMessagesUseCase>(),
+      sendTextMessageUseCase: getIt<SendTextMessageUseCase>(),
+      messageRealtimeDataSource: getIt<MessageRealtimeDataSource>(),
+    ),
+  );
 }
 
 Future<void> _registerSharedPreferences() async {
