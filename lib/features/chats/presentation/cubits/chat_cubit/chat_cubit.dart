@@ -59,7 +59,6 @@ class ChatCubit extends Cubit<ChatState> {
       return;
     }
 
-    emit(ChatSending(messages: currentState.messages));
 
     final result = await sendTextMessageUseCase(
       conversationId: conversationId,
@@ -106,7 +105,7 @@ class ChatCubit extends Cubit<ChatState> {
 
     if (alreadyExists) return;
 
-    emit(ChatLoaded(messages: [...currentState.messages, message]));
+    emit(ChatLoaded(messages: [...currentState.messages, message], isSending: currentState.isSending,));
     markConversationAsRead(conversationId: message.conversationId);
   }
 

@@ -15,20 +15,15 @@ final class ChatLoading extends ChatState {
 final class ChatLoaded extends ChatState {
   const ChatLoaded({
     required this.messages,
+    this.isSending = false,
     this.errorMessage,
   });
 
   final List<MessageEntity> messages;
+  final bool isSending;
   final String? errorMessage;
 }
 
-final class ChatSending extends ChatState {
-  const ChatSending({
-    required this.messages,
-  });
-
-  final List<MessageEntity> messages;
-}
 
 final class ChatFailure extends ChatState {
   const ChatFailure({

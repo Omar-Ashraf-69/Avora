@@ -11,7 +11,7 @@ class SessionCubit extends Cubit<SessionState> {
     required this._authRepository,
     required this._getProfileUseCase,
     required this._supabase,
-  })  : super(const SessionInitial()) {
+  }) : super(const SessionInitial()) {
     _init();
   }
 
@@ -22,34 +22,31 @@ class SessionCubit extends Cubit<SessionState> {
   StreamSubscription<AuthState>? _authStateSubscription;
 
   void _init() {
-    _authStateSubscription = _supabase.auth.onAuthStateChange.listen(
-      (data) {
-        _handleAuthStateChange(data.event);
-      },
-    );
+    _authStateSubscription = _supabase.auth.onAuthStateChange.listen((data) {
+      _handleAuthStateChange(data.event);
+    });
   }
 
   Future<void> startProfileCompletion() async {
-  emit(const SessionCompletingProfile());
+    emit(const SessionCompletingProfile());
 
-  final result = await _getProfileUseCase.call(
-    userId: _authRepository.getCurrentUser()!.id,
-  );
+    final result = await _getProfileUseCase.call(
+      userId: _authRepository.getCurrentUser()!.id,
+    );
 
-  result.fold(
-    (failure) => emit(SessionFailure(failure.message)),
-    (profile) async {
+    result.fold((failure) => emit(SessionFailure(failure.message)), (
+      profile,
+    ) async {
       if (profile == null) {
         emit(const SessionProfileIncomplete());
         return;
       }
-    
+
       await Future.delayed(const Duration(seconds: 3));
 
       emit(SessionAuthenticated(profile: profile));
-    },
-  );
-}
+    });
+  }
 
   Future<void> checkSession() async {
     // If state is already resolved to the same state, avoid triggering redundant re-loading
@@ -70,16 +67,13 @@ class SessionCubit extends Cubit<SessionState> {
   Future<void> _checkProfile(String userId) async {
     final result = await _getProfileUseCase.call(userId: userId);
 
-    result.fold(
-      (failure) => emit(SessionFailure(failure.message)),
-      (profile) {
-        if (profile == null) {
-          emit(const SessionProfileIncomplete());
-        } else {
-          emit(SessionAuthenticated(profile: profile));
-        }
-      },
-    );
+    result.fold((failure) => emit(SessionFailure(failure.message)), (profile) {
+      if (profile == null) {
+        emit(const SessionProfileIncomplete());
+      } else {
+        emit(SessionAuthenticated(profile: profile));
+      }
+    });
   }
 
   Future<void> _handleAuthStateChange(AuthChangeEvent event) async {
@@ -99,7 +93,7 @@ class SessionCubit extends Cubit<SessionState> {
       case AuthChangeEvent.userUpdated:
       case AuthChangeEvent.passwordRecovery:
       case AuthChangeEvent.mfaChallengeVerified:
-        // Background operational events must NOT trigger session re-evaluation 
+        // Background operational events must NOT trigger session re-evaluation
         // to prevent unintended UI resets.
         break;
     }

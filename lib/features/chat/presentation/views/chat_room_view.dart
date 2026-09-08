@@ -1,4 +1,5 @@
 import 'package:avora/core/di/dependecny_injection.dart';
+import 'package:avora/core/helper/custom_toast.dart';
 import 'package:avora/core/helper/spacing.dart';
 import 'package:avora/core/themes/app_text_styles.dart';
 import 'package:avora/core/themes/padding.dart';
@@ -27,7 +28,6 @@ class ChatRoomView extends StatefulWidget {
   final String? userImage;
   final bool isOnline;
   final String? lastSeen;
-  
 
   @override
   State<ChatRoomView> createState() => _ChatRoomViewState();
@@ -39,7 +39,15 @@ class _ChatRoomViewState extends State<ChatRoomView> {
   final _messageController = TextEditingController();
   final _scrollController = ScrollController();
   bool _showScrollToBottomButton = false;
+  // Number of incoming messages received while the user
+  // is away from the bottom of the chat.
+  int _newMessagesCount = 0;
 
+  // IDs of messages that we have already seen in the current
+  // ChatRoom session. This prevents counting the same message
+  // more than once.
+  bool _hasInitializedMessages = false;
+  final Set<String> _knownMessageIds = {};
   @override
   void initState() {
     super.initState();
@@ -69,14 +77,15 @@ class _ChatRoomViewState extends State<ChatRoomView> {
         child: Column(
           children: [
             Expanded(
-              child: BlocBuilder<ChatCubit, ChatState>(
+              child: BlocConsumer<ChatCubit, ChatState>(
+                listener: _onChatStateChanged,
                 builder: (context, state) {
                   if (state is ChatLoading) {
                     return const Center(child: CircularProgressIndicator());
                   }
 
                   if (state is ChatFailure) {
-                    return Center(child: Text(state.message));
+                    ToastNoContext.showCenterShortToast(message: state.message);
                   }
 
                   if (state is ChatLoaded) {
@@ -88,10 +97,6 @@ class _ChatRoomViewState extends State<ChatRoomView> {
                         ),
                       );
                     }
-                    return _buildMessageList(state.messages);
-                  }
-
-                  if (state is ChatSending) {
                     return _buildMessageList(state.messages);
                   }
 
@@ -127,28 +132,95 @@ class _ChatRoomViewState extends State<ChatRoomView> {
           separatorBuilder: (_, _) => verticalSpace(8),
           itemBuilder: (context, index) {
             final message = messages[messages.length - 1 - index];
+            return KeyedSubtree(
+              key: ValueKey(message.id),
 
-            return MessageBubble(
-              message: message,
-              isMe: message.senderId == currentUserId,
+              child: MessageBubble(
+                message: message,
+                isMe: message.senderId == currentUserId,
+              ),
             );
           },
         ),
         ScrollDownFloatingActionButton(
           onPressed: _scrollToBottom,
           showScrollToBottomButton: _showScrollToBottomButton,
+          unreadMessagesCount: _newMessagesCount,
         ),
       ],
     );
   }
 
+  void _onChatStateChanged(BuildContext context, ChatState state) {
+    if (state is! ChatLoaded) return;
+
+    final messages = state.messages;
+
+    // First ChatLoaded state = initial data.
+    // Register existing messages without counting them.
+    if (!_hasInitializedMessages) {
+      _hasInitializedMessages = true;
+
+      _knownMessageIds
+        ..clear()
+        ..addAll(messages.map((message) => message.id));
+
+      return;
+    }
+
+    final currentUserId = getIt<AuthRepository>().getCurrentUser()?.id;
+
+    if (currentUserId == null) return;
+
+    final newMessages = messages
+        .where((message) => !_knownMessageIds.contains(message.id))
+        .toList();
+
+    // Always update known IDs.
+    _knownMessageIds
+      ..clear()
+      ..addAll(messages.map((message) => message.id));
+
+    if (newMessages.isEmpty) return;
+
+    // Don't show a counter if we're already at the bottom.
+    if (_isAtBottom) return;
+
+    final incomingMessages = newMessages.where(
+      (message) => message.senderId != currentUserId,
+    );
+
+    if (incomingMessages.isEmpty) return;
+
+    setState(() {
+      _newMessagesCount += incomingMessages.length;
+    });
+  }
+
+  bool get _isAtBottom {
+    if (!_scrollController.hasClients) {
+      return true;
+    }
+
+    return _scrollController.offset <= _scrollThreshold;
+  }
+
   void _onScroll() {
     if (!_scrollController.hasClients) return;
 
-    // With reverse:true, position 0 is the bottom.
-    final shouldShowButton = _scrollController.offset > _scrollThreshold;
+    final isAtBottom = _isAtBottom;
 
-    if (shouldShowButton == _showScrollToBottomButton) return;
+    final shouldShowButton = !isAtBottom;
+
+    if (isAtBottom && _newMessagesCount != 0) {
+      setState(() {
+        _newMessagesCount = 0;
+      });
+    }
+
+    if (shouldShowButton == _showScrollToBottomButton) {
+      return;
+    }
 
     setState(() {
       _showScrollToBottomButton = shouldShowButton;
@@ -157,6 +229,14 @@ class _ChatRoomViewState extends State<ChatRoomView> {
 
   void _scrollToBottom() {
     if (!_scrollController.hasClients) return;
+
+    // The user is intentionally going to the bottom,
+    // so clear the new-message counter.
+    if (_newMessagesCount != 0) {
+      setState(() {
+        _newMessagesCount = 0;
+      });
+    }
 
     _scrollController.animateTo(
       0,
@@ -170,12 +250,13 @@ class _ChatRoomViewState extends State<ChatRoomView> {
 
     if (text.isEmpty) return;
 
-  
     context.read<ChatCubit>().sendTextMessage(
       conversationId: widget.conversationId,
       content: text,
     );
+
     _messageController.clear();
+
     // With reverse:true, bottom = 0.
     _scrollToBottom();
   }
