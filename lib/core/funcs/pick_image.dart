@@ -1,4 +1,4 @@
- import 'package:avora/core/di/dependecny_injection.dart';
+import 'package:avora/core/di/dependecny_injection.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -10,30 +10,20 @@ Future<XFile?> pickImage(BuildContext context) async {
   );
 
   if (image == null) {
-    return null ;
+    return null;
   }
-
-
 
   final extension = image.path.split('.').last.toLowerCase();
 
-  const supportedExtensions = {
-    'jpg',
-    'jpeg',
-    'png',
-    'webp',
-  };
+  const supportedExtensions = {'jpg', 'jpeg', 'png', 'webp', 'heic'};
 
   if (!supportedExtensions.contains(extension)) {
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(
-        content: Text('Please select a JPG, PNG, or WebP image.'),
-      ),
+      const SnackBar(content: Text('Please select a JPG, PNG, or WebP image.')),
     );
 
     return null;
   }
 
   return image;
-
 }

@@ -6,6 +6,7 @@ import 'package:avora/core/themes/app_text_styles.dart';
 import 'package:avora/features/auth/domain/repos/auth_repo.dart';
 import 'package:avora/features/chats/domain/entities/conversation_entity.dart';
 import 'package:avora/features/chats/domain/entities/conversation_preview_entity.dart';
+import 'package:avora/features/chats/domain/entities/message_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -53,16 +54,7 @@ class ChatRoomTile extends StatelessWidget {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
-      subtitle: Text(
-        conversation.lastMessage == null
-            ? ''
-            : isLastMessageFromMe
-            ? 'You: ${conversation.lastMessage}'
-            : conversation.lastMessage!,
-        style: TextStyles.regular13,
-        maxLines: 1,
-        overflow: TextOverflow.ellipsis,
-      ),
+      subtitle: _buildLastMessagePreview(),
       trailing: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
@@ -82,6 +74,41 @@ class ChatRoomTile extends StatelessWidget {
             ),
         ],
       ),
+    );
+  }
+
+  Widget _buildLastMessagePreview() {
+    final lastMessageType = conversation.lastMessageType;
+
+    if (lastMessageType == MessageType.image) {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          conversation.lastMessageSenderId ==
+                  getIt<AuthRepository>().getCurrentUser()?.id
+              ? Text('You:', style: TextStyles.regular13)
+              : const SizedBox.shrink(),
+          Icon(Icons.photo_outlined, size: 17.sp, color: AppColors.gray),
+          horizontalSpace(4),
+          Text('Photo', style: TextStyles.regular13),
+        ],
+      );
+    }
+
+    final lastMessage = conversation.lastMessage;
+
+    if (lastMessage == null || lastMessage.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    return Text(
+      conversation.lastMessageSenderId ==
+              getIt<AuthRepository>().getCurrentUser()?.id
+          ? 'You: $lastMessage'
+          : lastMessage,
+      style: TextStyles.regular13,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
     );
   }
 }

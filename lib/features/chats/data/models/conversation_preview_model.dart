@@ -1,5 +1,6 @@
 import 'package:avora/features/chats/domain/entities/conversation_entity.dart';
 import 'package:avora/features/chats/domain/entities/conversation_preview_entity.dart';
+import 'package:avora/features/chats/domain/entities/message_entity.dart';
 
 class ConversationPreviewModel {
   const ConversationPreviewModel({
@@ -11,6 +12,7 @@ class ConversationPreviewModel {
     this.lastMessageAt,
     this.unreadCount = 0,
     this.lastMessageSenderId,
+    this.lastMessageType,
   });
 
   final String conversationId;
@@ -19,6 +21,7 @@ class ConversationPreviewModel {
   final String title;
   final String? avatarUrl;
   final String? lastMessageSenderId;
+  final MessageType? lastMessageType;
 
   final String? lastMessage;
   final DateTime? lastMessageAt;
@@ -36,6 +39,9 @@ class ConversationPreviewModel {
           ? DateTime.parse(json['last_message_at'] as String)
           : null,
       lastMessageSenderId: json['last_message_sender_id'] as String?,
+      lastMessageType: json['last_message_type'] == null
+          ? null
+          : MessageType.values.byName(json['last_message_type'] as String),
       unreadCount: (json['unread_count'] as num?)?.toInt() ?? 0,
     );
   }
@@ -48,6 +54,7 @@ class ConversationPreviewModel {
       avatarUrl: avatarUrl,
       lastMessage: lastMessage,
       lastMessageAt: lastMessageAt,
+      lastMessageType: lastMessageType,
       unreadCount: unreadCount,
       lastMessageSenderId: lastMessageSenderId,
     );
