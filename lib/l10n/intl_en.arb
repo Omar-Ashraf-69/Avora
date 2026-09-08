@@ -133,7 +133,8 @@
   "starting": "Starting...",
   "searching": "Searching...",
   "start_chat": "Start Chat",
-  "with_your_friends_and_family": "with your friends and family"
+  "with_your_friends_and_family": "with your friends and family",
+  "not_authenticated": "You are not authenticated. "
 
   
 

@@ -3,6 +3,7 @@ import 'package:avora/features/chats/data/models/message_model.dart';
 import 'package:avora/features/chats/domain/entities/message_entity.dart';
 import 'package:avora/features/chats/domain/use_case/get_messages_use_case.dart';
 import 'package:avora/features/chats/domain/use_case/mark_conversation_as_read_use_case.dart';
+import 'package:avora/features/chats/domain/use_case/send_image_message_use_case.dart';
 import 'package:avora/features/chats/domain/use_case/send_text_message_use_case.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
@@ -13,13 +14,14 @@ class ChatCubit extends Cubit<ChatState> {
     required this.getMessagesUseCase,
     required this.sendTextMessageUseCase,
     required this.messageRealtimeDataSource,
-    required this.markConversationAsReadUseCase,
+    required this.markConversationAsReadUseCase, required this.sendImageMessageUseCase,
   }) : super(const ChatInitial());
 
   final GetMessagesUseCase getMessagesUseCase;
   final SendTextMessageUseCase sendTextMessageUseCase;
   final MarkConversationAsReadUseCase markConversationAsReadUseCase;
   final MessageRealtimeDataSource messageRealtimeDataSource;
+final SendImageMessageUseCase sendImageMessageUseCase;
 
   Future<void> loadMessages({required String conversationId}) async {
 
@@ -79,7 +81,44 @@ class ChatCubit extends Cubit<ChatState> {
       },
     );
   }
+Future<void> sendImageMessage({
+  required String conversationId,
+  required String filePath,
+}) async {
+  final currentState = state;
 
+  if (currentState is! ChatLoaded) {
+    return;
+  }
+
+ 
+
+  final result = await sendImageMessageUseCase(
+    conversationId: conversationId,
+    filePath: filePath,
+  );
+
+  result.fold(
+    (failure) {
+      emit(
+        ChatLoaded(
+          messages: currentState.messages,
+          errorMessage: failure.message,
+        ),
+      );
+    },
+    (message) {
+      emit(
+        ChatLoaded(
+          messages: [
+            ...currentState.messages,
+            message,
+          ],
+        ),
+      );
+    },
+  );
+}
   void _subscribeToMessages(String conversationId) {
     messageRealtimeDataSource.subscribeToMessages(
       conversationId: conversationId,

@@ -1134,6 +1134,16 @@ class S {
       args: [],
     );
   }
+
+  /// `You are not authenticated. `
+  String get not_authenticated {
+    return Intl.message(
+      'You are not authenticated. ',
+      name: 'not_authenticated',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

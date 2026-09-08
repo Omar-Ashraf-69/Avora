@@ -4,6 +4,7 @@ import 'package:avora/core/helper/spacing.dart';
 import 'package:avora/core/themes/app_colors.dart';
 import 'package:avora/core/themes/app_text_styles.dart';
 import 'package:avora/features/auth/domain/repos/auth_repo.dart';
+import 'package:avora/features/chats/domain/entities/conversation_entity.dart';
 import 'package:avora/features/chats/domain/entities/conversation_preview_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';

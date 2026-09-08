@@ -1,4 +1,5 @@
 import 'package:avora/core/di/dependecny_injection.dart';
+import 'package:avora/core/funcs/pick_image.dart';
 import 'package:avora/core/helper/custom_toast.dart';
 import 'package:avora/core/helper/spacing.dart';
 import 'package:avora/core/themes/app_text_styles.dart';
@@ -8,11 +9,13 @@ import 'package:avora/features/chat/presentation/views/widgets/chat_Input.dart';
 import 'package:avora/features/chat/presentation/views/widgets/chat_room_app_bar.dart';
 import 'package:avora/features/chat/presentation/views/widgets/message_bubble.dart';
 import 'package:avora/features/chat/presentation/views/widgets/scroll_down_floating_action_button.dart';
+import 'package:avora/features/chats/data/data_source/image_storage_data_source.dart';
 import 'package:avora/features/chats/domain/entities/message_entity.dart';
 import 'package:avora/features/chats/presentation/cubits/chat_cubit/chat_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 
 class ChatRoomView extends StatefulWidget {
   const ChatRoomView({
@@ -108,13 +111,23 @@ class _ChatRoomViewState extends State<ChatRoomView> {
             ChatInput(
               controller: _messageController,
               onSend: _sendMessage,
-              onImagePressed: () {},
+              onImagePressed: _pickImage,
             ),
           ],
         ),
       ),
     );
   }
+
+  Future<void> _pickImage() async {
+    final image = await pickImage(context);
+    // ignore: use_build_context_synchronously
+    context.read<ChatCubit>().sendImageMessage(
+      conversationId: widget.conversationId,
+      filePath: image!.path,
+    );
+  }
+
 
   Widget _buildMessageList(List<MessageEntity> messages) {
     final currentUserId = getIt<AuthRepository>().getCurrentUser()!.id;
@@ -134,10 +147,10 @@ class _ChatRoomViewState extends State<ChatRoomView> {
             final message = messages[messages.length - 1 - index];
             return KeyedSubtree(
               key: ValueKey(message.id),
-
               child: MessageBubble(
                 message: message,
                 isMe: message.senderId == currentUserId,
+                imageStorageDataSource: getIt<ImageStorageDataSource>(),
               ),
             );
           },

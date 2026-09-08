@@ -61,7 +61,33 @@ class MessageRemoteDataSourceImpl implements MessageRemoteDataSource {
 
     return MessageModel.fromJson(result);
   }
+@override
+Future<MessageModel> sendImageMessage({
+  required String conversationId,
+  required String messageId,
+  required String imagePath,
+}) async {
+  final user = authRepository.getCurrentUser();
 
+  if (user == null) {
+    throw CustomException(
+      message: S.current.not_authenticated,
+    );
+  }
+
+  final result = await databaseService.insert(
+    table: 'messages',
+    data: {
+      'id': messageId,
+      'conversation_id': conversationId,
+      'sender_id': user.id,
+      'type': 'image',
+      'image_url': imagePath,
+    },
+  );
+
+  return MessageModel.fromJson(result);
+}
   @override
 Future<void> markConversationAsRead({
   required String conversationId,

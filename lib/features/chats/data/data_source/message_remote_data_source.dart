@@ -8,7 +8,12 @@ abstract class MessageRemoteDataSource {
   Future<MessageModel> sendTextMessage({
     required String conversationId,
     required String content,
-  });
+  });Future<MessageModel> sendImageMessage({
+  required String conversationId,
+  required String messageId,
+  required String imagePath,
+});
+
    Future<void> markConversationAsRead({
     required String conversationId,
   });

@@ -21,6 +21,8 @@ import 'package:avora/features/auth/presentation/reset_pass_cubit/reset_pass_cub
 import 'package:avora/features/auth/presentation/sign_up_cubit/sign_up_cubit.dart';
 import 'package:avora/features/chats/data/data_source/conversation_remote_data_source.dart';
 import 'package:avora/features/chats/data/data_source/conversation_remote_data_source_impl.dart';
+import 'package:avora/features/chats/data/data_source/image_storage_data_source.dart';
+import 'package:avora/features/chats/data/data_source/image_storage_data_source_impl.dart';
 import 'package:avora/features/chats/data/data_source/message_realtime_data_source.dart';
 import 'package:avora/features/chats/data/data_source/message_realtime_data_source_impl.dart';
 import 'package:avora/features/chats/data/data_source/message_remote_data_source.dart';
@@ -33,6 +35,7 @@ import 'package:avora/features/chats/domain/use_case/create_direct_conversation.
 import 'package:avora/features/chats/domain/use_case/get_conversations.dart';
 import 'package:avora/features/chats/domain/use_case/get_messages_use_case.dart';
 import 'package:avora/features/chats/domain/use_case/mark_conversation_as_read_use_case.dart';
+import 'package:avora/features/chats/domain/use_case/send_image_message_use_case.dart';
 import 'package:avora/features/chats/domain/use_case/send_text_message_use_case.dart';
 import 'package:avora/features/chats/presentation/cubits/chat_cubit/chat_cubit.dart';
 import 'package:avora/features/chats/presentation/cubits/chats_cubit/chats_cubit.dart';
@@ -49,6 +52,7 @@ import 'package:avora/features/profile/domain/use_cases/update_profile.dart';
 import 'package:avora/features/profile/presentation/cubits/fill_your_profile/fill_your_profile_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
@@ -196,6 +200,9 @@ void _registerAuth() {
 }
 
 void _registerConversation() {
+  getIt.registerLazySingleton<ImagePicker>(
+    () => ImagePicker(),
+  );
   getIt.registerLazySingleton<ConversationRemoteDataSource>(
     () => ConversationRemoteDataSourceImpl(
       authRemoteDataSource: getIt<AuthRemoteDataSourceRepo>(),
@@ -224,6 +231,9 @@ void _registerConversation() {
   getIt.registerLazySingleton<MarkConversationAsReadUseCase>(
     () => MarkConversationAsReadUseCase(getIt<MessageRepository>()),
   );
+  getIt.registerLazySingleton<ImageStorageDataSource>(
+    () => ImageStorageDataSourceImpl(supabaseClient: getIt<SupabaseClient>()),
+  );
   getIt.registerFactory<ChatsCubit>(
     () => ChatsCubit(
       getConversationsUseCase: getIt<GetConversationsUseCase>(),
@@ -238,7 +248,10 @@ void _registerConversation() {
     ),
   );
   getIt.registerLazySingleton<MessageRepository>(
-    () => MessageRepositoryImpl(getIt<MessageRemoteDataSource>()),
+    () => MessageRepositoryImpl(
+      getIt<MessageRemoteDataSource>(),
+      imageStorageDataSource: getIt<ImageStorageDataSource>(),
+    ),
   );
 
   getIt.registerLazySingleton<GetMessagesUseCase>(
@@ -247,6 +260,9 @@ void _registerConversation() {
 
   getIt.registerLazySingleton<SendTextMessageUseCase>(
     () => SendTextMessageUseCase(getIt<MessageRepository>()),
+  );
+  getIt.registerLazySingleton<SendImageMessageUseCase>(
+    () => SendImageMessageUseCase(getIt<MessageRepository>()),
   );
   getIt.registerLazySingleton<MessageRealtimeDataSource>(
     () => MessageRealtimeDataSourceImpl(),
@@ -257,6 +273,7 @@ void _registerConversation() {
       sendTextMessageUseCase: getIt<SendTextMessageUseCase>(),
       messageRealtimeDataSource: getIt<MessageRealtimeDataSource>(),
       markConversationAsReadUseCase: getIt<MarkConversationAsReadUseCase>(),
+      sendImageMessageUseCase: getIt<SendImageMessageUseCase>(),
     ),
   );
 }

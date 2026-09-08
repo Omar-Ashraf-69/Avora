@@ -163,6 +163,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "no_worries_enter_your_email_address": MessageLookupByLibrary.simpleMessage(
       "No worries! Enter your email address and\nwe’ll send you a link to reset your password.",
     ),
+    "not_authenticated": MessageLookupByLibrary.simpleMessage(
+      "You are not authenticated. ",
+    ),
     "offline": MessageLookupByLibrary.simpleMessage("Offline"),
     "online": MessageLookupByLibrary.simpleMessage("Online"),
     "operation_cancelled": MessageLookupByLibrary.simpleMessage(
