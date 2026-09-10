@@ -81,24 +81,22 @@ final SendImageMessageUseCase sendImageMessageUseCase;
       },
     );
   }
-Future<void> sendImageMessage({
+Future<bool> sendImageMessage({
   required String conversationId,
   required String filePath,
 }) async {
   final currentState = state;
 
   if (currentState is! ChatLoaded) {
-    return;
+    return false;
   }
-
- 
 
   final result = await sendImageMessageUseCase(
     conversationId: conversationId,
     filePath: filePath,
   );
 
-  result.fold(
+  return result.fold(
     (failure) {
       emit(
         ChatLoaded(
@@ -106,6 +104,8 @@ Future<void> sendImageMessage({
           errorMessage: failure.message,
         ),
       );
+
+      return false;
     },
     (message) {
       emit(
@@ -116,6 +116,8 @@ Future<void> sendImageMessage({
           ],
         ),
       );
+
+      return true;
     },
   );
 }

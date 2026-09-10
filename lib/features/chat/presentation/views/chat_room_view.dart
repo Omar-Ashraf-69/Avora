@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:avora/core/di/dependecny_injection.dart';
 import 'package:avora/core/funcs/pick_image.dart';
 import 'package:avora/core/helper/custom_toast.dart';
@@ -7,6 +9,7 @@ import 'package:avora/core/themes/padding.dart';
 import 'package:avora/features/auth/domain/repos/auth_repo.dart';
 import 'package:avora/features/chat/presentation/views/widgets/chat_Input.dart';
 import 'package:avora/features/chat/presentation/views/widgets/chat_room_app_bar.dart';
+import 'package:avora/features/chat/presentation/views/widgets/image_message_preview.dart';
 import 'package:avora/features/chat/presentation/views/widgets/message_bubble.dart';
 import 'package:avora/features/chat/presentation/views/widgets/scroll_down_floating_action_button.dart';
 import 'package:avora/features/chats/data/data_source/image_storage_data_source.dart';
@@ -107,10 +110,23 @@ class _ChatRoomViewState extends State<ChatRoomView> {
               ),
             ),
 
-            ChatInput(
-              controller: _messageController,
-              onSend: _sendMessage,
-              onImagePressed: _pickImage,
+            Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (_selectedImage != null)
+                  ImageMessagePreview(
+                    imageFile: _selectedImage!,
+                    isUploading: _isUploadingImage,
+                    onSend: _sendSelectedImage,
+                    onRemove: _removeSelectedImage,
+                  ),
+
+                ChatInput(
+                  controller: _messageController,
+                  onSend: _sendMessage,
+                  onImagePressed: _pickImage,
+                ),
+              ],
             ),
           ],
         ),
@@ -120,13 +136,55 @@ class _ChatRoomViewState extends State<ChatRoomView> {
 
   Future<void> _pickImage() async {
     final image = await pickImage(context);
-    // ignore: use_build_context_synchronously
-    context.read<ChatCubit>().sendImageMessage(
-      conversationId: widget.conversationId,
-      filePath: image!.path,
-    );
+
+    setState(() {
+      _selectedImage = File(image?.path ?? '');
+    });
   }
 
+  File? _selectedImage;
+  bool _isUploadingImage = false;
+  Future<void> _sendSelectedImage() async {
+    final image = _selectedImage;
+
+    if (image == null || _isUploadingImage) {
+      return;
+    }
+
+    setState(() {
+      _isUploadingImage = true;
+    });
+
+    final success = await context.read<ChatCubit>().sendImageMessage(
+      conversationId: widget.conversationId,
+      filePath: image.path,
+    );
+
+    if (!mounted) {
+      return;
+    }
+
+    if (success) {
+      setState(() {
+        _selectedImage = null;
+        _isUploadingImage = false;
+      });
+    } else {
+      setState(() {
+        _isUploadingImage = false;
+      });
+    }
+  }
+
+  void _removeSelectedImage() {
+    if (_isUploadingImage) {
+      return;
+    }
+
+    setState(() {
+      _selectedImage = null;
+    });
+  }
 
   Widget _buildMessageList(List<MessageEntity> messages) {
     final currentUserId = getIt<AuthRepository>().getCurrentUser()!.id;
