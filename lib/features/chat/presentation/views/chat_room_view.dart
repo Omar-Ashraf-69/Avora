@@ -110,23 +110,10 @@ class _ChatRoomViewState extends State<ChatRoomView> {
               ),
             ),
 
-            Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                if (_selectedImage != null)
-                  ImageMessagePreview(
-                    imageFile: _selectedImage!,
-                    isUploading: _isUploadingImage,
-                    onSend: _sendSelectedImage,
-                    onRemove: _removeSelectedImage,
-                  ),
-
-                ChatInput(
-                  controller: _messageController,
-                  onSend: _sendMessage,
-                  onImagePressed: _pickImage,
-                ),
-              ],
+            ChatInput(
+              controller: _messageController,
+              onSend: _sendMessage,
+              onImagePressed: _pickImage,
             ),
           ],
         ),
@@ -137,9 +124,20 @@ class _ChatRoomViewState extends State<ChatRoomView> {
   Future<void> _pickImage() async {
     final image = await pickImage(context);
 
-    setState(() {
-      _selectedImage = File(image?.path ?? '');
-    });
+    // if (image != null) return;
+    await Navigator.push(
+      // ignore: use_build_context_synchronously
+      context,
+      MaterialPageRoute(
+        builder: (_) => BlocProvider.value(
+          value: context.read<ChatCubit>(),
+          child: ImagePreviewScreen(
+            imageFile: File(image!.path),
+            conversationId: widget.conversationId,
+          ),
+        ),
+      ),
+    );
   }
 
   File? _selectedImage;

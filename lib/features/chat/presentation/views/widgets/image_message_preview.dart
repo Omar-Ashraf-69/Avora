@@ -1,95 +1,124 @@
 import 'dart:io';
 
 import 'package:avora/core/themes/app_colors.dart';
-import 'package:avora/core/themes/app_text_styles.dart';
+import 'package:avora/features/chats/presentation/cubits/chat_cubit/chat_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
-class ImageMessagePreview extends StatelessWidget {
-  const ImageMessagePreview({
+class ImagePreviewScreen extends StatefulWidget {
+  const ImagePreviewScreen({
     super.key,
     required this.imageFile,
-    required this.isUploading,
-    required this.onSend,
-    required this.onRemove,
+    required this.conversationId,
   });
 
   final File imageFile;
-  final bool isUploading;
-  final VoidCallback onSend;
-  final VoidCallback onRemove;
+  final String conversationId;
+
+  @override
+  State<ImagePreviewScreen> createState() => _ImagePreviewScreenState();
+}
+
+class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
+  final TextEditingController _captionController = TextEditingController();
+
+  bool _isSending = false;
+
+  @override
+  void dispose() {
+    _captionController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _sendImage() async {
+    if (_isSending) {
+      return;
+    }
+
+    setState(() {
+      _isSending = true;
+    });
+
+    final success = await context.read<ChatCubit>().sendImageMessage(
+      conversationId: widget.conversationId,
+      filePath: widget.imageFile.path,
+    );
+
+    if (!mounted) {
+      return;
+    }
+
+    if (success) {
+      Navigator.pop(context);
+      return;
+    }
+
+    setState(() {
+      _isSending = false;
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Failed to send image. Please try again.')),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: EdgeInsets.fromLTRB(
-        12.w,
-        8.h,
-        12.w,
-        4.h,
+    return Scaffold(
+      backgroundColor: Colors.black,
+      appBar: AppBar(
+        backgroundColor: Colors.black,
+        foregroundColor: Colors.white,
+        elevation: 0,
+        leading: IconButton(
+          onPressed: _isSending ? null : () => Navigator.pop(context),
+          icon: const Icon(Icons.close),
+        ),
       ),
-      padding: EdgeInsets.all(8.w),
-      decoration: BoxDecoration(
-        color: AppColors.lightWhite,
-        borderRadius: BorderRadius.circular(16.r),
-      ),
-      child: Row(
+      body: Stack(
         children: [
-          _buildImagePreview(),
-          SizedBox(width: 12.w),
-          Expanded(
-            child: Text(
-              isUploading ? 'Sending image...' : 'Image',
-              style: TextStyles.regular13,
+          Positioned.fill(
+            child: InteractiveViewer(
+              child: Image.file(widget.imageFile, fit: BoxFit.contain),
             ),
           ),
-          _buildActionButton(),
+
+          Positioned(
+            left: 12.w,
+            right: 12.w,
+            bottom: 16.h,
+            child: _buildBottomComposer(),
+          ),
         ],
       ),
     );
   }
 
-  Widget _buildImagePreview() {
-    return ClipRRect(
-      borderRadius: BorderRadius.circular(12.r),
-      child: Image.file(
-        imageFile,
-        width: 64.w,
-        height: 64.h,
-        fit: BoxFit.cover,
-      ),
-    );
-  }
-
-  Widget _buildActionButton() {
-    if (isUploading) {
-      return SizedBox(
-        width: 42.w,
-        height: 42.h,
-        child: Padding(
-          padding: EdgeInsets.all(11.w),
-          child: CircularProgressIndicator(
-            strokeWidth: 2.5.w,
-            color: AppColors.mainBlue,
+  Widget _buildBottomComposer() {
+    return Material(
+      color: AppColors.mainBlue,
+      shape: const CircleBorder(),
+      child: InkWell(
+        onTap: _isSending ? null : _sendImage,
+        customBorder: const CircleBorder(),
+        child: SizedBox(
+          width: 52.w,
+          height: 52.h,
+          child: Center(
+            child: _isSending
+                ? SizedBox(
+                    width: 22.w,
+                    height: 22.h,
+                    child: const CircularProgressIndicator(
+                      strokeWidth: 2.5,
+                      color: Colors.white,
+                    ),
+                  )
+                : Icon(Icons.send_rounded, size: 24.sp, color: Colors.white),
           ),
         ),
-      );
-    }
-
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        IconButton(
-          onPressed: onRemove,
-          icon: const Icon(Icons.close),
-          color: AppColors.gray,
-        ),
-        IconButton(
-          onPressed: onSend,
-          icon: const Icon(Icons.send_rounded),
-          color: AppColors.mainBlue,
-        ),
-      ],
+      ),
     );
   }
 }
