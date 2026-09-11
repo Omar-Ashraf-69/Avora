@@ -13,7 +13,8 @@ abstract class MessageRepository {
   });
 Future<Either<Failure, MessageEntity>> sendImageMessage({
   required String conversationId,
-  required String filePath,
+  required String filePath,  String? content,
+
 });
   Future<Either<Failure, void>> markConversationAsRead({
   required String conversationId,

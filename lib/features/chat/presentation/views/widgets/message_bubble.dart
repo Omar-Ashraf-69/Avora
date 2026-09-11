@@ -81,6 +81,8 @@ class MessageBubble extends StatelessWidget {
       width: width,
       height: height,
       imageStorageDataSource: imageStorageDataSource,
+      content: message.content,
+      isMe: isMe,
     );
   }
 }

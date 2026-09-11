@@ -13,10 +13,13 @@ class SendImageMessageUseCase {
   Future<Either<Failure, MessageEntity>> call({
     required String conversationId,
     required String filePath,
+      String? content,
+
   }) {
     return repository.sendImageMessage(
       conversationId: conversationId,
       filePath: filePath,
+content: content,
     );
   }
 }

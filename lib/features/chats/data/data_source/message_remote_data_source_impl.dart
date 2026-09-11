@@ -65,7 +65,7 @@ class MessageRemoteDataSourceImpl implements MessageRemoteDataSource {
 Future<MessageModel> sendImageMessage({
   required String conversationId,
   required String messageId,
-  required String imagePath,
+  required String imagePath,  String? content,
 }) async {
   final user = authRepository.getCurrentUser();
 
@@ -83,6 +83,7 @@ Future<MessageModel> sendImageMessage({
       'sender_id': user.id,
       'type': 'image',
       'image_url': imagePath,
+      'content': content,
     },
   );
 

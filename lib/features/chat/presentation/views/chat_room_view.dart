@@ -140,50 +140,6 @@ class _ChatRoomViewState extends State<ChatRoomView> {
     );
   }
 
-  File? _selectedImage;
-  bool _isUploadingImage = false;
-  Future<void> _sendSelectedImage() async {
-    final image = _selectedImage;
-
-    if (image == null || _isUploadingImage) {
-      return;
-    }
-
-    setState(() {
-      _isUploadingImage = true;
-    });
-
-    final success = await context.read<ChatCubit>().sendImageMessage(
-      conversationId: widget.conversationId,
-      filePath: image.path,
-    );
-
-    if (!mounted) {
-      return;
-    }
-
-    if (success) {
-      setState(() {
-        _selectedImage = null;
-        _isUploadingImage = false;
-      });
-    } else {
-      setState(() {
-        _isUploadingImage = false;
-      });
-    }
-  }
-
-  void _removeSelectedImage() {
-    if (_isUploadingImage) {
-      return;
-    }
-
-    setState(() {
-      _selectedImage = null;
-    });
-  }
-
   Widget _buildMessageList(List<MessageEntity> messages) {
     final currentUserId = getIt<AuthRepository>().getCurrentUser()!.id;
 

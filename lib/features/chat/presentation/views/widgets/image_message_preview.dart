@@ -1,6 +1,9 @@
 import 'dart:io';
 
+import 'package:avora/core/funcs/custom_field_decoration.dart';
+import 'package:avora/core/helper/spacing.dart';
 import 'package:avora/core/themes/app_colors.dart';
+import 'package:avora/core/themes/app_text_styles.dart';
 import 'package:avora/features/chats/presentation/cubits/chat_cubit/chat_cubit.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -35,7 +38,7 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
     if (_isSending) {
       return;
     }
-
+    final caption = _captionController.text.trim();
     setState(() {
       _isSending = true;
     });
@@ -43,6 +46,7 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
     final success = await context.read<ChatCubit>().sendImageMessage(
       conversationId: widget.conversationId,
       filePath: widget.imageFile.path,
+      content: caption.isEmpty ? null : caption,
     );
 
     if (!mounted) {
@@ -96,29 +100,57 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
   }
 
   Widget _buildBottomComposer() {
-    return Material(
-      color: AppColors.mainBlue,
-      shape: const CircleBorder(),
-      child: InkWell(
-        onTap: _isSending ? null : _sendImage,
-        customBorder: const CircleBorder(),
-        child: SizedBox(
-          width: 52.w,
-          height: 52.h,
-          child: Center(
-            child: _isSending
-                ? SizedBox(
-                    width: 22.w,
-                    height: 22.h,
-                    child: const CircularProgressIndicator(
-                      strokeWidth: 2.5,
-                      color: Colors.white,
-                    ),
-                  )
-                : Icon(Icons.send_rounded, size: 24.sp, color: Colors.white),
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Expanded(
+          child: Container(
+            constraints: BoxConstraints(minHeight: 48.h, maxHeight: 120.h),
+
+            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
+            child: TextField(
+              controller: _captionController,
+              enabled: !_isSending,
+              maxLines: 4,
+              minLines: 1,
+              textInputAction: TextInputAction.newline,
+              decoration: customFieldDecoration('Send a caption...'),
+              style: TextStyles.regular15.copyWith(color: AppColors.darkBlue),
+            ),
           ),
         ),
-      ),
+
+        horizontalSpace(2),
+
+        Material(
+          color: AppColors.mainBlue,
+          shape: const CircleBorder(),
+          child: InkWell(
+            onTap: _isSending ? null : _sendImage,
+            customBorder: const CircleBorder(),
+            child: SizedBox(
+              width: 52.w,
+              height: 52.h,
+              child: Center(
+                child: _isSending
+                    ? SizedBox(
+                        width: 22.w,
+                        height: 22.h,
+                        child: const CircularProgressIndicator(
+                          strokeWidth: 2.5,
+                          color: Colors.white,
+                        ),
+                      )
+                    : Icon(
+                        Icons.send_rounded,
+                        size: 24.sp,
+                        color: Colors.white,
+                      ),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }

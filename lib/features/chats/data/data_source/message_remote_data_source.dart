@@ -12,6 +12,8 @@ abstract class MessageRemoteDataSource {
   required String conversationId,
   required String messageId,
   required String imagePath,
+    String? content,
+
 });
 
    Future<void> markConversationAsRead({

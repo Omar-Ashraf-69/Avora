@@ -70,6 +70,7 @@ class MessageRepositoryImpl implements MessageRepository {
   Future<Either<Failure, MessageEntity>> sendImageMessage({
     required String conversationId,
     required String filePath,
+    String? content,
   }) async {
     String? uploadedImagePath;
 
@@ -89,6 +90,7 @@ class MessageRepositoryImpl implements MessageRepository {
         conversationId: conversationId,
         messageId: messageId,
         imagePath: uploadedImagePath,
+        content: content,
       );
 
       // 4. Convert the model to a domain entity.

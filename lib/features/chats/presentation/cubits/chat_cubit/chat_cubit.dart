@@ -84,6 +84,8 @@ final SendImageMessageUseCase sendImageMessageUseCase;
 Future<bool> sendImageMessage({
   required String conversationId,
   required String filePath,
+    String? content,
+
 }) async {
   final currentState = state;
 
@@ -94,6 +96,7 @@ Future<bool> sendImageMessage({
   final result = await sendImageMessageUseCase(
     conversationId: conversationId,
     filePath: filePath,
+    content: content,
   );
 
   return result.fold(
