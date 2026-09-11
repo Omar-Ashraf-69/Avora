@@ -14,10 +14,13 @@ import 'package:avora/features/chat/presentation/views/widgets/message_bubble.da
 import 'package:avora/features/chat/presentation/views/widgets/scroll_down_floating_action_button.dart';
 import 'package:avora/features/chats/data/data_source/image_storage_data_source.dart';
 import 'package:avora/features/chats/domain/entities/message_entity.dart';
+import 'package:avora/features/chats/domain/use_case/get_other_participant_use_case.dart';
 import 'package:avora/features/chats/presentation/cubits/chat_cubit/chat_cubit.dart';
+import 'package:avora/features/profile/domain/entities/profile_entity.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:skeletonizer/skeletonizer.dart';
 
 class ChatRoomView extends StatefulWidget {
   const ChatRoomView({
@@ -53,6 +56,9 @@ class _ChatRoomViewState extends State<ChatRoomView> {
   // more than once.
   bool _hasInitializedMessages = false;
   final Set<String> _knownMessageIds = {};
+  ProfileEntity? _otherParticipant;
+  final GetOtherParticipantUseCase getOtherParticipantUseCase =
+      getIt<GetOtherParticipantUseCase>();
   @override
   void initState() {
     super.initState();
@@ -60,6 +66,26 @@ class _ChatRoomViewState extends State<ChatRoomView> {
     _scrollController.addListener(_onScroll);
     context.read<ChatCubit>().loadMessages(
       conversationId: widget.conversationId,
+    );
+    _loadOtherParticipant();
+  }
+
+  Future<void> _loadOtherParticipant() async {
+    final result = await getOtherParticipantUseCase(
+      conversationId: widget.conversationId,
+    );
+
+    if (!mounted) return;
+
+    result.fold(
+      (failure) {
+        // Handle later.
+      },
+      (profile) {
+        setState(() {
+          _otherParticipant = profile;
+        });
+      },
     );
   }
 
@@ -76,7 +102,13 @@ class _ChatRoomViewState extends State<ChatRoomView> {
       resizeToAvoidBottomInset: true,
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(70.h),
-        child: ChatRoomAppBar(context: context, widget: widget),
+        child: Skeletonizer(
+    enabled: _otherParticipant == null,
+    child: ChatRoomAppBar(
+      context: context,
+      profile: _otherParticipant,
+    ),
+  ),
       ),
       body: SafeArea(
         child: Column(
@@ -141,7 +173,11 @@ class _ChatRoomViewState extends State<ChatRoomView> {
   }
 
   Widget _buildMessageList(List<MessageEntity> messages) {
-    final currentUserId = getIt<AuthRepository>().getCurrentUser()!.id;
+    final currentUserId = getIt<AuthRepository>().getCurrentUser()?.id;
+
+    if (currentUserId == null) {
+      return const SizedBox.shrink();
+    }
 
     return Stack(
       children: [

@@ -1,6 +1,9 @@
+import 'package:avora/core/error/exceptions.dart';
 import 'package:avora/core/services/auth/auth_remote_data_source_repo.dart';
 import 'package:avora/core/services/database/data_base_service.dart';
 import 'package:avora/features/chats/data/models/conversation_preview_model.dart';
+import 'package:avora/features/profile/data/models/profile_model.dart';
+import 'package:avora/generated/l10n.dart';
 import 'conversation_remote_data_source.dart';
 
 class ConversationRemoteDataSourceImpl implements ConversationRemoteDataSource {
@@ -37,4 +40,26 @@ class ConversationRemoteDataSourceImpl implements ConversationRemoteDataSource {
         )
         .toList();
   }
+
+  @override
+Future<ProfileModel> getOtherParticipant({
+  required String conversationId,
+}) async {
+  final result = await databaseService.rpc(
+    functionName: 'get_other_participant',
+    params: {
+      'p_conversation_id': conversationId,
+    },
+  );
+
+  if (result.isEmpty) {
+    throw CustomException(
+      message:  S.current.user_not_found,
+    );
+  }
+
+  return ProfileModel.fromJson(
+    result.first,
+  );
+}
 }

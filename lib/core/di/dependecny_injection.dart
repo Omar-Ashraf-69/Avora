@@ -34,6 +34,7 @@ import 'package:avora/features/chats/domain/repos/message_repository.dart';
 import 'package:avora/features/chats/domain/use_case/create_direct_conversation.dart';
 import 'package:avora/features/chats/domain/use_case/get_conversations.dart';
 import 'package:avora/features/chats/domain/use_case/get_messages_use_case.dart';
+import 'package:avora/features/chats/domain/use_case/get_other_participant_use_case.dart';
 import 'package:avora/features/chats/domain/use_case/mark_conversation_as_read_use_case.dart';
 import 'package:avora/features/chats/domain/use_case/send_image_message_use_case.dart';
 import 'package:avora/features/chats/domain/use_case/send_text_message_use_case.dart';
@@ -200,9 +201,7 @@ void _registerAuth() {
 }
 
 void _registerConversation() {
-  getIt.registerLazySingleton<ImagePicker>(
-    () => ImagePicker(),
-  );
+  getIt.registerLazySingleton<ImagePicker>(() => ImagePicker());
   getIt.registerLazySingleton<ConversationRemoteDataSource>(
     () => ConversationRemoteDataSourceImpl(
       authRemoteDataSource: getIt<AuthRemoteDataSourceRepo>(),
@@ -267,6 +266,11 @@ void _registerConversation() {
   getIt.registerLazySingleton<MessageRealtimeDataSource>(
     () => MessageRealtimeDataSourceImpl(),
   );
+
+  getIt.registerLazySingleton<GetOtherParticipantUseCase>(
+    () => GetOtherParticipantUseCase(getIt<ConversationRepository>()),
+  );
+
   getIt.registerFactory<ChatCubit>(
     () => ChatCubit(
       getMessagesUseCase: getIt<GetMessagesUseCase>(),

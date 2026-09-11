@@ -3,7 +3,7 @@ import 'package:avora/core/helper/spacing.dart';
 import 'package:avora/core/themes/app_colors.dart';
 import 'package:avora/core/themes/app_text_styles.dart';
 import 'package:avora/core/themes/padding.dart';
-import 'package:avora/features/chat/presentation/views/chat_room_view.dart';
+import 'package:avora/features/profile/domain/entities/profile_entity.dart';
 import 'package:avora/generated/l10n.dart';
 import 'package:flutter/material.dart';
 
@@ -11,11 +11,11 @@ class ChatRoomAppBar extends StatelessWidget {
   const ChatRoomAppBar({
     super.key,
     required this.context,
-    required this.widget,
+    required this.profile,
   });
 
   final BuildContext context;
-  final ChatRoomView widget;
+  final ProfileEntity? profile;
 
   @override
   Widget build(BuildContext context) {
@@ -35,10 +35,10 @@ class ChatRoomAppBar extends StatelessWidget {
         children: [
           CircleAvatar(
             radius: 20,
-            backgroundImage: widget.userImage != null
-                ? NetworkImage(widget.userImage!)
+            backgroundImage: profile?.avatarUrl != null
+                ? NetworkImage(profile!.avatarUrl!)
                 : null,
-            child: widget.userImage == null ? const Icon(Icons.person) : null,
+            child: profile?.avatarUrl == null ? const Icon(Icons.person) : null,
           ),
           horizontalSpace(10),
           Column(
@@ -47,19 +47,22 @@ class ChatRoomAppBar extends StatelessWidget {
               SizedBox(
                 width: context.width * 0.5,
                 child: Text(
-                  widget.conversationId,
+                  profile?.name ?? 'Loading User',
+
                   style: TextStyles.semiBold16,
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
               verticalSpace(2),
               Text(
-                widget.isOnline
+                // ignore: unrelated_type_equality_checks
+                profile?.id == 0
                     ? S.of(context).online
-                    : widget.lastSeen ??
+                    : profile?.about ??
                           "${S.of(context).last_seen} ${S.of(context).recently}",
                 style: TextStyles.regular13.copyWith(
-                  color: widget.isOnline ? AppColors.mainBlue : AppColors.gray,
+                  // ignore: unrelated_type_equality_checks
+                  color: profile?.id == 0 ? AppColors.mainBlue : AppColors.gray,
                 ),
               ),
             ],
