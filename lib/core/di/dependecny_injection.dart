@@ -21,8 +21,13 @@ import 'package:avora/features/auth/presentation/reset_pass_cubit/reset_pass_cub
 import 'package:avora/features/auth/presentation/sign_up_cubit/sign_up_cubit.dart';
 import 'package:avora/features/chats/data/data_source/conversation_remote_data_source.dart';
 import 'package:avora/features/chats/data/data_source/conversation_remote_data_source_impl.dart';
+import 'package:avora/features/chats/data/data_source/conversation_status_realtime_data_source.dart';
+import 'package:avora/features/chats/data/data_source/conversation_status_realtime_data_source_impl.dart';
 import 'package:avora/features/chats/data/data_source/image_storage_data_source.dart';
 import 'package:avora/features/chats/data/data_source/image_storage_data_source_impl.dart';
+import 'package:avora/features/chats/data/data_source/mark_pending_messages_as_delivered_use_case.dart';
+import 'package:avora/features/chats/data/data_source/message_delivery_realtime_data_source.dart';
+import 'package:avora/features/chats/data/data_source/message_delivery_realtime_data_source_impl.dart';
 import 'package:avora/features/chats/data/data_source/message_realtime_data_source.dart';
 import 'package:avora/features/chats/data/data_source/message_realtime_data_source_impl.dart';
 import 'package:avora/features/chats/data/data_source/message_remote_data_source.dart';
@@ -35,12 +40,15 @@ import 'package:avora/features/chats/domain/use_case/create_direct_conversation.
 import 'package:avora/features/chats/domain/use_case/get_conversations.dart';
 import 'package:avora/features/chats/domain/use_case/get_messages_use_case.dart';
 import 'package:avora/features/chats/domain/use_case/get_other_participant_use_case.dart';
+import 'package:avora/features/chats/domain/use_case/get_other_user_participant_message_states.dart';
+import 'package:avora/features/chats/domain/use_case/mark_conversation_as_delivered.dart';
 import 'package:avora/features/chats/domain/use_case/mark_conversation_as_read_use_case.dart';
 import 'package:avora/features/chats/domain/use_case/send_image_message_use_case.dart';
 import 'package:avora/features/chats/domain/use_case/send_text_message_use_case.dart';
 import 'package:avora/features/chats/presentation/cubits/chat_cubit/chat_cubit.dart';
 import 'package:avora/features/chats/presentation/cubits/chats_cubit/chats_cubit.dart';
 import 'package:avora/features/chats/presentation/cubits/conversation_cubit/conversation_cubit.dart';
+import 'package:avora/features/home/presentation/views/cubits/message_delivery_cubit.dart';
 import 'package:avora/features/profile/data/data_sources/profile_remote_data_source.dart';
 import 'package:avora/features/profile/data/data_sources/profile_remote_data_source_impl.dart';
 import 'package:avora/features/profile/data/repos/profile_repo_impl.dart';
@@ -70,6 +78,7 @@ Future<void> setupGetIt() async {
   _registerProfile();
   _registerAuth();
   _registerConversation();
+  _registerMessageDelivery();
 }
 
 void _registerRouter() =>
@@ -200,6 +209,26 @@ void _registerAuth() {
   );
 }
 
+void _registerMessageDelivery() {
+  getIt.registerLazySingleton<MessageDeliveryRealtimeDataSource>(
+    () => MessageDeliveryRealtimeDataSourceImpl(),
+  );
+  getIt.registerLazySingleton<MarkPendingMessagesAsDeliveredUseCase>(
+    () => MarkPendingMessagesAsDeliveredUseCase(getIt<MessageRepository>()),
+  );
+
+  getIt.registerFactory<MessageDeliveryCubit>(
+    () => MessageDeliveryCubit(
+      messageDeliveryRealtimeDataSource:
+          getIt<MessageDeliveryRealtimeDataSource>(),
+      markConversationAsDeliveredUseCase:
+          getIt<MarkConversationAsDeliveredUseCase>(),
+      currentUserId: getIt<AuthRepository>().getCurrentUser()!.id,
+      markPendingMessagesAsDeliveredUseCase: getIt<MarkPendingMessagesAsDeliveredUseCase>(),
+    ),
+  );
+}
+
 void _registerConversation() {
   getIt.registerLazySingleton<ImagePicker>(() => ImagePicker());
   getIt.registerLazySingleton<ConversationRemoteDataSource>(
@@ -267,8 +296,17 @@ void _registerConversation() {
     () => MessageRealtimeDataSourceImpl(),
   );
 
+  getIt.registerLazySingleton<GetOtherParticipantMessageStatusUseCase>(
+    () => GetOtherParticipantMessageStatusUseCase(getIt<MessageRepository>()),
+  );
+  getIt.registerLazySingleton<ConversationStatusRealtimeDataSource>(
+    () => ConversationStatusRealtimeDataSourceImpl(),
+  );
   getIt.registerLazySingleton<GetOtherParticipantUseCase>(
     () => GetOtherParticipantUseCase(getIt<ConversationRepository>()),
+  );
+  getIt.registerLazySingleton<MarkConversationAsDeliveredUseCase>(
+    () => MarkConversationAsDeliveredUseCase(getIt<MessageRepository>()),
   );
 
   getIt.registerFactory<ChatCubit>(
@@ -278,6 +316,13 @@ void _registerConversation() {
       messageRealtimeDataSource: getIt<MessageRealtimeDataSource>(),
       markConversationAsReadUseCase: getIt<MarkConversationAsReadUseCase>(),
       sendImageMessageUseCase: getIt<SendImageMessageUseCase>(),
+      authRepository: getIt<AuthRepository>(),
+      markConversationAsDeliveredUseCase:
+          getIt<MarkConversationAsDeliveredUseCase>(),
+      conversationStatusRealtimeDataSource:
+          getIt<ConversationStatusRealtimeDataSource>(),
+      getOtherParticipantMessageStatusUseCase:
+          getIt<GetOtherParticipantMessageStatusUseCase>(),
     ),
   );
 }

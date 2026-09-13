@@ -1,4 +1,5 @@
 import 'package:avora/core/error/failures.dart';
+import 'package:avora/features/chats/domain/entities/conversation_message_status.dart';
 import 'package:avora/features/chats/domain/entities/message_entity.dart';
 import 'package:dartz/dartz.dart';
 
@@ -19,4 +20,10 @@ Future<Either<Failure, MessageEntity>> sendImageMessage({
   Future<Either<Failure, void>> markConversationAsRead({
   required String conversationId,
 });
+Future<Either<Failure, void>> markConversationAsDelivered({
+  required String conversationId,
+});Future<Either<Failure, ConversationMessageStatus>>
+    getOtherParticipantMessageStatus({
+  required String conversationId,
+});Future<Either<Failure, void>> markPendingMessagesAsDelivered();
 }

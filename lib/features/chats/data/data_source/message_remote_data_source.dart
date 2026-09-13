@@ -1,4 +1,5 @@
 import 'package:avora/features/chats/data/models/message_model.dart';
+import 'package:avora/features/chats/domain/entities/conversation_message_status.dart';
 
 abstract class MessageRemoteDataSource {
   Future<List<MessageModel>> getMessages({
@@ -18,5 +19,11 @@ abstract class MessageRemoteDataSource {
 
    Future<void> markConversationAsRead({
     required String conversationId,
-  });
+  });Future<void> markConversationAsDelivered({
+  required String conversationId,
+});Future<ConversationMessageStatus> getOtherParticipantMessageStatus({
+  required String conversationId,
+});
+  Future<void> markPendingMessagesAsDelivered();
+
 }

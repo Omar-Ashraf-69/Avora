@@ -53,6 +53,8 @@ class MessageModel {
       imageUrl: imageUrl,
       createdAt: createdAt,
       updatedAt: updatedAt,
+          status: null,
+
     );
   }
 }

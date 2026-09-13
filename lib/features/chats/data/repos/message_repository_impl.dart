@@ -3,6 +3,7 @@ import 'package:avora/core/error/exceptions.dart';
 import 'package:avora/core/error/failures.dart';
 import 'package:avora/features/chats/data/data_source/image_storage_data_source.dart';
 import 'package:avora/features/chats/data/data_source/message_remote_data_source.dart';
+import 'package:avora/features/chats/domain/entities/conversation_message_status.dart';
 import 'package:avora/features/chats/domain/entities/message_entity.dart';
 import 'package:avora/features/chats/domain/repos/message_repository.dart';
 import 'package:avora/generated/l10n.dart';
@@ -149,6 +150,60 @@ Future<Either<Failure, void>> markConversationAsRead({
          S.current.unexpected_error,
       ),
     );
+  }
+}@override
+Future<Either<Failure, void>> markConversationAsDelivered({
+  required String conversationId,
+}) async {
+  try {
+    await remoteDataSource.markConversationAsDelivered(
+      conversationId: conversationId,
+    );
+
+    return const Right(null);
+  } on CustomException catch (e) {
+    return Left(
+      ServerFailure(e.message),
+    );
+  } catch (_) {
+    return Left(
+      ServerFailure(
+        S.current.unexpected_error,
+      ),
+    );
+  }
+}
+
+  @override
+  Future<Either<Failure, ConversationMessageStatus>> getOtherParticipantMessageStatus({required String conversationId}) async{
+    try {
+  final status =
+        await remoteDataSource.getOtherParticipantMessageStatus(
+      conversationId: conversationId,
+    );
+      return Right(status);
+    } on CustomException catch (e) {
+      return Left(
+        ServerFailure(e.message),
+      );
+    } catch (_) {
+      return Left(
+        ServerFailure(
+          S.current.unexpected_error,
+        ),
+      );
+    }
+  }
+@override
+Future<Either<Failure, void>> markPendingMessagesAsDelivered() async {
+  try {
+    await remoteDataSource.markPendingMessagesAsDelivered();
+
+    return const Right(null);
+  } on CustomException catch (e) {
+    return Left(ServerFailure(e.message));
+  } catch (_) {
+    return Left(ServerFailure(S.current.unexpected_error));
   }
 }
 }

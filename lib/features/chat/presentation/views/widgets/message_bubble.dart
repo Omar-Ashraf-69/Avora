@@ -4,7 +4,9 @@ import 'package:avora/features/chat/presentation/views/widgets/chat_image.dart';
 import 'package:avora/features/chat/presentation/views/widgets/message_meta.dart';
 import 'package:avora/features/chats/data/data_source/image_storage_data_source.dart';
 import 'package:avora/features/chats/domain/entities/message_entity.dart';
+import 'package:avora/features/chats/presentation/cubits/chat_cubit/chat_cubit.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MessageBubble extends StatelessWidget {
   const MessageBubble({
@@ -34,18 +36,18 @@ class MessageBubble extends StatelessWidget {
           borderRadius: BorderRadiusDirectional.only(
             topStart: const Radius.circular(16),
             topEnd: const Radius.circular(16),
-            bottomStart: Radius.circular(isMe ? 16 : 4),
-            bottomEnd: Radius.circular(isMe ? 4 : 16),
+            bottomStart: Radius.circular(isMe ? 8 : 2),
+            bottomEnd: Radius.circular(isMe ? 2 : 8),
           ),
         ),
         child: message.type == MessageType.text
-            ? _buildTextMessage()
+            ? _buildTextMessage(context)
             : _buildImageMessage(context),
       ),
     );
   }
 
-  Widget _buildTextMessage() {
+  Widget _buildTextMessage(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
       crossAxisAlignment: CrossAxisAlignment.end,
@@ -59,7 +61,11 @@ class MessageBubble extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 8),
-        MessageMeta(message: message, isMe: isMe),
+        MessageMeta(
+          message: message,
+          isMe: isMe,
+          status: context.read<ChatCubit>().getMessageStatus(message: message),
+        ),
       ],
     );
   }
@@ -81,7 +87,7 @@ class MessageBubble extends StatelessWidget {
       width: width,
       height: height,
       imageStorageDataSource: imageStorageDataSource,
-      content: message.content,
+      message: message,
       isMe: isMe,
     );
   }

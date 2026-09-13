@@ -15,7 +15,6 @@ class ChatRoomTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-
     return ListTile(
       contentPadding: const EdgeInsets.all(0),
       leading: Stack(
@@ -73,6 +72,17 @@ class ChatRoomTile extends StatelessWidget {
     );
   }
 
+  String _buildTextPreview(String message) {
+    final lines = message
+        .split('\n')
+        .map((line) => line.trim())
+        .where((line) => line.isNotEmpty)
+        .toList();
+    if (lines.isEmpty) return '';
+    final firstLine = lines.first;
+    return lines.length > 1 ? '$firstLine ...' : firstLine;
+  }
+
   Widget _buildLastMessagePreview() {
     final lastMessageType = conversation.lastMessageType;
 
@@ -100,8 +110,8 @@ class ChatRoomTile extends StatelessWidget {
     return Text(
       conversation.lastMessageSenderId ==
               getIt<AuthRepository>().getCurrentUser()?.id
-          ? 'You: $lastMessage'
-          : lastMessage,
+          ? 'You: ${_buildTextPreview(lastMessage)}'
+          : _buildTextPreview(lastMessage),
       style: TextStyles.regular13,
       maxLines: 1,
       overflow: TextOverflow.ellipsis,

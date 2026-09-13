@@ -2,9 +2,13 @@ import 'package:avora/core/themes/app_colors.dart';
 import 'package:avora/core/themes/app_text_styles.dart';
 import 'package:avora/core/themes/padding.dart';
 import 'package:avora/core/widgets/full_screen_image.dart';
+import 'package:avora/features/chat/presentation/views/widgets/message_meta.dart';
 import 'package:avora/features/chats/data/data_source/image_storage_data_source.dart';
+import 'package:avora/features/chats/domain/entities/message_entity.dart';
+import 'package:avora/features/chats/presentation/cubits/chat_cubit/chat_cubit.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ChatImage extends StatefulWidget {
@@ -14,7 +18,7 @@ class ChatImage extends StatefulWidget {
     required this.width,
     required this.height,
     required this.imageStorageDataSource,
-    this.content,
+    required this.message,
     required this.isMe,
   });
 
@@ -22,7 +26,7 @@ class ChatImage extends StatefulWidget {
   final double width;
   final double height;
   final ImageStorageDataSource imageStorageDataSource;
-  final String? content;
+  final MessageEntity message;
   final bool isMe;
 
   @override
@@ -84,38 +88,56 @@ class _ChatImageState extends State<ChatImage> {
           ),
         );
       },
-      child: ClipRRect(
-        borderRadius: BorderRadius.circular(12),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            CachedNetworkImage(
-              imageUrl: _signedUrl!,
-              width: widget.width,
-              height: widget.height,
-              fit: BoxFit.cover,
-              placeholder: (context, url) {
-                return _buildPlaceholder();
-              },
-              errorWidget: (context, url, error) {
-                return _buildError();
-              },
-            ),
-            if (widget.content != null)
-              Padding(
-                padding: const EdgeInsetsDirectional.only(
-                  top: AppPadding.small,
-                  start: AppPadding.extraSmall,
-                ),
-                child: Text(
-                  widget.content!,
-                  style: TextStyles.regular15.copyWith(
-                    color: widget.isMe ? Colors.white : AppColors.darkBlue,
-                  ),
-                ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          CachedNetworkImage(
+            imageUrl: _signedUrl!,
+            width: widget.width,
+            height: widget.height,
+            fit: BoxFit.cover,
+            placeholder: (context, url) {
+              return _buildPlaceholder();
+            },
+            errorWidget: (context, url, error) {
+              return _buildError();
+            },
+          ),
+          SizedBox(
+            width: widget.width,
+            child: Padding(
+              padding: const EdgeInsetsDirectional.only(
+                top: AppPadding.small,
+                start: AppPadding.extraSmall,
               ),
-          ],
-        ),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  if (widget.message.content != null)
+                    Expanded(
+                      child: Text(
+                        widget.message.content!,
+                        style: TextStyles.regular15.copyWith(
+                          color: widget.isMe
+                              ? Colors.white
+                              : AppColors.darkBlue,
+                        ),
+                      ),
+                    ),
+                  const Spacer(),
+
+                  MessageMeta(
+                    message: widget.message,
+                    isMe: widget.isMe,
+                    status: context.read<ChatCubit>().getMessageStatus(
+                      message: widget.message,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

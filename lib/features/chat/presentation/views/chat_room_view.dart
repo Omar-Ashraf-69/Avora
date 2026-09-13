@@ -103,12 +103,9 @@ class _ChatRoomViewState extends State<ChatRoomView> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(70.h),
         child: Skeletonizer(
-    enabled: _otherParticipant == null,
-    child: ChatRoomAppBar(
-      context: context,
-      profile: _otherParticipant,
-    ),
-  ),
+          enabled: _otherParticipant == null,
+          child: ChatRoomAppBar(context: context, profile: _otherParticipant),
+        ),
       ),
       body: SafeArea(
         child: Column(

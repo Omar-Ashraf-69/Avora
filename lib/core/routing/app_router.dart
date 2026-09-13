@@ -15,6 +15,7 @@ import 'package:avora/features/chats/presentation/cubits/chat_cubit/chat_cubit.d
 import 'package:avora/features/chats/presentation/cubits/chats_cubit/chats_cubit.dart';
 import 'package:avora/features/chats/presentation/cubits/conversation_cubit/conversation_cubit.dart';
 import 'package:avora/features/groups/presentation/views/widgets/create_group_view.dart';
+import 'package:avora/features/home/presentation/views/cubits/message_delivery_cubit.dart';
 import 'package:avora/features/home/presentation/views/home_view.dart';
 import 'package:avora/features/profile/presentation/cubits/fill_your_profile/fill_your_profile_cubit.dart';
 import 'package:avora/features/profile/presentation/views/edit_profile_view.dart';
@@ -25,6 +26,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 class AppRouter {
   Route<dynamic>? onGenerateRoute(RouteSettings settings) {
+
     switch (settings.name) {
       case AppRoutes.splash:
         return _buildRoute(const SplashView());
@@ -61,6 +63,16 @@ class AppRouter {
           MultiBlocProvider(
             providers: [
               BlocProvider(create: (_) => getIt<ConversationCubit>()),
+              BlocProvider(
+                lazy: false,
+                create: (_) {
+                  final cubit = getIt<MessageDeliveryCubit>();
+
+                  cubit.startListening();
+
+                  return cubit;
+                },
+              ),
               BlocProvider(
                 create: (context) {
                   final cubit = getIt<ChatsCubit>();
