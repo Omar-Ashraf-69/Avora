@@ -49,15 +49,20 @@ import 'package:avora/features/chats/presentation/cubits/chat_cubit/chat_cubit.d
 import 'package:avora/features/chats/presentation/cubits/chats_cubit/chats_cubit.dart';
 import 'package:avora/features/chats/presentation/cubits/conversation_cubit/conversation_cubit.dart';
 import 'package:avora/features/home/presentation/views/cubits/message_delivery_cubit.dart';
+import 'package:avora/features/profile/data/data_sources/profile_avatar_storage_data_source.dart';
+import 'package:avora/features/profile/data/data_sources/profile_avatar_storage_data_source_impl.dart';
 import 'package:avora/features/profile/data/data_sources/profile_remote_data_source.dart';
 import 'package:avora/features/profile/data/data_sources/profile_remote_data_source_impl.dart';
+import 'package:avora/features/profile/data/repos/profile_avatar_repo_impl.dart';
 import 'package:avora/features/profile/data/repos/profile_repo_impl.dart';
+import 'package:avora/features/profile/domain/repos/profile_avatar_repo.dart';
 import 'package:avora/features/profile/domain/repos/profile_repo.dart';
 import 'package:avora/features/profile/domain/use_cases/create_profile.dart';
 import 'package:avora/features/profile/domain/use_cases/find_user.dart';
 import 'package:avora/features/profile/domain/use_cases/get_current_profile.dart';
 import 'package:avora/features/profile/domain/use_cases/get_profile.dart';
 import 'package:avora/features/profile/domain/use_cases/update_profile.dart';
+import 'package:avora/features/profile/domain/use_cases/upload_profile_avatar.dart';
 import 'package:avora/features/profile/presentation/cubits/fill_your_profile/fill_your_profile_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -117,9 +122,26 @@ void _registerProfile() {
   getIt.registerLazySingleton(
     () => FindUserUseCase(getIt<ProfileRepository>()),
   );
+getIt.registerLazySingleton<ProfileAvatarStorageDataSource>(
+  () => ProfileAvatarStorageDataSourceImpl(
+    supabaseClient: getIt<SupabaseClient>(),
+  ),
+);
 
+getIt.registerLazySingleton<ProfileAvatarRepository>(
+  () => ProfileAvatarRepositoryImpl(
+    storageDataSource: getIt<ProfileAvatarStorageDataSource>(),
+  ),
+);
+
+getIt.registerLazySingleton<UploadProfileAvatarUseCase>(
+  () => UploadProfileAvatarUseCase(
+    getIt<ProfileAvatarRepository>(),
+  ),
+);
   getIt.registerFactory(
-    () => ProfileCubit(createProfileUseCase: getIt<CreateProfileUseCase>()),
+    () => ProfileCubit(createProfileUseCase: getIt<CreateProfileUseCase>(),
+    uploadProfileAvatarUseCase: getIt<UploadProfileAvatarUseCase>(),),
   );
 }
 

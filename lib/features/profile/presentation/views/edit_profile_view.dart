@@ -24,7 +24,9 @@ class EditProfileView extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                const ProfileAvatarPicker(),
+                 ProfileAvatarPicker(
+                  onImageSelected: (_) {},
+                ),
                 const EditProfileFieldsSection(),
                 verticalSpace(AppSpacing.md),
                 CustomButton(

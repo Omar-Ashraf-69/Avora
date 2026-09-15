@@ -18,6 +18,7 @@ Future<XFile?> pickImage(BuildContext context) async {
   const supportedExtensions = {'jpg', 'jpeg', 'png', 'webp', 'heic'};
 
   if (!supportedExtensions.contains(extension)) {
+    // ignore: use_build_context_synchronously
     ScaffoldMessenger.of(context).showSnackBar(
       const SnackBar(content: Text('Please select a JPG, PNG, or WebP image.')),
     );

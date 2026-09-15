@@ -17,6 +17,7 @@ import 'package:avora/features/profile/presentation/views/widgets/profile_fields
 import 'package:avora/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:image_picker/image_picker.dart';
 
 class FillYourProfileView extends StatefulWidget {
   const FillYourProfileView({super.key});
@@ -33,7 +34,7 @@ class _FillYourProfileViewState extends State<FillYourProfileView> {
   late final TextEditingController phoneController;
   late final TextEditingController emailController;
   late final TextEditingController aboutController;
-
+  XFile? _selectedImage;
   @override
   void initState() {
     super.initState();
@@ -97,7 +98,11 @@ class _FillYourProfileViewState extends State<FillYourProfileView> {
                 spacing: AppSpacing.lg,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const ProfileAvatarPicker(),
+                  ProfileAvatarPicker(
+                    onImageSelected: (image) {
+                      _selectedImage = image;
+                    },
+                  ),
                   ProfileFieldsSection(
                     nameController: nameController,
                     usernameController: usernameController,
@@ -159,6 +164,9 @@ class _FillYourProfileViewState extends State<FillYourProfileView> {
       updatedAt: now,
     );
 
-    context.read<ProfileCubit>().createProfile(profile: profile);
+    context.read<ProfileCubit>().createProfile(
+      profile: profile,
+      avatarFilePath: _selectedImage?.path,
+    );
   }
 }
