@@ -5,6 +5,7 @@ import 'package:avora/core/widgets/chats_welcome_view.dart';
 import 'package:avora/core/widgets/custom_loading_indecator.dart';
 import 'package:avora/features/chats/presentation/cubits/chats_cubit/chats_cubit.dart';
 import 'package:avora/features/chats/presentation/cubits/chats_cubit/chats_state.dart';
+import 'package:avora/features/chats/presentation/cubits/presence_cubit/presence_cubit.dart';
 import 'package:avora/features/chats/presentation/views/widgets/chats_room_tile.dart';
 import 'package:avora/features/chats/presentation/views/widgets/chats_search_field.dart';
 import 'package:avora/generated/l10n.dart';
@@ -45,7 +46,10 @@ class ChatsViewBlocBuilder extends StatelessWidget {
                     return GestureDetector(
                       onTap: () => context.pushNamed(
                         AppRoutes.chatRoom,
-                        arguments: conversation.conversationId,
+                        arguments: {
+                          'conversationId': conversation.conversationId,
+                          'presenceCubit': context.read<PresenceCubit>(),
+                        },
                       ),
                       child: ChatRoomTile(conversation: conversation),
                     );

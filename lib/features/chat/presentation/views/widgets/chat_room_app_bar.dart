@@ -3,10 +3,14 @@ import 'package:avora/core/helper/spacing.dart';
 import 'package:avora/core/themes/app_colors.dart';
 import 'package:avora/core/themes/app_text_styles.dart';
 import 'package:avora/core/themes/padding.dart';
+import 'package:avora/core/utils/last_seen_formatter.dart';
+import 'package:avora/features/chats/presentation/cubits/presence_cubit/presence_cubit.dart';
+import 'package:avora/features/chats/presentation/cubits/presence_cubit/presence_state.dart';
 import 'package:avora/features/profile/domain/entities/profile_entity.dart';
 import 'package:avora/generated/l10n.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 
@@ -50,16 +54,27 @@ class ChatRoomAppBar extends StatelessWidget {
                 ),
               ),
               verticalSpace(2),
-              Text(
-                // ignore: unrelated_type_equality_checks
-                profile?.id == 0
-                    ? S.of(context).online
-                    : profile?.about ??
-                          "${S.of(context).last_seen} ${S.of(context).recently}",
-                style: TextStyles.regular13.copyWith(
-                  // ignore: unrelated_type_equality_checks
-                  color: profile?.id == 0 ? AppColors.mainBlue : AppColors.gray,
-                ),
+              BlocBuilder<PresenceCubit, PresenceState>(
+                builder: (context, state) {
+                  if (profile == null) {
+                    return Text(
+                      S.of(context).loading_user,
+                      style: TextStyles.regular13,
+                    );
+                  }
+
+                  final isOnline = state.isOnline(profile!.id);
+
+                  return Text(
+                    isOnline
+                        ? 'Online'
+                        : LastSeenFormatter.format(
+                            state.getLastSeen(profile!.id) ??
+                                profile!.lastSeenAt,
+                          ),
+                    style: TextStyles.regular13,
+                  );
+                },
               ),
             ],
           ),

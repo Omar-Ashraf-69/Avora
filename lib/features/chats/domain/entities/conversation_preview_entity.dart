@@ -11,11 +11,12 @@ class ConversationPreviewEntity {
     this.lastMessageAt,
     this.unreadCount = 0,
     this.isOnline = false,
-    this.lastMessageSenderId, this.lastMessageType,
+    this.lastMessageSenderId, this.lastMessageType, this.otherParticipantId,
   });
 
   final String conversationId;
   final ConversationType type;
+  final String? otherParticipantId;
 
   final String title;
   final String? avatarUrl;

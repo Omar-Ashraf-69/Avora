@@ -32,6 +32,8 @@ import 'package:avora/features/chats/data/data_source/message_realtime_data_sour
 import 'package:avora/features/chats/data/data_source/message_realtime_data_source_impl.dart';
 import 'package:avora/features/chats/data/data_source/message_remote_data_source.dart';
 import 'package:avora/features/chats/data/data_source/message_remote_data_source_impl.dart';
+import 'package:avora/features/chats/data/data_source/presence_realtime_data_source.dart';
+import 'package:avora/features/chats/data/data_source/presence_realtime_data_source_impl.dart';
 import 'package:avora/features/chats/data/repos/conversation_repository_impl.dart';
 import 'package:avora/features/chats/data/repos/message_repository_impl.dart';
 import 'package:avora/features/chats/domain/repos/conversation_repository.dart';
@@ -48,6 +50,7 @@ import 'package:avora/features/chats/domain/use_case/send_text_message_use_case.
 import 'package:avora/features/chats/presentation/cubits/chat_cubit/chat_cubit.dart';
 import 'package:avora/features/chats/presentation/cubits/chats_cubit/chats_cubit.dart';
 import 'package:avora/features/chats/presentation/cubits/conversation_cubit/conversation_cubit.dart';
+import 'package:avora/features/chats/presentation/cubits/presence_cubit/presence_cubit.dart';
 import 'package:avora/features/home/presentation/views/cubits/message_delivery_cubit.dart';
 import 'package:avora/features/profile/data/data_sources/profile_avatar_storage_data_source.dart';
 import 'package:avora/features/profile/data/data_sources/profile_avatar_storage_data_source_impl.dart';
@@ -61,9 +64,11 @@ import 'package:avora/features/profile/domain/use_cases/create_profile.dart';
 import 'package:avora/features/profile/domain/use_cases/find_user.dart';
 import 'package:avora/features/profile/domain/use_cases/get_current_profile.dart';
 import 'package:avora/features/profile/domain/use_cases/get_profile.dart';
+import 'package:avora/features/profile/domain/use_cases/update_last_seen_use_case.dart';
 import 'package:avora/features/profile/domain/use_cases/update_profile.dart';
 import 'package:avora/features/profile/domain/use_cases/upload_profile_avatar.dart';
 import 'package:avora/features/profile/presentation/cubits/fill_your_profile/fill_your_profile_cubit.dart';
+import 'package:flutter/material.dart';
 import 'package:get_it/get_it.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:image_picker/image_picker.dart';
@@ -71,6 +76,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final getIt = GetIt.instance;
+  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> setupGetIt() async {
   // Shared Preferences
@@ -102,7 +108,11 @@ void _registerProfile() {
       authRemoteDataSource: getIt<AuthRemoteDataSourceRepo>(),
     ),
   );
-
+getIt.registerLazySingleton<UpdateLastSeenUseCase>(
+  () => UpdateLastSeenUseCase(
+    getIt<ProfileRepository>(),
+  ),
+);
   getIt.registerLazySingleton<ProfileRepository>(
     () => ProfileRepositoryImpl(getIt<ProfileRemoteDataSource>()),
   );
@@ -317,7 +327,9 @@ void _registerConversation() {
   getIt.registerLazySingleton<MessageRealtimeDataSource>(
     () => MessageRealtimeDataSourceImpl(),
   );
-
+getIt.registerLazySingleton<PresenceRealtimeDataSource>(
+  () => PresenceRealtimeDataSourceImpl(),
+);
   getIt.registerLazySingleton<GetOtherParticipantMessageStatusUseCase>(
     () => GetOtherParticipantMessageStatusUseCase(getIt<MessageRepository>()),
   );
@@ -330,7 +342,13 @@ void _registerConversation() {
   getIt.registerLazySingleton<MarkConversationAsDeliveredUseCase>(
     () => MarkConversationAsDeliveredUseCase(getIt<MessageRepository>()),
   );
-
+getIt.registerFactory<PresenceCubit>(
+  () => PresenceCubit(
+    presenceRealtimeDataSource:
+        getIt<PresenceRealtimeDataSource>(),
+        getProfileUseCase: getIt<GetProfileUseCase>(),
+  ),
+);
   getIt.registerFactory<ChatCubit>(
     () => ChatCubit(
       getMessagesUseCase: getIt<GetMessagesUseCase>(),

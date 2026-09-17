@@ -1,3 +1,4 @@
+import 'package:avora/core/app/app_lifecycle_observer.dart';
 import 'package:avora/core/auth/cubit/session_cubit.dart';
 import 'package:avora/core/di/dependecny_injection.dart';
 import 'package:avora/core/localization/locale_provider.dart';
@@ -22,6 +23,26 @@ class AvoraApp extends StatefulWidget {
 
 class _AvoraAppState extends State<AvoraApp> {
   final GlobalKey<NavigatorState> _navigatorKey = GlobalKey<NavigatorState>();
+  late final AppLifecycleObserver _lifecycleObserver;
+  @override
+  void initState() {
+    super.initState();
+
+    _lifecycleObserver = AppLifecycleObserver();
+
+    WidgetsBinding.instance.addObserver(
+      _lifecycleObserver,
+    );
+  }
+
+  @override
+  void dispose() {
+    WidgetsBinding.instance.removeObserver(
+      _lifecycleObserver,
+    );
+
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

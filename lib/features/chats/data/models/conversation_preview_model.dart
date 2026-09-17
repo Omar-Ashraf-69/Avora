@@ -12,7 +12,7 @@ class ConversationPreviewModel {
     this.lastMessageAt,
     this.unreadCount = 0,
     this.lastMessageSenderId,
-    this.lastMessageType,
+    this.lastMessageType, this.otherParticipantId,
   });
 
   final String conversationId;
@@ -25,6 +25,7 @@ class ConversationPreviewModel {
 
   final String? lastMessage;
   final DateTime? lastMessageAt;
+  final String? otherParticipantId;
 
   final int unreadCount;
 
@@ -43,6 +44,8 @@ class ConversationPreviewModel {
           ? null
           : MessageType.values.byName(json['last_message_type'] as String),
       unreadCount: (json['unread_count'] as num?)?.toInt() ?? 0,
+         otherParticipantId:
+          json['other_participant_id'] as String?,
     );
   }
 
@@ -57,6 +60,7 @@ class ConversationPreviewModel {
       lastMessageType: lastMessageType,
       unreadCount: unreadCount,
       lastMessageSenderId: lastMessageSenderId,
+      otherParticipantId: otherParticipantId,
     );
   }
 }

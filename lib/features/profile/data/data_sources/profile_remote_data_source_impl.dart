@@ -6,6 +6,7 @@ import 'package:avora/features/profile/data/models/create_profile_model.dart';
 import 'package:avora/features/profile/data/models/profile_model.dart';
 import 'package:avora/features/profile/data/models/public_profile_model.dart';
 import 'package:avora/features/profile/domain/entities/user_identifier.dart';
+import 'package:avora/generated/l10n.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
@@ -104,4 +105,25 @@ class ProfileRemoteDataSourceImpl implements ProfileRemoteDataSource {
 
     return PublicProfileModel.fromJson(user);
   }
+  @override
+Future<void> updateLastSeen({
+  required DateTime lastSeenAt,
+}) async {
+  try {
+    final user = authRemoteDataSource.getCurrentUser();
+
+    if (user == null) {
+      throw  CustomException(
+        message: S.current.user_not_found
+      );
+    }
+
+    await databaseService.update(table: "profiles", id: user.id, data: {"last_seen_at": lastSeenAt.toUtc().toIso8601String()});
+        
+  } catch (e) {
+    throw CustomException(
+      message: e.toString(),
+    );
+  }
+}
 }

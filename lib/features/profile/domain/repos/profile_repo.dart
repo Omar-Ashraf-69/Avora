@@ -22,5 +22,7 @@ Future<Either<Failure, ProfileEntity?>> getProfile({
 
   Future<Either<Failure, PublicProfileEntity?>> findUser({
   required UserIdentifier identifier,
-});
+}); Future<void> updateLastSeen({
+    required DateTime lastSeenAt,
+  });
 }

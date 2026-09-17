@@ -100,6 +100,19 @@ Future<Either<Failure, PublicProfileEntity?>> findUser({
     },
   );
   
+}@override
+Future<void> updateLastSeen({
+  required DateTime lastSeenAt,
+}) async {
+  try {
+    await _remoteDataSource.updateLastSeen(
+      lastSeenAt: lastSeenAt,
+    );
+  } on CustomException catch (e) {
+    throw ServerFailure(
+       e.message,
+    );
+  }
 }
 
   Future<Either<Failure, T>> _execute<T>({

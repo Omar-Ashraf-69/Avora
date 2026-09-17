@@ -8,6 +8,7 @@ class ProfileEntity {
   final String? avatarUrl;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final DateTime? lastSeenAt;
 
   const ProfileEntity({
     required this.id,
@@ -18,6 +19,6 @@ class ProfileEntity {
     this.about,
     this.avatarUrl,
     required this.createdAt,
-    required this.updatedAt,
+    required this.updatedAt, this.lastSeenAt,
   });
 }

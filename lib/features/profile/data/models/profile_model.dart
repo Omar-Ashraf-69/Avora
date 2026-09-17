@@ -10,6 +10,7 @@ class ProfileModel {
   final String? avatarUrl;
   final DateTime createdAt;
   final DateTime updatedAt;
+  final DateTime? lastSeenAt;
 
   const ProfileModel({
     required this.id,
@@ -20,7 +21,7 @@ class ProfileModel {
     this.about,
     this.avatarUrl,
     required this.createdAt,
-    required this.updatedAt,
+    required this.updatedAt, this.lastSeenAt,
   });
 
   factory ProfileModel.fromJson(Map<String, dynamic> json) {
@@ -34,6 +35,9 @@ class ProfileModel {
       avatarUrl: json['avatar_url'] as String?,
       createdAt: DateTime.parse(json['created_at'] as String),
       updatedAt: DateTime.parse(json['updated_at'] as String),
+      lastSeenAt: json['last_seen_at'] != null
+    ? DateTime.parse(json['last_seen_at'] as String)
+    : null,
     );
   }
 
@@ -48,6 +52,7 @@ class ProfileModel {
       'avatar_url': avatarUrl,
       'created_at': createdAt.toIso8601String(),
       'updated_at': updatedAt.toIso8601String(),
+
     };
   }
 
@@ -62,6 +67,7 @@ class ProfileModel {
       avatarUrl: avatarUrl,
       createdAt: createdAt,
       updatedAt: updatedAt,
+      lastSeenAt: lastSeenAt,
     );
   }
 }

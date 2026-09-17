@@ -19,4 +19,7 @@ abstract class ProfileRemoteDataSource {
   Future<PublicProfileModel?> findUser({
   required UserIdentifier identifier,
 });
+Future<void> updateLastSeen({
+  required DateTime lastSeenAt,
+});
 }
