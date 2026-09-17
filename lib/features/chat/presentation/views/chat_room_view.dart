@@ -17,6 +17,7 @@ import 'package:avora/features/chats/domain/entities/message_entity.dart';
 import 'package:avora/features/chats/domain/use_case/get_other_participant_use_case.dart';
 import 'package:avora/features/chats/presentation/cubits/chat_cubit/chat_cubit.dart';
 import 'package:avora/features/profile/domain/entities/profile_entity.dart';
+import 'package:avora/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,14 +27,11 @@ class ChatRoomView extends StatefulWidget {
   const ChatRoomView({
     super.key,
     required this.conversationId,
-    this.userImage =
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSVfMoUD1O9jVxSKrF3EFoS1k55PyUrojQ5Py3z-1oKQ95qlm0ozgY3YCpLl-UUkFf9D9fUjcCZyRVy5ls9GcUtzK9O2X9W1TCZmgmWFcxEUA&s=10",
-    this.isOnline = false,
+        this.isOnline = false,
     this.lastSeen,
   });
 
   final String conversationId;
-  final String? userImage;
   final bool isOnline;
   final String? lastSeen;
 
@@ -126,7 +124,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
                     if (state.messages.isEmpty) {
                       return Center(
                         child: Text(
-                          "No messages yet. Start the conversation!",
+                          S.of(context).no_messages_yet,
                           style: TextStyles.regular16,
                         ),
                       );

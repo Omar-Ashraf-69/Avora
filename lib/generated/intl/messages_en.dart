@@ -149,6 +149,7 @@ class MessageLookup extends MessageLookupByLibrary {
     ),
     "last_seen": MessageLookupByLibrary.simpleMessage("Last seen"),
     "loading": MessageLookupByLibrary.simpleMessage("loading"),
+    "loading_user": MessageLookupByLibrary.simpleMessage("Loading user..."),
     "login": MessageLookupByLibrary.simpleMessage("Login"),
     "login_into_your_account": MessageLookupByLibrary.simpleMessage(
       "Login into your account",
@@ -160,6 +161,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "name": MessageLookupByLibrary.simpleMessage("Your full name"),
     "new_chat": MessageLookupByLibrary.simpleMessage("New Chat"),
     "no": MessageLookupByLibrary.simpleMessage("No"),
+    "no_messages_yet": MessageLookupByLibrary.simpleMessage(
+      "No messages yet. Start the conversation!",
+    ),
     "no_worries_enter_your_email_address": MessageLookupByLibrary.simpleMessage(
       "No worries! Enter your email address and\nwe’ll send you a link to reset your password.",
     ),
@@ -202,6 +206,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "phone_number_already_exists": MessageLookupByLibrary.simpleMessage(
       "Phone number already exists",
     ),
+    "photo": MessageLookupByLibrary.simpleMessage("Photo"),
     "please_enter_a_valid_email": MessageLookupByLibrary.simpleMessage(
       "Please enter a valid email",
     ),
@@ -238,6 +243,9 @@ class MessageLookup extends MessageLookupByLibrary {
       "Something went wrong. Please try again",
     ),
     "start": MessageLookupByLibrary.simpleMessage("Start"),
+    "start_a_conversation": MessageLookupByLibrary.simpleMessage(
+      "Start a conversation",
+    ),
     "start_a_converstion": MessageLookupByLibrary.simpleMessage(
       "Start a conversation ",
     ),
@@ -300,6 +308,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "The password is incorrect",
     ),
     "yes": MessageLookupByLibrary.simpleMessage("Yes"),
+    "you": MessageLookupByLibrary.simpleMessage("You"),
     "your_account_has_been_created": MessageLookupByLibrary.simpleMessage(
       "Your account is ready to use. You will be redirected to the Home page in a few seconds.",
     ),

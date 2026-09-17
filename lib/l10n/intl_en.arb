@@ -134,7 +134,12 @@
   "searching": "Searching...",
   "start_chat": "Start Chat",
   "with_your_friends_and_family": "with your friends and family",
-  "not_authenticated": "You are not authenticated. "
+  "not_authenticated": "You are not authenticated. ",
+  "start_a_conversation": "Start a conversation",
+  "no_messages_yet": "No messages yet. Start the conversation!",
+  "loading_user": "Loading user...",
+  "you": "You",
+  "photo": "Photo"
 
   
 

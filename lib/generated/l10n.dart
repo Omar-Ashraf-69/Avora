@@ -1144,6 +1144,46 @@ class S {
       args: [],
     );
   }
+
+  /// `Start a conversation`
+  String get start_a_conversation {
+    return Intl.message(
+      'Start a conversation',
+      name: 'start_a_conversation',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `No messages yet. Start the conversation!`
+  String get no_messages_yet {
+    return Intl.message(
+      'No messages yet. Start the conversation!',
+      name: 'no_messages_yet',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Loading user...`
+  String get loading_user {
+    return Intl.message(
+      'Loading user...',
+      name: 'loading_user',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `You`
+  String get you {
+    return Intl.message('You', name: 'you', desc: '', args: []);
+  }
+
+  /// `Photo`
+  String get photo {
+    return Intl.message('Photo', name: 'photo', desc: '', args: []);
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {

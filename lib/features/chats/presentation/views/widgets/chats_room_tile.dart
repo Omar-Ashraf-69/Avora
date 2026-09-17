@@ -6,8 +6,11 @@ import 'package:avora/core/themes/app_text_styles.dart';
 import 'package:avora/features/auth/domain/repos/auth_repo.dart';
 import 'package:avora/features/chats/domain/entities/conversation_preview_entity.dart';
 import 'package:avora/features/chats/domain/entities/message_entity.dart';
+import 'package:avora/generated/l10n.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class ChatRoomTile extends StatelessWidget {
   const ChatRoomTile({super.key, required this.conversation});
@@ -16,32 +19,8 @@ class ChatRoomTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: const EdgeInsets.all(0),
-      leading: Stack(
-        clipBehavior: Clip.hardEdge,
-        children: [
-          CircleAvatar(
-            radius: 32.r,
-            backgroundColor: AppColors.lightGray,
-            child: Icon(Icons.person, size: 40.h, color: AppColors.lightWhite),
-          ),
-          Positioned(
-            right: 4.w,
-            bottom: 4.h,
-            child: Container(
-              padding: const EdgeInsets.all(2),
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                color: Colors.white,
-              ),
-              child: CircleAvatar(
-                radius: 5.r,
-                backgroundColor: AppColors.mainBlue,
-              ),
-            ),
-          ),
-        ],
-      ),
+      contentPadding: EdgeInsets.zero,
+      leading: _buildAvatar(),
       horizontalTitleGap: 4.w,
       title: Text(
         conversation.title,
@@ -49,7 +28,7 @@ class ChatRoomTile extends StatelessWidget {
         maxLines: 1,
         overflow: TextOverflow.ellipsis,
       ),
-      subtitle: _buildLastMessagePreview(),
+      subtitle: _buildLastMessagePreview(context),
       trailing: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         children: [
@@ -72,6 +51,67 @@ class ChatRoomTile extends StatelessWidget {
     );
   }
 
+  Widget _buildAvatar() {
+    final avatarUrl = conversation.avatarUrl;
+    return Stack(
+      clipBehavior: Clip.none,
+      children: [
+        CircleAvatar(
+          radius: 28.r,
+          backgroundColor: AppColors.lightGray,
+          child: ClipOval(
+            child: avatarUrl != null && avatarUrl.isNotEmpty
+                ? CachedNetworkImage(
+                    imageUrl: avatarUrl,
+                    width: 64.w,
+                    height: 64.h,
+                    fit: BoxFit.cover,
+                    placeholder: (context, url) {
+                      return SizedBox(
+                        width: 64.w,
+                        height: 64.h,
+                        child: Center(
+                          child: SizedBox(
+                            width: 20.r,
+                            height: 20.r,
+                            child: LoadingAnimationWidget.discreteCircle(
+                              color: AppColors.mainBlue,
+                              size: 20.r,
+                            ),
+                          ),
+                        ),
+                      );
+                    },
+                    errorWidget: (context, url, error) {
+                      return Icon(
+                        Icons.person,
+                        size: 42.sp,
+                        color: AppColors.lightWhite,
+                      );
+                    },
+                  )
+                : Icon(Icons.person, size: 42.sp, color: AppColors.lightWhite),
+          ),
+        ),
+        Positioned(
+          right: 2.w,
+          bottom: 2.h,
+          child: Container(
+            padding: EdgeInsets.all(2.r),
+            decoration: const BoxDecoration(
+              shape: BoxShape.circle,
+              color: Colors.white,
+            ),
+            child: CircleAvatar(
+              radius: 5.r,
+              backgroundColor: AppColors.mainBlue,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
   String _buildTextPreview(String message) {
     final lines = message
         .split('\n')
@@ -83,8 +123,18 @@ class ChatRoomTile extends StatelessWidget {
     return lines.length > 1 ? '$firstLine ...' : firstLine;
   }
 
-  Widget _buildLastMessagePreview() {
+  Widget _buildLastMessagePreview(BuildContext context) {
     final lastMessageType = conversation.lastMessageType;
+
+    // New conversation — no messages yet.
+    if (conversation.lastMessageAt == null) {
+      return Text(
+        S.of(context).start_a_conversation,
+        style: TextStyles.regular13.copyWith(color: AppColors.gray),
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
+      );
+    }
 
     if (lastMessageType == MessageType.image) {
       return Row(
@@ -92,11 +142,11 @@ class ChatRoomTile extends StatelessWidget {
         children: [
           conversation.lastMessageSenderId ==
                   getIt<AuthRepository>().getCurrentUser()?.id
-              ? Text('You:', style: TextStyles.regular13)
+              ? Text(S.of(context).you, style: TextStyles.regular13)
               : const SizedBox.shrink(),
           Icon(Icons.photo_outlined, size: 17.sp, color: AppColors.gray),
           horizontalSpace(4),
-          Text('Photo', style: TextStyles.regular13),
+          Text(S.of(context).photo, style: TextStyles.regular13),
         ],
       );
     }
@@ -110,7 +160,7 @@ class ChatRoomTile extends StatelessWidget {
     return Text(
       conversation.lastMessageSenderId ==
               getIt<AuthRepository>().getCurrentUser()?.id
-          ? 'You: ${_buildTextPreview(lastMessage)}'
+          ? '${S.of(context).you}: ${_buildTextPreview(lastMessage)}'
           : _buildTextPreview(lastMessage),
       style: TextStyles.regular13,
       maxLines: 1,
