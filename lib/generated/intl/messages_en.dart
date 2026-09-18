@@ -117,6 +117,9 @@ class MessageLookup extends MessageLookupByLibrary {
     "enter_your_phone_number": MessageLookupByLibrary.simpleMessage(
       "Enter your phone number",
     ),
+    "failed_to_create_group": MessageLookupByLibrary.simpleMessage(
+      "Failed to create group",
+    ),
     "file_access_denied": MessageLookupByLibrary.simpleMessage(
       "You don\'t have permission to access this file",
     ),

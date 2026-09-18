@@ -51,6 +51,13 @@ import 'package:avora/features/chats/presentation/cubits/chat_cubit/chat_cubit.d
 import 'package:avora/features/chats/presentation/cubits/chats_cubit/chats_cubit.dart';
 import 'package:avora/features/chats/presentation/cubits/conversation_cubit/conversation_cubit.dart';
 import 'package:avora/features/chats/presentation/cubits/presence_cubit/presence_cubit.dart';
+import 'package:avora/features/groups/data/data_sources/group_remote_data_source.dart';
+import 'package:avora/features/groups/data/data_sources/group_remote_data_source_impl.dart';
+import 'package:avora/features/groups/data/repos/group_repo_impl.dart';
+import 'package:avora/features/groups/domain/entities/get_group_details_use_case.dart';
+import 'package:avora/features/groups/domain/repos/group_repo.dart';
+import 'package:avora/features/groups/domain/use_case/create_group.dart';
+import 'package:avora/features/groups/presentation/cubits/create_group/cubit/create_group_cubit.dart';
 import 'package:avora/features/home/presentation/views/cubits/message_delivery_cubit.dart';
 import 'package:avora/features/profile/data/data_sources/profile_avatar_storage_data_source.dart';
 import 'package:avora/features/profile/data/data_sources/profile_avatar_storage_data_source_impl.dart';
@@ -76,7 +83,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 final getIt = GetIt.instance;
-  final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
+final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> setupGetIt() async {
   // Shared Preferences
@@ -90,6 +97,7 @@ Future<void> setupGetIt() async {
   _registerAuth();
   _registerConversation();
   _registerMessageDelivery();
+  _registerGroup();
 }
 
 void _registerRouter() =>
@@ -108,11 +116,9 @@ void _registerProfile() {
       authRemoteDataSource: getIt<AuthRemoteDataSourceRepo>(),
     ),
   );
-getIt.registerLazySingleton<UpdateLastSeenUseCase>(
-  () => UpdateLastSeenUseCase(
-    getIt<ProfileRepository>(),
-  ),
-);
+  getIt.registerLazySingleton<UpdateLastSeenUseCase>(
+    () => UpdateLastSeenUseCase(getIt<ProfileRepository>()),
+  );
   getIt.registerLazySingleton<ProfileRepository>(
     () => ProfileRepositoryImpl(getIt<ProfileRemoteDataSource>()),
   );
@@ -132,26 +138,26 @@ getIt.registerLazySingleton<UpdateLastSeenUseCase>(
   getIt.registerLazySingleton(
     () => FindUserUseCase(getIt<ProfileRepository>()),
   );
-getIt.registerLazySingleton<ProfileAvatarStorageDataSource>(
-  () => ProfileAvatarStorageDataSourceImpl(
-    supabaseClient: getIt<SupabaseClient>(),
-  ),
-);
+  getIt.registerLazySingleton<ProfileAvatarStorageDataSource>(
+    () => ProfileAvatarStorageDataSourceImpl(
+      supabaseClient: getIt<SupabaseClient>(),
+    ),
+  );
 
-getIt.registerLazySingleton<ProfileAvatarRepository>(
-  () => ProfileAvatarRepositoryImpl(
-    storageDataSource: getIt<ProfileAvatarStorageDataSource>(),
-  ),
-);
+  getIt.registerLazySingleton<ProfileAvatarRepository>(
+    () => ProfileAvatarRepositoryImpl(
+      storageDataSource: getIt<ProfileAvatarStorageDataSource>(),
+    ),
+  );
 
-getIt.registerLazySingleton<UploadProfileAvatarUseCase>(
-  () => UploadProfileAvatarUseCase(
-    getIt<ProfileAvatarRepository>(),
-  ),
-);
+  getIt.registerLazySingleton<UploadProfileAvatarUseCase>(
+    () => UploadProfileAvatarUseCase(getIt<ProfileAvatarRepository>()),
+  );
   getIt.registerFactory(
-    () => ProfileCubit(createProfileUseCase: getIt<CreateProfileUseCase>(),
-    uploadProfileAvatarUseCase: getIt<UploadProfileAvatarUseCase>(),),
+    () => ProfileCubit(
+      createProfileUseCase: getIt<CreateProfileUseCase>(),
+      uploadProfileAvatarUseCase: getIt<UploadProfileAvatarUseCase>(),
+    ),
   );
 }
 
@@ -256,7 +262,8 @@ void _registerMessageDelivery() {
       markConversationAsDeliveredUseCase:
           getIt<MarkConversationAsDeliveredUseCase>(),
       currentUserId: getIt<AuthRepository>().getCurrentUser()!.id,
-      markPendingMessagesAsDeliveredUseCase: getIt<MarkPendingMessagesAsDeliveredUseCase>(),
+      markPendingMessagesAsDeliveredUseCase:
+          getIt<MarkPendingMessagesAsDeliveredUseCase>(),
     ),
   );
 }
@@ -327,9 +334,9 @@ void _registerConversation() {
   getIt.registerLazySingleton<MessageRealtimeDataSource>(
     () => MessageRealtimeDataSourceImpl(),
   );
-getIt.registerLazySingleton<PresenceRealtimeDataSource>(
-  () => PresenceRealtimeDataSourceImpl(),
-);
+  getIt.registerLazySingleton<PresenceRealtimeDataSource>(
+    () => PresenceRealtimeDataSourceImpl(),
+  );
   getIt.registerLazySingleton<GetOtherParticipantMessageStatusUseCase>(
     () => GetOtherParticipantMessageStatusUseCase(getIt<MessageRepository>()),
   );
@@ -342,13 +349,12 @@ getIt.registerLazySingleton<PresenceRealtimeDataSource>(
   getIt.registerLazySingleton<MarkConversationAsDeliveredUseCase>(
     () => MarkConversationAsDeliveredUseCase(getIt<MessageRepository>()),
   );
-getIt.registerFactory<PresenceCubit>(
-  () => PresenceCubit(
-    presenceRealtimeDataSource:
-        getIt<PresenceRealtimeDataSource>(),
-        getProfileUseCase: getIt<GetProfileUseCase>(),
-  ),
-);
+  getIt.registerFactory<PresenceCubit>(
+    () => PresenceCubit(
+      presenceRealtimeDataSource: getIt<PresenceRealtimeDataSource>(),
+      getProfileUseCase: getIt<GetProfileUseCase>(),
+    ),
+  );
   getIt.registerFactory<ChatCubit>(
     () => ChatCubit(
       getMessagesUseCase: getIt<GetMessagesUseCase>(),
@@ -375,4 +381,25 @@ Future<void> _registerSharedPreferences() async {
 void _registerSupabase() {
   // Supabase
   getIt.registerSingleton<SupabaseClient>(Supabase.instance.client);
+}
+
+void _registerGroup() {
+  getIt.registerLazySingleton<GroupRemoteDataSource>(
+    () => GroupRemoteDataSourceImpl(databaseService: getIt<DatabaseService>()),
+  );
+  getIt.registerLazySingleton<GroupRepository>(
+    () => GroupRepositoryImpl(remoteDataSource: getIt<GroupRemoteDataSource>()),
+  );
+  getIt.registerLazySingleton<GetGroupDetailsUseCase>(
+  () => GetGroupDetailsUseCase(
+    getIt<GroupRepository>(),
+  ),
+);
+  getIt.registerLazySingleton<CreateGroupUseCase>(
+    () => CreateGroupUseCase(getIt<GroupRepository>()),
+  );getIt.registerFactory<CreateGroupCubit>(
+  () => CreateGroupCubit(
+    createGroupUseCase: getIt<CreateGroupUseCase>(),
+  ),
+);
 }

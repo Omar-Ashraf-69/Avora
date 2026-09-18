@@ -27,13 +27,10 @@ class ChatRoomView extends StatefulWidget {
   const ChatRoomView({
     super.key,
     required this.conversationId,
-        this.isOnline = false,
-    this.lastSeen,
   });
 
   final String conversationId;
-  final bool isOnline;
-  final String? lastSeen;
+
 
   @override
   State<ChatRoomView> createState() => _ChatRoomViewState();

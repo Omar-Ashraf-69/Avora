@@ -16,6 +16,7 @@ import 'package:avora/features/chats/presentation/cubits/chat_cubit/chat_cubit.d
 import 'package:avora/features/chats/presentation/cubits/chats_cubit/chats_cubit.dart';
 import 'package:avora/features/chats/presentation/cubits/conversation_cubit/conversation_cubit.dart';
 import 'package:avora/features/chats/presentation/cubits/presence_cubit/presence_cubit.dart';
+import 'package:avora/features/groups/presentation/cubits/create_group/cubit/create_group_cubit.dart';
 import 'package:avora/features/groups/presentation/views/widgets/create_group_view.dart';
 import 'package:avora/features/home/presentation/views/cubits/message_delivery_cubit.dart';
 import 'package:avora/features/home/presentation/views/home_view.dart';
@@ -103,7 +104,12 @@ class AppRouter {
         return _buildRoute(const QrCodeView());
 
       case AppRoutes.createGroup:
-        return _buildRoute(const CreateGroupView());
+        return _buildRoute(
+          BlocProvider(
+      create: (_) => getIt<CreateGroupCubit>(),
+            child: const CreateGroupView(),
+          ),
+        );
 
       case AppRoutes.chatRoom:
         final arguments = settings.arguments as Map<String, dynamic>;

@@ -1,16 +1,21 @@
 import 'package:avora/core/constants/app_spacing.dart';
+import 'package:avora/core/funcs/loading_dialoag.dart';
+import 'package:avora/core/helper/custom_toast.dart';
 import 'package:avora/core/helper/extenstions.dart';
 import 'package:avora/core/helper/spacing.dart';
 import 'package:avora/core/themes/app_colors.dart';
 import 'package:avora/core/themes/app_text_styles.dart';
 import 'package:avora/core/themes/padding.dart';
 import 'package:avora/features/groups/data/models/group_contact_model.dart';
+import 'package:avora/features/groups/presentation/cubits/create_group/cubit/create_group_cubit.dart';
+import 'package:avora/features/groups/presentation/cubits/create_group/cubit/create_group_state.dart';
 import 'package:avora/features/groups/presentation/views/widgets/create_group/bottom_actions.dart';
 import 'package:avora/features/groups/presentation/views/widgets/create_group/contacts_grid.dart';
 import 'package:avora/features/groups/presentation/views/widgets/create_group/create_group_app_bar.dart';
 import 'package:avora/features/groups/presentation/views/widgets/create_group/group_info_section.dart';
 import 'package:avora/generated/l10n.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CreateGroupView extends StatefulWidget {
@@ -45,62 +50,94 @@ class _CreateGroupViewState extends State<CreateGroupView> {
     if (_groupNameController.text.trim().isEmpty) {
       return;
     }
+
     if (_selectedContactIds.isEmpty) {
       return;
     }
-    // Create the group using the selected contacts.
+
+    context.read<CreateGroupCubit>().createGroup(
+      name: _groupNameController.text,
+      memberIds: _selectedContactIds.toList(),
+    );
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: PreferredSize(
-        preferredSize: Size.fromHeight(70.h),
-        child: CreateGroupAppBar(),
-      ),
-      body: GestureDetector(
-        behavior: HitTestBehavior.opaque,
-        onTap: () => FocusScope.of(context).unfocus(),
-        child: SafeArea(
-          child: Column(
-            children: [
-              Expanded(
-                child: SingleChildScrollView(
-                  keyboardDismissBehavior:
-                      ScrollViewKeyboardDismissBehavior.onDrag,
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: AppPadding.medium,
-                  ),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      verticalSpace(AppSpacing.md),
-                      GroupInformationSection(controller: _groupNameController),
-                      verticalSpace(AppSpacing.xl),
-                      Text(S.of(context).add_members, style: TextStyles.bold19),
-                      verticalSpace(AppSpacing.xs),
-                      Text(
-                        S.of(context).choose_people_from,
-                        style: TextStyles.regular13.copyWith(
-                          color: AppColors.gray,
+    return BlocListener<CreateGroupCubit, CreateGroupState>(
+      listener: (context, state) {
+        if (state is CreateGroupSuccess) {
+          context.pop();
+          ToastNoContext.showColoredToast(
+            message: 'Group created successfully.',
+          );
+
+          // We'll handle navigation to the new ChatRoom here.
+        }
+
+        if (state is CreateGroupFailure) {
+          ScaffoldMessenger.of(
+            context,
+          ).showSnackBar(SnackBar(content: Text(state.failure.message)));
+          context.pop();
+        }
+        if (state is CreateGroupLoading) {
+          loadingDialog(context);
+        }
+      },
+      child: Scaffold(
+        appBar: PreferredSize(
+          preferredSize: Size.fromHeight(70.h),
+          child: CreateGroupAppBar(),
+        ),
+        body: GestureDetector(
+          behavior: HitTestBehavior.opaque,
+          onTap: () => FocusScope.of(context).unfocus(),
+          child: SafeArea(
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    keyboardDismissBehavior:
+                        ScrollViewKeyboardDismissBehavior.onDrag,
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: AppPadding.medium,
+                    ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        verticalSpace(AppSpacing.md),
+                        GroupInformationSection(
+                          controller: _groupNameController,
                         ),
-                      ),
-                      verticalSpace(AppSpacing.md),
-                      ContactsGrid(
-                        contacts: contacts,
-                        selectedContactIds: _selectedContactIds,
-                        onContactTap: _toggleContact,
-                      ),
-                      verticalSpace(AppSpacing.lg),
-                    ],
+                        verticalSpace(AppSpacing.xl),
+                        Text(
+                          S.of(context).add_members,
+                          style: TextStyles.bold19,
+                        ),
+                        verticalSpace(AppSpacing.xs),
+                        Text(
+                          S.of(context).choose_people_from,
+                          style: TextStyles.regular13.copyWith(
+                            color: AppColors.gray,
+                          ),
+                        ),
+                        verticalSpace(AppSpacing.md),
+                        ContactsGrid(
+                          contacts: contacts,
+                          selectedContactIds: _selectedContactIds,
+                          onContactTap: _toggleContact,
+                        ),
+                        verticalSpace(AppSpacing.lg),
+                      ],
+                    ),
                   ),
                 ),
-              ),
-              BottomActions(
-                onCancel: () => context.pop(),
-                onCreate: _createGroup,
-              ),
-            ],
+                BottomActions(
+                  onCancel: () => context.pop(),
+                  onCreate: _createGroup,
+                ),
+              ],
+            ),
           ),
         ),
       ),

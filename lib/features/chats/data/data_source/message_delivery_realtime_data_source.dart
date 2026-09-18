@@ -1,5 +1,5 @@
 abstract class MessageDeliveryRealtimeDataSource {
-  void subscribe({
+  Future<void> subscribe({
     required void Function({
       required String conversationId,
       required String senderId,

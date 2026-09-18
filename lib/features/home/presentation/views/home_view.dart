@@ -21,7 +21,6 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
     _pageController = PageController();
   }
-
   @override
   void dispose() {
     _pageController.dispose();
@@ -34,11 +33,7 @@ class _HomeViewState extends State<HomeView> {
       body: PageView(
         controller: _pageController,
         onPageChanged: _onPageChanged,
-        children: const [
-          ChatsView(),
-          GroupsView(),
-          SettingsView(),
-        ],
+        children: const [ChatsView(), GroupsView(), SettingsView()],
       ),
       // floatingActionButton: _currentIndex == 2
       //     ? null

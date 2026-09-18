@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:avora/core/di/dependecny_injection.dart';
 import 'package:avora/features/chats/data/data_source/message_delivery_realtime_data_source.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
@@ -11,14 +13,14 @@ class MessageDeliveryRealtimeDataSourceImpl
   RealtimeChannel? _channel;
 
   @override
-  void subscribe({
+  Future<void> subscribe({
     required void Function({
       required String conversationId,
       required String senderId,
     })
     onMessageReceived,
-  }) {
-    unsubscribe();
+  }) async {
+    await unsubscribe();
 
     _channel = supabase
         .channel('global_message_delivery')
@@ -27,6 +29,11 @@ class MessageDeliveryRealtimeDataSourceImpl
           schema: 'public',
           table: 'messages',
           callback: (payload) {
+            log(
+              'MESSAGE DELIVERY REALTIME INSERT: '
+              '${payload.newRecord}',
+            );
+
             final record = payload.newRecord;
 
             final conversationId = record['conversation_id'] as String;

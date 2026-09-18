@@ -1,4 +1,6 @@
 
+import 'dart:developer';
+
 import 'package:avora/features/chats/data/data_source/mark_pending_messages_as_delivered_use_case.dart';
 import 'package:avora/features/chats/data/data_source/message_delivery_realtime_data_source.dart';
 import 'package:avora/features/chats/domain/use_case/mark_conversation_as_delivered.dart';
@@ -39,6 +41,10 @@ final MarkPendingMessagesAsDeliveredUseCase
     required String senderId,
   }) async {
     // Ignore messages sent by the current user.
+    log(
+    'MESSAGE DELIVERY CUBIT: '
+    'conversation=$conversationId sender=$senderId',
+  );
     if (senderId == currentUserId) return;
 
     await markConversationAsDeliveredUseCase(conversationId: conversationId);

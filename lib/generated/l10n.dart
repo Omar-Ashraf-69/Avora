@@ -1184,6 +1184,16 @@ class S {
   String get photo {
     return Intl.message('Photo', name: 'photo', desc: '', args: []);
   }
+
+  /// `Failed to create group`
+  String get failed_to_create_group {
+    return Intl.message(
+      'Failed to create group',
+      name: 'failed_to_create_group',
+      desc: '',
+      args: [],
+    );
+  }
 }
 
 class AppLocalizationDelegate extends LocalizationsDelegate<S> {
