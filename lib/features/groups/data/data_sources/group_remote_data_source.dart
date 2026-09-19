@@ -7,4 +7,8 @@ abstract class GroupRemoteDataSource {
   }); Future<GroupDetailsModel> getGroupDetails({
     required String conversationId,
   });
+   Future<void> updateGroupAvatar({
+    required String conversationId,
+    required String avatarUrl,
+  });
 }

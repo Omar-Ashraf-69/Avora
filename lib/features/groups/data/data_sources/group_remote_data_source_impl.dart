@@ -61,4 +61,17 @@ Future<GroupDetailsModel> getGroupDetails({
     );
   }
 }
+@override
+Future<void> updateGroupAvatar({
+  required String conversationId,
+  required String avatarUrl,
+}) async {
+  await databaseService.rpc(
+    functionName: 'update_group_avatar',
+    params: {
+      'p_conversation_id': conversationId,
+      'p_avatar_url': avatarUrl,
+    },
+  );
+}
 }

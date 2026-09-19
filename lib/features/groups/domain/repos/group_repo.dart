@@ -10,4 +10,10 @@ abstract class GroupRepository {
     Future<Either<Failure, GroupDetailsEntity>> getGroupDetails({
     required String conversationId,
   });
+
+  Future<Either<Failure, void>> updateGroupAvatar({
+    required String conversationId,
+    required String avatarUrl,
+  });
+ 
 }

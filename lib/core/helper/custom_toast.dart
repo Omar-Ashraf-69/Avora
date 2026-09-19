@@ -21,11 +21,11 @@ class ToastNoContext {
     );
   }
 
-  static void showColoredToast({required String message}) {
+  static void showColoredToast( {required String message, Color? color}) {
     Fluttertoast.showToast(
       msg: message,
       toastLength: Toast.LENGTH_SHORT,
-      backgroundColor: AppColors.mainBlue,
+      backgroundColor:color?? AppColors.mainBlue,
       textColor: Colors.white,
     );
   }

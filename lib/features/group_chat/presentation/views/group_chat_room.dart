@@ -8,35 +8,32 @@ import 'package:avora/core/themes/app_text_styles.dart';
 import 'package:avora/core/themes/padding.dart';
 import 'package:avora/features/auth/domain/repos/auth_repo.dart';
 import 'package:avora/features/chat/presentation/views/widgets/chat_Input.dart';
-import 'package:avora/features/chat/presentation/views/widgets/chat_room_app_bar.dart';
 import 'package:avora/features/chat/presentation/views/widgets/image_message_preview.dart';
 import 'package:avora/features/chat/presentation/views/widgets/message_bubble.dart';
 import 'package:avora/features/chat/presentation/views/widgets/scroll_down_floating_action_button.dart';
 import 'package:avora/features/chats/data/data_source/image_storage_data_source.dart';
 import 'package:avora/features/chats/domain/entities/message_entity.dart';
-import 'package:avora/features/chats/domain/use_case/get_other_participant_use_case.dart';
-import 'package:avora/features/chats/presentation/cubits/chat_cubit/chat_cubit.dart';
-import 'package:avora/features/profile/domain/entities/profile_entity.dart';
+import 'package:avora/features/chats/presentation/cubits/group_chat_cubit/group_chat_cubit.dart';
+import 'package:avora/features/chats/presentation/cubits/group_chat_cubit/group_chat_state.dart';
+import 'package:avora/features/group_chat/presentation/views/widget/group_chat_room_app_bar.dart';
+import 'package:avora/features/groups/domain/entities/get_group_details_use_case.dart';
+import 'package:avora/features/groups/domain/entities/group_details_entity.dart';
 import 'package:avora/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
-class ChatRoomView extends StatefulWidget {
-  const ChatRoomView({
-    super.key,
-    required this.conversationId,
-  });
+class GroupChatRoom extends StatefulWidget {
+  const GroupChatRoom({super.key, required this.conversationId});
 
   final String conversationId;
 
-
   @override
-  State<ChatRoomView> createState() => _ChatRoomViewState();
+  State<GroupChatRoom> createState() => _GroupChatRoomState();
 }
 
-class _ChatRoomViewState extends State<ChatRoomView> {
+class _GroupChatRoomState extends State<GroupChatRoom> {
   static const _scrollThreshold = 100.0;
 
   final _messageController = TextEditingController();
@@ -51,37 +48,20 @@ class _ChatRoomViewState extends State<ChatRoomView> {
   // more than once.
   bool _hasInitializedMessages = false;
   final Set<String> _knownMessageIds = {};
-  ProfileEntity? _otherParticipant;
-  final GetOtherParticipantUseCase getOtherParticipantUseCase =
-      getIt<GetOtherParticipantUseCase>();
+
+  GroupDetailsEntity? _groupDetails;
+  final GetGroupDetailsUseCase getGroupDetailsUseCase =
+      getIt<GetGroupDetailsUseCase>();
   @override
   void initState() {
     super.initState();
 
     _scrollController.addListener(_onScroll);
-    context.read<ChatCubit>().loadMessages(
-      conversationId: widget.conversationId,
-    );
-    _loadOtherParticipant();
-  }
-
-  Future<void> _loadOtherParticipant() async {
-    final result = await getOtherParticipantUseCase(
+    context.read<GroupChatCubit>().loadMessages(
       conversationId: widget.conversationId,
     );
 
-    if (!mounted) return;
-
-    result.fold(
-      (failure) {
-        // Handle later.
-      },
-      (profile) {
-        setState(() {
-          _otherParticipant = profile;
-        });
-      },
-    );
+    _loadGroupDetails();
   }
 
   @override
@@ -91,6 +71,25 @@ class _ChatRoomViewState extends State<ChatRoomView> {
     super.dispose();
   }
 
+  Future<void> _loadGroupDetails() async {
+    final result = await getGroupDetailsUseCase(
+      conversationId: widget.conversationId,
+    );
+
+    if (!mounted) return;
+
+    result.fold(
+      (failure) {
+        ToastNoContext.showCenterShortToast(message: failure.message);
+      },
+      (group) {
+        setState(() {
+          _groupDetails = group;
+        });
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -98,26 +97,26 @@ class _ChatRoomViewState extends State<ChatRoomView> {
       appBar: PreferredSize(
         preferredSize: Size.fromHeight(70.h),
         child: Skeletonizer(
-          enabled: _otherParticipant == null,
-          child: ChatRoomAppBar( profile: _otherParticipant),
+          enabled: _groupDetails == null,
+          child: GroupChatRoomAppBar(group: _groupDetails),
         ),
       ),
       body: SafeArea(
         child: Column(
           children: [
             Expanded(
-              child: BlocConsumer<ChatCubit, ChatState>(
+              child: BlocConsumer<GroupChatCubit, GroupChatState>(
                 listener: _onChatStateChanged,
                 builder: (context, state) {
-                  if (state is ChatLoading) {
+                  if (state is GroupChatLoading) {
                     return const Center(child: CircularProgressIndicator());
                   }
 
-                  if (state is ChatFailure) {
+                  if (state is GroupChatFailure) {
                     ToastNoContext.showCenterShortToast(message: state.message);
                   }
 
-                  if (state is ChatLoaded) {
+                  if (state is GroupChatLoaded) {
                     if (state.messages.isEmpty) {
                       return Center(
                         child: Text(
@@ -126,6 +125,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
                         ),
                       );
                     }
+
                     return _buildMessageList(state.messages);
                   }
 
@@ -148,15 +148,16 @@ class _ChatRoomViewState extends State<ChatRoomView> {
   Future<void> _pickImage() async {
     final image = await pickImage(context);
 
-    // if (image != null) return;
+    if (image == null) return;
+
     await Navigator.push(
       // ignore: use_build_context_synchronously
       context,
       MaterialPageRoute(
         builder: (_) => BlocProvider.value(
-          value: context.read<ChatCubit>(),
+          value: context.read<GroupChatCubit>(),
           child: ImagePreviewScreen(
-            imageFile: File(image!.path),
+            imageFile: File(image.path),
             conversationId: widget.conversationId,
           ),
         ),
@@ -203,13 +204,11 @@ class _ChatRoomViewState extends State<ChatRoomView> {
     );
   }
 
-  void _onChatStateChanged(BuildContext context, ChatState state) {
-    if (state is! ChatLoaded) return;
+  void _onChatStateChanged(BuildContext context, GroupChatState state) {
+    if (state is! GroupChatLoaded) return;
 
     final messages = state.messages;
 
-    // First ChatLoaded state = initial data.
-    // Register existing messages without counting them.
     if (!_hasInitializedMessages) {
       _hasInitializedMessages = true;
 
@@ -228,14 +227,12 @@ class _ChatRoomViewState extends State<ChatRoomView> {
         .where((message) => !_knownMessageIds.contains(message.id))
         .toList();
 
-    // Always update known IDs.
     _knownMessageIds
       ..clear()
       ..addAll(messages.map((message) => message.id));
 
     if (newMessages.isEmpty) return;
 
-    // Don't show a counter if we're already at the bottom.
     if (_isAtBottom) return;
 
     final incomingMessages = newMessages.where(
@@ -302,14 +299,13 @@ class _ChatRoomViewState extends State<ChatRoomView> {
 
     if (text.isEmpty) return;
 
-    context.read<ChatCubit>().sendTextMessage(
+    context.read<GroupChatCubit>().sendTextMessage(
       conversationId: widget.conversationId,
       content: text,
     );
 
     _messageController.clear();
 
-    // With reverse:true, bottom = 0.
     _scrollToBottom();
   }
 }

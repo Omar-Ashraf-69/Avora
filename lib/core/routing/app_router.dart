@@ -15,8 +15,10 @@ import 'package:avora/features/chat/presentation/views/chat_room_view.dart';
 import 'package:avora/features/chats/presentation/cubits/chat_cubit/chat_cubit.dart';
 import 'package:avora/features/chats/presentation/cubits/chats_cubit/chats_cubit.dart';
 import 'package:avora/features/chats/presentation/cubits/conversation_cubit/conversation_cubit.dart';
+import 'package:avora/features/chats/presentation/cubits/group_chat_cubit/group_chat_cubit.dart';
 import 'package:avora/features/chats/presentation/cubits/presence_cubit/presence_cubit.dart';
-import 'package:avora/features/groups/presentation/cubits/create_group/cubit/create_group_cubit.dart';
+import 'package:avora/features/group_chat/presentation/views/group_chat_room.dart';
+import 'package:avora/features/groups/presentation/cubits/create_group/create_group_cubit.dart';
 import 'package:avora/features/groups/presentation/views/widgets/create_group_view.dart';
 import 'package:avora/features/home/presentation/views/cubits/message_delivery_cubit.dart';
 import 'package:avora/features/home/presentation/views/home_view.dart';
@@ -106,7 +108,7 @@ class AppRouter {
       case AppRoutes.createGroup:
         return _buildRoute(
           BlocProvider(
-      create: (_) => getIt<CreateGroupCubit>(),
+            create: (_) => getIt<CreateGroupCubit>(),
             child: const CreateGroupView(),
           ),
         );
@@ -125,7 +127,17 @@ class AppRouter {
             child: ChatRoomView(conversationId: conversationId),
           ),
         );
+      case AppRoutes.groupChatRoom:
+        final arguments = settings.arguments as Map<String, dynamic>;
 
+        final conversationId = arguments['conversationId'] as String;
+
+        return _buildRoute(
+          BlocProvider(
+            create: (_) => getIt<GroupChatCubit>(),
+            child: GroupChatRoom(conversationId: conversationId),
+          ),
+        );
       case AppRoutes.forgotPassword:
         return _buildRoute(
           BlocProvider(

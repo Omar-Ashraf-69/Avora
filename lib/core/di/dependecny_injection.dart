@@ -50,14 +50,19 @@ import 'package:avora/features/chats/domain/use_case/send_text_message_use_case.
 import 'package:avora/features/chats/presentation/cubits/chat_cubit/chat_cubit.dart';
 import 'package:avora/features/chats/presentation/cubits/chats_cubit/chats_cubit.dart';
 import 'package:avora/features/chats/presentation/cubits/conversation_cubit/conversation_cubit.dart';
+import 'package:avora/features/chats/presentation/cubits/group_chat_cubit/group_chat_cubit.dart';
 import 'package:avora/features/chats/presentation/cubits/presence_cubit/presence_cubit.dart';
 import 'package:avora/features/groups/data/data_sources/group_remote_data_source.dart';
 import 'package:avora/features/groups/data/data_sources/group_remote_data_source_impl.dart';
+import 'package:avora/features/groups/data/repos/group_avatar_repo_impl.dart';
 import 'package:avora/features/groups/data/repos/group_repo_impl.dart';
 import 'package:avora/features/groups/domain/entities/get_group_details_use_case.dart';
+import 'package:avora/features/groups/domain/repos/group_avatar_repo.dart';
 import 'package:avora/features/groups/domain/repos/group_repo.dart';
 import 'package:avora/features/groups/domain/use_case/create_group.dart';
-import 'package:avora/features/groups/presentation/cubits/create_group/cubit/create_group_cubit.dart';
+import 'package:avora/features/groups/domain/use_case/update_group_avatar.dart';
+import 'package:avora/features/groups/domain/use_case/upload_group_avatar.dart';
+import 'package:avora/features/groups/presentation/cubits/create_group/create_group_cubit.dart';
 import 'package:avora/features/home/presentation/views/cubits/message_delivery_cubit.dart';
 import 'package:avora/features/profile/data/data_sources/profile_avatar_storage_data_source.dart';
 import 'package:avora/features/profile/data/data_sources/profile_avatar_storage_data_source_impl.dart';
@@ -371,6 +376,18 @@ void _registerConversation() {
           getIt<GetOtherParticipantMessageStatusUseCase>(),
     ),
   );
+  getIt.registerFactory<GroupChatCubit>(
+    () => GroupChatCubit(
+      getMessagesUseCase: getIt<GetMessagesUseCase>(),
+      sendTextMessageUseCase: getIt<SendTextMessageUseCase>(),
+      sendImageMessageUseCase: getIt<SendImageMessageUseCase>(),
+      messageRealtimeDataSource: getIt<MessageRealtimeDataSource>(),
+      markConversationAsReadUseCase: getIt<MarkConversationAsReadUseCase>(),
+      markConversationAsDeliveredUseCase:
+          getIt<MarkConversationAsDeliveredUseCase>(),
+      authRepository: getIt<AuthRepository>(),
+    ),
+  );
 }
 
 Future<void> _registerSharedPreferences() async {
@@ -391,15 +408,27 @@ void _registerGroup() {
     () => GroupRepositoryImpl(remoteDataSource: getIt<GroupRemoteDataSource>()),
   );
   getIt.registerLazySingleton<GetGroupDetailsUseCase>(
-  () => GetGroupDetailsUseCase(
-    getIt<GroupRepository>(),
-  ),
-);
+    () => GetGroupDetailsUseCase(getIt<GroupRepository>()),
+  );
+  getIt.registerLazySingleton<UpdateGroupAvatarUseCase>(
+    () => UpdateGroupAvatarUseCase(getIt<GroupRepository>()),
+  );
+  getIt.registerLazySingleton<GroupAvatarRepository>(
+    () => GroupAvatarRepositoryImpl(
+      storageDataSource: getIt<ImageStorageDataSource>(),
+    ),
+  );
+  getIt.registerLazySingleton<UploadGroupAvatarUseCase>(
+    () => UploadGroupAvatarUseCase(getIt<GroupAvatarRepository>()),
+  );
   getIt.registerLazySingleton<CreateGroupUseCase>(
     () => CreateGroupUseCase(getIt<GroupRepository>()),
-  );getIt.registerFactory<CreateGroupCubit>(
-  () => CreateGroupCubit(
-    createGroupUseCase: getIt<CreateGroupUseCase>(),
-  ),
-);
+  );
+  getIt.registerFactory<CreateGroupCubit>(
+    () => CreateGroupCubit(
+      createGroupUseCase: getIt<CreateGroupUseCase>(),
+      updateGroupAvatarUseCase: getIt<UpdateGroupAvatarUseCase>(),
+      uploadGroupAvatarUseCase: getIt<UploadGroupAvatarUseCase>(),
+    ),
+  );
 }

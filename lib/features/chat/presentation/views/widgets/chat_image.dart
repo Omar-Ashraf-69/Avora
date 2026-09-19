@@ -48,6 +48,7 @@ class _ChatImageState extends State<ChatImage> {
     try {
       final signedUrl = await widget.imageStorageDataSource.createSignedUrl(
         path: widget.path,
+        bucketName: 'chat-images',
       );
 
       if (!mounted) {

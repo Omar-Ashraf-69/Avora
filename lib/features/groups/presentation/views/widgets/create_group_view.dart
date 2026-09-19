@@ -3,12 +3,13 @@ import 'package:avora/core/funcs/loading_dialoag.dart';
 import 'package:avora/core/helper/custom_toast.dart';
 import 'package:avora/core/helper/extenstions.dart';
 import 'package:avora/core/helper/spacing.dart';
+import 'package:avora/core/routing/app_routes.dart';
 import 'package:avora/core/themes/app_colors.dart';
 import 'package:avora/core/themes/app_text_styles.dart';
 import 'package:avora/core/themes/padding.dart';
 import 'package:avora/features/groups/data/models/group_contact_model.dart';
-import 'package:avora/features/groups/presentation/cubits/create_group/cubit/create_group_cubit.dart';
-import 'package:avora/features/groups/presentation/cubits/create_group/cubit/create_group_state.dart';
+import 'package:avora/features/groups/presentation/cubits/create_group/create_group_cubit.dart';
+import 'package:avora/features/groups/presentation/cubits/create_group/create_group_state.dart';
 import 'package:avora/features/groups/presentation/views/widgets/create_group/bottom_actions.dart';
 import 'package:avora/features/groups/presentation/views/widgets/create_group/contacts_grid.dart';
 import 'package:avora/features/groups/presentation/views/widgets/create_group/create_group_app_bar.dart';
@@ -17,6 +18,7 @@ import 'package:avora/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:image_picker/image_picker.dart';
 
 class CreateGroupView extends StatefulWidget {
   const CreateGroupView({super.key});
@@ -29,7 +31,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
   final _groupNameController = TextEditingController();
 
   final Set<String> _selectedContactIds = {};
-
+  XFile? _groupImage;
   @override
   void dispose() {
     _groupNameController.dispose();
@@ -58,6 +60,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
     context.read<CreateGroupCubit>().createGroup(
       name: _groupNameController.text,
       memberIds: _selectedContactIds.toList(),
+      avatarFilePath: _groupImage?.path,
     );
   }
 
@@ -70,14 +73,17 @@ class _CreateGroupViewState extends State<CreateGroupView> {
           ToastNoContext.showColoredToast(
             message: 'Group created successfully.',
           );
-
-          // We'll handle navigation to the new ChatRoom here.
+          context.pushReplacementNamed(
+            AppRoutes.groupChatRoom,
+            arguments: {'conversationId': state.conversationId},
+          );
         }
 
         if (state is CreateGroupFailure) {
-          ScaffoldMessenger.of(
-            context,
-          ).showSnackBar(SnackBar(content: Text(state.failure.message)));
+          ToastNoContext.showColoredToast(
+            message: state.failure.message,
+            color: AppColors.lightRed,
+          );
           context.pop();
         }
         if (state is CreateGroupLoading) {
@@ -108,6 +114,11 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                         verticalSpace(AppSpacing.md),
                         GroupInformationSection(
                           controller: _groupNameController,
+                          onImageSelected: (image) {
+                            setState(() {
+                              _groupImage = image;
+                            });
+                          },
                         ),
                         verticalSpace(AppSpacing.xl),
                         Text(

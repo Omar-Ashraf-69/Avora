@@ -34,33 +34,47 @@ class GroupRepositoryImpl implements GroupRepository {
     }
   }
 
- @override
-Future<Either<Failure, GroupDetailsEntity>> getGroupDetails({
-  required String conversationId,
-}) async {
-  try {
-    final model = await _remoteDataSource.getGroupDetails(
-      conversationId: conversationId,
-    );
+  @override
+  Future<Either<Failure, GroupDetailsEntity>> getGroupDetails({
+    required String conversationId,
+  }) async {
+    try {
+      final model = await _remoteDataSource.getGroupDetails(
+        conversationId: conversationId,
+      );
 
-    return Right(model.toEntity());
-  } on CustomException catch (e) {
-    log(
-      'GroupRepositoryImpl.getGroupDetails',
-      error: e,
-    );
+      return Right(model.toEntity());
+    } on CustomException catch (e) {
+      log('GroupRepositoryImpl.getGroupDetails', error: e);
 
-    return Left(ServerFailure(e.message));
-  } catch (e, stackTrace) {
-    log(
-      'GroupRepositoryImpl.getGroupDetails',
-      error: e,
-      stackTrace: stackTrace,
-    );
+      return Left(ServerFailure(e.message));
+    } catch (e, stackTrace) {
+      log(
+        'GroupRepositoryImpl.getGroupDetails',
+        error: e,
+        stackTrace: stackTrace,
+      );
 
-    return Left(
-      ServerFailure(S.current.unexpected_error),
-    );
+      return Left(ServerFailure(S.current.unexpected_error));
+    }
   }
-}
+
+  @override
+  Future<Either<Failure, void>> updateGroupAvatar({
+    required String conversationId,
+    required String avatarUrl,
+  }) async {
+    try {
+      await _remoteDataSource.updateGroupAvatar(
+        conversationId: conversationId,
+        avatarUrl: avatarUrl,
+      );
+
+      return const Right(null);
+    } on CustomException catch (e) {
+      return Left(ServerFailure(e.message));
+    } catch (_) {
+      return const Left(ServerFailure('Failed to update group image.'));
+    }
+  }
 }

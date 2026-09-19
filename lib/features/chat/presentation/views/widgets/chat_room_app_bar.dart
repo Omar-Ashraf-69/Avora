@@ -4,11 +4,11 @@ import 'package:avora/core/themes/app_colors.dart';
 import 'package:avora/core/themes/app_text_styles.dart';
 import 'package:avora/core/themes/padding.dart';
 import 'package:avora/core/utils/last_seen_formatter.dart';
+import 'package:avora/core/widgets/images/app_avatar.dart';
 import 'package:avora/features/chats/presentation/cubits/presence_cubit/presence_cubit.dart';
 import 'package:avora/features/chats/presentation/cubits/presence_cubit/presence_state.dart';
 import 'package:avora/features/profile/domain/entities/profile_entity.dart';
 import 'package:avora/generated/l10n.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -17,11 +17,9 @@ import 'package:loading_animation_widget/loading_animation_widget.dart';
 class ChatRoomAppBar extends StatelessWidget {
   const ChatRoomAppBar({
     super.key,
-    required this.context,
     required this.profile,
   });
 
-  final BuildContext context;
   final ProfileEntity? profile;
 
   @override
@@ -84,43 +82,24 @@ class ChatRoomAppBar extends StatelessWidget {
   }
 
   Widget _buildAvatar() {
-    final avatarUrl = profile?.avatarUrl;
-    return CircleAvatar(
-      radius: 22.r,
-      backgroundColor: AppColors.lightGray,
-      child: ClipOval(
-        child: avatarUrl != null && avatarUrl.isNotEmpty
-            ? CachedNetworkImage(
-                imageUrl: avatarUrl,
-                width: 44.r,
-                height: 44.r,
-                fit: BoxFit.cover,
-                placeholder: (context, url) {
-                  return SizedBox(
-                    width: 40.r,
-                    height: 40.r,
-                    child: Center(
-                      child: SizedBox(
-                        width: 14.r,
-                        height: 14.r,
-                        child: LoadingAnimationWidget.discreteCircle(
-                          color: AppColors.mainBlue,
-                          size: 14.r,
-                        ),
-                      ),
-                    ),
-                  );
-                },
-                errorWidget: (context, url, error) {
-                  return Icon(
-                    Icons.person,
-                    size: 25.sp,
-                    color: AppColors.lightWhite,
-                  );
-                },
-              )
-            : Icon(Icons.person, size: 25.sp, color: AppColors.lightWhite),
+     return AppAvatar(
+    imageUrl: profile?.avatarUrl,
+    radius: 22.r,
+    placeholder: Center(
+      child: SizedBox(
+        width: 14.r,
+        height: 14.r,
+        child: LoadingAnimationWidget.discreteCircle(
+          color: AppColors.mainBlue,
+          size: 14.r,
+        ),
       ),
-    );
+    ),
+    fallbackIcon: Icon(
+      Icons.person,
+      size: 25.sp,
+      color: AppColors.lightWhite,
+    ),
+  );
   }
 }

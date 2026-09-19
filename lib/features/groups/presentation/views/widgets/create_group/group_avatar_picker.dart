@@ -7,7 +7,8 @@ import 'package:hugeicons/hugeicons.dart';
 import 'package:image_picker/image_picker.dart';
 
 class GroupAvatarPicker extends StatefulWidget {
-  const GroupAvatarPicker({super.key});
+  const GroupAvatarPicker({super.key, this.onImageSelected});
+  final ValueChanged<XFile?>? onImageSelected;
 
   @override
   State<GroupAvatarPicker> createState() => GroupAvatarPickerState();
@@ -48,9 +49,18 @@ class GroupAvatarPickerState extends State<GroupAvatarPicker> {
               customBorder: const CircleBorder(),
               onTap: () async {
                 final picker = ImagePicker();
-                // Pick an image.
-                image = await picker.pickImage(source: ImageSource.gallery);
-                setState(() {});
+
+                final selectedImage = await picker.pickImage(
+                  source: ImageSource.gallery,
+                );
+
+                if (selectedImage == null) return;
+
+                setState(() {
+                  image = selectedImage;
+                });
+
+                widget.onImageSelected?.call(selectedImage);
               },
               child: Padding(
                 padding: EdgeInsets.all(7.r),
