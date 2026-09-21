@@ -28,8 +28,8 @@ class AppAvatar extends StatelessWidget {
         child: hasImage
             ? AppCachedImage(
                 imageUrl: imageUrl,
-                width: radius * 2,
-                height: radius * 2,
+                width: radius * 2.3,
+                height: radius * 2.3,
                 placeholder: (_, _) =>
                     placeholder ?? const SizedBox.shrink(),
                 errorWidget: (_, _, _) =>

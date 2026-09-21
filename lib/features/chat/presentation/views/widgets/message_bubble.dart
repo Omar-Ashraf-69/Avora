@@ -1,3 +1,4 @@
+import 'package:avora/core/helper/spacing.dart';
 import 'package:avora/core/themes/app_colors.dart';
 import 'package:avora/core/themes/app_text_styles.dart';
 import 'package:avora/core/widgets/images/app_avatar.dart';
@@ -7,6 +8,7 @@ import 'package:avora/features/chats/data/data_source/image_storage_data_source.
 import 'package:avora/features/chats/domain/entities/message_entity.dart';
 import 'package:avora/features/groups/domain/entities/group_member_entity.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class MessageBubble extends StatelessWidget {
   const MessageBubble({
@@ -32,60 +34,50 @@ class MessageBubble extends StatelessWidget {
       alignment: isMe
           ? AlignmentDirectional.centerEnd
           : AlignmentDirectional.centerStart,
-      child: Container(
-        constraints: BoxConstraints(
-          maxWidth: MediaQuery.sizeOf(context).width * .78,
-        ),
-        padding: const EdgeInsets.fromLTRB(12, 8, 8, 6),
-        decoration: BoxDecoration(
-          color: isMe ? AppColors.mainBlue : AppColors.lightWhite,
-          borderRadius: BorderRadiusDirectional.only(
-            topStart: const Radius.circular(16),
-            topEnd: const Radius.circular(16),
-            bottomStart: Radius.circular(isMe ? 8 : 2),
-            bottomEnd: Radius.circular(isMe ? 2 : 8),
-          ),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (_showSender) ...[
-              _buildSenderHeader(),
-              const SizedBox(height: 6),
-            ],
-            message.type == MessageType.text
-                ? _buildTextMessage(context)
-                : _buildImageMessage(context),
+      child: Row(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: isMe ? MainAxisSize.min : MainAxisSize.max,
+        children: [
+          if (_showSender) ...[
+            AppAvatar(imageUrl: sender?.avatarUrl, radius: 14.r),
+            horizontalSpace(4),
           ],
-        ),
+          Container(
+            constraints: BoxConstraints(
+              maxWidth: MediaQuery.sizeOf(context).width * .78,
+            ),
+            padding: const EdgeInsets.fromLTRB(12, 4, 8, 8),
+            decoration: BoxDecoration(
+              color: isMe ? AppColors.mainBlue : AppColors.lightWhite,
+              borderRadius: BorderRadiusDirectional.only(
+                topStart: Radius.circular(isMe ? 8 : 2),
+                topEnd: const Radius.circular(16),
+                bottomStart: Radius.circular(16),
+                bottomEnd: Radius.circular(isMe ? 2 : 8),
+              ),
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                if (_showSender) ...[_buildSenderHeader(), verticalSpace(2)],
+                message.type == MessageType.text
+                    ? _buildTextMessage(context)
+                    : _buildImageMessage(context),
+              ],
+            ),
+          ),
+        ],
       ),
     );
   }
 
   Widget _buildSenderHeader() {
-    return Row(
-      mainAxisSize: MainAxisSize.min,
-      children: [
-        AppAvatar(
-          imageUrl: sender!.avatarUrl,
-          radius: 14,
-          fallbackIcon: const Icon(
-            Icons.person,
-            size: 16,
-            color: AppColors.lightWhite,
-          ),
-        ),
-        const SizedBox(width: 8),
-        Flexible(
-          child: Text(
-            sender!.name,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: TextStyles.medium15.copyWith(color: AppColors.mainBlue),
-          ),
-        ),
-      ],
+    return Text(
+      sender!.name,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      style: TextStyles.medium15.copyWith(color: AppColors.mainBlue),
     );
   }
 
@@ -102,7 +94,7 @@ class MessageBubble extends StatelessWidget {
             ),
           ),
         ),
-        const SizedBox(width: 8),
+        horizontalSpace(8),
         MessageMeta(message: message, isMe: isMe, status: status),
       ],
     );

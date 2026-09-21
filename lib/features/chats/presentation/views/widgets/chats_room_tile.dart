@@ -1,20 +1,18 @@
-
 import 'package:avora/core/di/dependecny_injection.dart';
 import 'package:avora/core/helper/extenstions.dart';
 import 'package:avora/core/helper/spacing.dart';
 import 'package:avora/core/themes/app_colors.dart';
 import 'package:avora/core/themes/app_text_styles.dart';
+import 'package:avora/core/widgets/images/app_avatar.dart';
 import 'package:avora/features/auth/domain/repos/auth_repo.dart';
 import 'package:avora/features/chats/domain/entities/conversation_preview_entity.dart';
 import 'package:avora/features/chats/domain/entities/message_entity.dart';
 import 'package:avora/features/chats/presentation/cubits/presence_cubit/presence_cubit.dart';
 import 'package:avora/features/chats/presentation/cubits/presence_cubit/presence_state.dart';
 import 'package:avora/generated/l10n.dart';
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class ChatRoomTile extends StatelessWidget {
   const ChatRoomTile({super.key, required this.conversation});
@@ -66,45 +64,13 @@ class ChatRoomTile extends StatelessWidget {
         return Stack(
           clipBehavior: Clip.none,
           children: [
-            CircleAvatar(
+            AppAvatar(
               radius: 28.r,
-              backgroundColor: AppColors.lightGray,
-              child: ClipOval(
-                child: avatarUrl != null && avatarUrl.isNotEmpty
-                    ? CachedNetworkImage(
-                        imageUrl: avatarUrl,
-                        width: 64.w,
-                        height: 64.h,
-                        fit: BoxFit.cover,
-                        placeholder: (context, url) {
-                          return SizedBox(
-                            width: 64.w,
-                            height: 64.h,
-                            child: Center(
-                              child: SizedBox(
-                                width: 20.r,
-                                height: 20.r,
-                                child: LoadingAnimationWidget.discreteCircle(
-                                  color: AppColors.mainBlue,
-                                  size: 20.r,
-                                ),
-                              ),
-                            ),
-                          );
-                        },
-                        errorWidget: (context, url, error) {
-                          return Icon(
-                            Icons.person,
-                            size: 42.sp,
-                            color: AppColors.lightWhite,
-                          );
-                        },
-                      )
-                    : Icon(
-                        Icons.person,
-                        size: 42.sp,
-                        color: AppColors.lightWhite,
-                      ),
+              imageUrl: avatarUrl,
+              fallbackIcon: Icon(
+                Icons.person,
+                size: 25.sp,
+                color: AppColors.lightWhite,
               ),
             ),
             if (isOnline)

@@ -1,4 +1,5 @@
 import 'package:avora/core/helper/extenstions.dart';
+import 'package:avora/core/helper/spacing.dart';
 import 'package:avora/core/routing/app_routes.dart';
 import 'package:avora/core/themes/app_colors.dart';
 import 'package:avora/core/themes/app_text_styles.dart';
@@ -15,13 +16,13 @@ class GroupsRoomTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ListTile(
-      contentPadding: const EdgeInsets.all(0),
+      contentPadding: EdgeInsets.zero,
       leading: AppAvatar(
         imageUrl: group.avatarUrl,
-        radius: 26,
+        radius: 28.r,
         fallbackIcon: const Icon(Icons.group, color: AppColors.lightWhite),
       ),
-      horizontalTitleGap: 2.w,
+      horizontalTitleGap: 4.w,
       title: Text(
         group.name,
         style: TextStyles.semiBold16,
@@ -31,9 +32,10 @@ class GroupsRoomTile extends StatelessWidget {
       subtitle: Text(
         _buildLastMessage(),
         maxLines: 1,
+        style: TextStyles.regular13.copyWith(color: AppColors.gray),
         overflow: TextOverflow.ellipsis,
       ),
-      trailing: _buildTrailing(),
+      trailing: _buildTrailing(context),
       onTap: () {
         context.pushNamed(
           AppRoutes.groupChatRoom,
@@ -51,18 +53,25 @@ class GroupsRoomTile extends StatelessWidget {
     return group.lastMessage ?? 'No messages yet';
   }
 
-  Widget? _buildTrailing() {
-    if (group.unreadCount == 0) {
-      return null;
-    }
-
-    return CircleAvatar(
-      radius: 10.r,
-      backgroundColor: AppColors.mainBlue,
-      child: Text(
-        group.unreadCount > 99 ? '99+' : group.unreadCount.toString(),
-        style: TextStyles.bold13.copyWith(color: Colors.white),
-      ),
+  Widget? _buildTrailing(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.end,
+      children: [
+        Text(
+          group.lastMessageAt?.toLocalTimeLabel(context) ?? '',
+          style: TextStyles.regular13.copyWith(color: AppColors.gray),
+        ),
+        verticalSpace(4),
+        if (group.unreadCount > 0)
+          CircleAvatar(
+            radius: 12.r,
+            backgroundColor: AppColors.mainBlue,
+            child: Text(
+              '${group.unreadCount}',
+              style: TextStyles.bold13.copyWith(color: Colors.white),
+            ),
+          ),
+      ],
     );
   }
 }

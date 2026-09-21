@@ -4,6 +4,7 @@ import 'package:avora/core/di/dependecny_injection.dart';
 import 'package:avora/core/funcs/pick_image.dart';
 import 'package:avora/core/helper/custom_toast.dart';
 import 'package:avora/core/helper/spacing.dart';
+import 'package:avora/core/themes/app_colors.dart';
 import 'package:avora/core/themes/app_text_styles.dart';
 import 'package:avora/core/themes/padding.dart';
 import 'package:avora/features/auth/domain/repos/auth_repo.dart';
@@ -23,6 +24,7 @@ import 'package:avora/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class GroupChatRoom extends StatefulWidget {
@@ -110,7 +112,12 @@ class _GroupChatRoomState extends State<GroupChatRoom> {
                 listener: _onChatStateChanged,
                 builder: (context, state) {
                   if (state is GroupChatLoading) {
-                    return const Center(child: CircularProgressIndicator());
+                    return Center(
+                      child: LoadingAnimationWidget.beat(
+                        color: AppColors.mainBlue,
+                        size: 40.r,
+                      ),
+                    );
                   }
 
                   if (state is GroupChatLoaded) {

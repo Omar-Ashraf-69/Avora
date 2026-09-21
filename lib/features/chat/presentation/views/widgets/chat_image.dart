@@ -46,8 +46,7 @@ class _ChatImageState extends State<ChatImage> {
 
   Future<void> _createSignedUrl() async {
     try {
-      final signedUrl =
-          await widget.imageStorageDataSource.createSignedUrl(
+      final signedUrl = await widget.imageStorageDataSource.createSignedUrl(
         path: widget.path,
         bucketName: 'chat-images',
       );
@@ -86,26 +85,27 @@ class _ChatImageState extends State<ChatImage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => FullScreenImage(
-              imageUrl: _signedUrl!,
-            ),
+            builder: (_) => FullScreenImage(imageUrl: _signedUrl!),
           ),
         );
       },
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          CachedNetworkImage(
-            imageUrl: _signedUrl!,
-            width: widget.width,
-            height: widget.height,
-            fit: BoxFit.cover,
-            placeholder: (context, url) {
-              return _buildPlaceholder();
-            },
-            errorWidget: (context, url, error) {
-              return _buildError();
-            },
+          ClipRRect(
+            borderRadius: BorderRadius.circular(8),
+            child: CachedNetworkImage(
+              imageUrl: _signedUrl!,
+              width: widget.width,
+              height: widget.height,
+              fit: BoxFit.cover,
+              placeholder: (context, url) {
+                return _buildPlaceholder();
+              },
+              errorWidget: (context, url, error) {
+                return _buildError();
+              },
+            ),
           ),
           SizedBox(
             width: widget.width,
@@ -163,9 +163,7 @@ class _ChatImageState extends State<ChatImage> {
     return SizedBox(
       width: widget.width,
       height: widget.height,
-      child: const Center(
-        child: Icon(Icons.broken_image_outlined),
-      ),
+      child: const Center(child: Icon(Icons.broken_image_outlined)),
     );
   }
 }
