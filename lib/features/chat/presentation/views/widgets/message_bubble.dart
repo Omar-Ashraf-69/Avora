@@ -1,12 +1,12 @@
 import 'package:avora/core/themes/app_colors.dart';
 import 'package:avora/core/themes/app_text_styles.dart';
+import 'package:avora/core/widgets/images/app_avatar.dart';
 import 'package:avora/features/chat/presentation/views/widgets/chat_image.dart';
 import 'package:avora/features/chat/presentation/views/widgets/message_meta.dart';
 import 'package:avora/features/chats/data/data_source/image_storage_data_source.dart';
 import 'package:avora/features/chats/domain/entities/message_entity.dart';
-import 'package:avora/features/chats/presentation/cubits/chat_cubit/chat_cubit.dart';
+import 'package:avora/features/groups/domain/entities/group_member_entity.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 class MessageBubble extends StatelessWidget {
   const MessageBubble({
@@ -14,11 +14,17 @@ class MessageBubble extends StatelessWidget {
     required this.message,
     required this.isMe,
     required this.imageStorageDataSource,
+    this.status,
+    this.sender,
   });
 
   final MessageEntity message;
   final bool isMe;
   final ImageStorageDataSource imageStorageDataSource;
+  final MessageStatus? status;
+  final GroupMemberEntity? sender;
+
+  bool get _showSender => !isMe && sender != null;
 
   @override
   Widget build(BuildContext context) {
@@ -40,10 +46,46 @@ class MessageBubble extends StatelessWidget {
             bottomEnd: Radius.circular(isMe ? 2 : 8),
           ),
         ),
-        child: message.type == MessageType.text
-            ? _buildTextMessage(context)
-            : _buildImageMessage(context),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            if (_showSender) ...[
+              _buildSenderHeader(),
+              const SizedBox(height: 6),
+            ],
+            message.type == MessageType.text
+                ? _buildTextMessage(context)
+                : _buildImageMessage(context),
+          ],
+        ),
       ),
+    );
+  }
+
+  Widget _buildSenderHeader() {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        AppAvatar(
+          imageUrl: sender!.avatarUrl,
+          radius: 14,
+          fallbackIcon: const Icon(
+            Icons.person,
+            size: 16,
+            color: AppColors.lightWhite,
+          ),
+        ),
+        const SizedBox(width: 8),
+        Flexible(
+          child: Text(
+            sender!.name,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: TextStyles.medium15.copyWith(color: AppColors.mainBlue),
+          ),
+        ),
+      ],
     );
   }
 
@@ -61,11 +103,7 @@ class MessageBubble extends StatelessWidget {
           ),
         ),
         const SizedBox(width: 8),
-        MessageMeta(
-          message: message,
-          isMe: isMe,
-          status: context.read<ChatCubit>().getMessageStatus(message: message),
-        ),
+        MessageMeta(message: message, isMe: isMe, status: status),
       ],
     );
   }
@@ -77,11 +115,13 @@ class MessageBubble extends StatelessWidget {
       return SizedBox(
         width: MediaQuery.sizeOf(context).width * .6,
         height: MediaQuery.sizeOf(context).width * .6 * .8,
-        child: Center(child: Icon(Icons.broken_image_outlined)),
+        child: const Center(child: Icon(Icons.broken_image_outlined)),
       );
     }
+
     final width = MediaQuery.sizeOf(context).width * .6;
     final height = width * .8;
+
     return ChatImage(
       path: imagePath,
       width: width,
@@ -89,6 +129,7 @@ class MessageBubble extends StatelessWidget {
       imageStorageDataSource: imageStorageDataSource,
       message: message,
       isMe: isMe,
+      status: status,
     );
   }
 }

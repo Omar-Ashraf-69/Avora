@@ -19,6 +19,7 @@ import 'package:avora/features/chats/presentation/cubits/group_chat_cubit/group_
 import 'package:avora/features/chats/presentation/cubits/presence_cubit/presence_cubit.dart';
 import 'package:avora/features/group_chat/presentation/views/group_chat_room.dart';
 import 'package:avora/features/groups/presentation/cubits/create_group/create_group_cubit.dart';
+import 'package:avora/features/groups/presentation/cubits/groups_cubit/groups_cubit.dart';
 import 'package:avora/features/groups/presentation/views/widgets/create_group_view.dart';
 import 'package:avora/features/home/presentation/views/cubits/message_delivery_cubit.dart';
 import 'package:avora/features/home/presentation/views/home_view.dart';
@@ -66,6 +67,7 @@ class AppRouter {
         return _buildRoute(
           MultiBlocProvider(
             providers: [
+              BlocProvider(create: (_) => getIt<GroupsCubit>()),
               BlocProvider(create: (_) => getIt<ConversationCubit>()),
               BlocProvider(
                 lazy: false,

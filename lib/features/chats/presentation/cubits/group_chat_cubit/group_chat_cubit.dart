@@ -10,7 +10,6 @@ import 'package:avora/features/chats/domain/use_case/send_text_message_use_case.
 import 'package:avora/features/chats/presentation/cubits/group_chat_cubit/group_chat_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 class GroupChatCubit extends Cubit<GroupChatState> {
   GroupChatCubit({
     required this.getMessagesUseCase,
@@ -54,7 +53,7 @@ class GroupChatCubit extends Cubit<GroupChatState> {
     );
   }
 
-    Future<void> sendTextMessage({
+  Future<void> sendTextMessage({
     required String conversationId,
     required String content,
   }) async {
@@ -65,10 +64,7 @@ class GroupChatCubit extends Cubit<GroupChatState> {
 
     result.fold(
       (failure) {
-        log(
-          'GroupChatCubit.sendTextMessage',
-          error: failure.message,
-        );
+        log('GroupChatCubit.sendTextMessage', error: failure.message);
       },
       (message) {
         final currentState = state;
@@ -81,167 +77,136 @@ class GroupChatCubit extends Cubit<GroupChatState> {
           return;
         }
 
-        emit(
-          GroupChatLoaded(
-            messages: [
-              ...currentState.messages,
-              message,
-            ],
-          ),
-        );
+        emit(GroupChatLoaded(messages: [...currentState.messages, message]));
       },
     );
   }
 
-    Future<void> sendImageMessage({
+  Future<bool> sendImageMessage({
     required String conversationId,
     required String imagePath,
+    String? content,
   }) async {
     final result = await sendImageMessageUseCase(
       filePath: imagePath,
       conversationId: conversationId,
-      content: '',
+      content: content,
     );
-
-    result.fold(
+    return result.fold(
       (failure) {
-        log(
-          'GroupChatCubit.sendImageMessage',
-          error: failure.message,
-        );
+        log('GroupChatCubit.sendImageMessage', error: failure.message);
+        return false;
       },
       (message) {
         final currentState = state;
-
-        if (currentState is! GroupChatLoaded) return;
-
+        if (currentState is! GroupChatLoaded) {
+          return false;
+        }
         if (currentState.messages.any(
           (existingMessage) => existingMessage.id == message.id,
         )) {
-          return;
+          return false;
         }
-
-        emit(
-          GroupChatLoaded(
-            messages: [
-              ...currentState.messages,
-              message,
-            ],
-          ),
-        );
+        emit(GroupChatLoaded(messages: [...currentState.messages, message]));
+        return true;
       },
     );
   }
 
   void _subscribeToMessages(String conversationId) {
-  messageRealtimeDataSource.subscribeToMessages(
-    conversationId: conversationId,
-    onMessageInserted: _onMessageInserted,
-    onMessageUpdated: _onMessageUpdated,
-    onMessageDeleted: _onMessageDeleted,
-  );
-}
-
-void _onMessageInserted(MessageModel model) {
-  final currentState = state;
-
-  if (currentState is! GroupChatLoaded) {
-    return;
-  }
-
-  final message = model.toEntity();
-
-  final alreadyExists = currentState.messages.any(
-    (item) => item.id == message.id,
-  );
-
-  if (alreadyExists) {
-    return;
-  }
-
-  emit(
-    GroupChatLoaded(
-      messages: [...currentState.messages, message],
-      isSending: currentState.isSending,
-    ),
-  );
-
-  final currentUser = authRepository.getCurrentUser();
-
-  if (currentUser != null && message.senderId != currentUser.id) {
-    markConversationAsDelivered(
-      conversationId: message.conversationId,
-    );
-
-    markConversationAsRead(
-      conversationId: message.conversationId,
+    messageRealtimeDataSource.subscribeToMessages(
+      conversationId: conversationId,
+      onMessageInserted: _onMessageInserted,
+      onMessageUpdated: _onMessageUpdated,
+      onMessageDeleted: _onMessageDeleted,
     );
   }
-}
 
-void _onMessageUpdated(MessageModel model) {
-  final currentState = state;
+  void _onMessageInserted(MessageModel model) {
+    final currentState = state;
 
-  if (currentState is! GroupChatLoaded) {
-    return;
-  }
-
-  final updatedMessage = model.toEntity();
-
-  final messages = currentState.messages.map((message) {
-    if (message.id == updatedMessage.id) {
-      return updatedMessage;
+    if (currentState is! GroupChatLoaded) {
+      return;
     }
 
-    return message;
-  }).toList();
+    final message = model.toEntity();
 
-  emit(
-    GroupChatLoaded(
-      messages: messages,
-      isSending: currentState.isSending,
-    ),
-  );
-}
+    final alreadyExists = currentState.messages.any(
+      (item) => item.id == message.id,
+    );
 
-void _onMessageDeleted(String messageId) {
-  final currentState = state;
+    if (alreadyExists) {
+      return;
+    }
 
-  if (currentState is! GroupChatLoaded) {
-    return;
+    emit(
+      GroupChatLoaded(
+        messages: [...currentState.messages, message],
+        isSending: currentState.isSending,
+      ),
+    );
+
+    final currentUser = authRepository.getCurrentUser();
+
+    if (currentUser != null && message.senderId != currentUser.id) {
+      markConversationAsDelivered(conversationId: message.conversationId);
+
+      markConversationAsRead(conversationId: message.conversationId);
+    }
   }
 
-  final messages = currentState.messages
-      .where((message) => message.id != messageId)
-      .toList();
+  void _onMessageUpdated(MessageModel model) {
+    final currentState = state;
 
-  emit(
-    GroupChatLoaded(
-      messages: messages,
-      isSending: currentState.isSending,
-    ),
-  );
-}
+    if (currentState is! GroupChatLoaded) {
+      return;
+    }
 
-    Future<void> markConversationAsRead({
-    required String conversationId,
-  }) async {
-    await markConversationAsReadUseCase(
-      conversationId: conversationId,
+    final updatedMessage = model.toEntity();
+
+    final messages = currentState.messages.map((message) {
+      if (message.id == updatedMessage.id) {
+        return updatedMessage;
+      }
+
+      return message;
+    }).toList();
+
+    emit(
+      GroupChatLoaded(messages: messages, isSending: currentState.isSending),
     );
+  }
+
+  void _onMessageDeleted(String messageId) {
+    final currentState = state;
+
+    if (currentState is! GroupChatLoaded) {
+      return;
+    }
+
+    final messages = currentState.messages
+        .where((message) => message.id != messageId)
+        .toList();
+
+    emit(
+      GroupChatLoaded(messages: messages, isSending: currentState.isSending),
+    );
+  }
+
+  Future<void> markConversationAsRead({required String conversationId}) async {
+    await markConversationAsReadUseCase(conversationId: conversationId);
   }
 
   Future<void> markConversationAsDelivered({
     required String conversationId,
   }) async {
-    await markConversationAsDeliveredUseCase(
-      conversationId: conversationId,
-    );
+    await markConversationAsDeliveredUseCase(conversationId: conversationId);
   }
-@override
-Future<void> close() async {
-  await messageRealtimeDataSource.unsubscribe();
 
-  return super.close();
-}
+  @override
+  Future<void> close() async {
+    await messageRealtimeDataSource.unsubscribe();
+
+    return super.close();
+  }
 }

@@ -5,10 +5,8 @@ import 'package:avora/core/widgets/full_screen_image.dart';
 import 'package:avora/features/chat/presentation/views/widgets/message_meta.dart';
 import 'package:avora/features/chats/data/data_source/image_storage_data_source.dart';
 import 'package:avora/features/chats/domain/entities/message_entity.dart';
-import 'package:avora/features/chats/presentation/cubits/chat_cubit/chat_cubit.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:shimmer/shimmer.dart';
 
 class ChatImage extends StatefulWidget {
@@ -20,6 +18,7 @@ class ChatImage extends StatefulWidget {
     required this.imageStorageDataSource,
     required this.message,
     required this.isMe,
+    this.status,
   });
 
   final String path;
@@ -28,6 +27,7 @@ class ChatImage extends StatefulWidget {
   final ImageStorageDataSource imageStorageDataSource;
   final MessageEntity message;
   final bool isMe;
+  final MessageStatus? status;
 
   @override
   State<ChatImage> createState() => _ChatImageState();
@@ -46,7 +46,8 @@ class _ChatImageState extends State<ChatImage> {
 
   Future<void> _createSignedUrl() async {
     try {
-      final signedUrl = await widget.imageStorageDataSource.createSignedUrl(
+      final signedUrl =
+          await widget.imageStorageDataSource.createSignedUrl(
         path: widget.path,
         bucketName: 'chat-images',
       );
@@ -85,7 +86,9 @@ class _ChatImageState extends State<ChatImage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (_) => FullScreenImage(imageUrl: _signedUrl!),
+            builder: (_) => FullScreenImage(
+              imageUrl: _signedUrl!,
+            ),
           ),
         );
       },
@@ -114,7 +117,8 @@ class _ChatImageState extends State<ChatImage> {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  if (widget.message.content != null)
+                  if (widget.message.content != null &&
+                      widget.message.content!.isNotEmpty)
                     Expanded(
                       child: Text(
                         widget.message.content!,
@@ -126,13 +130,10 @@ class _ChatImageState extends State<ChatImage> {
                       ),
                     ),
                   const Spacer(),
-
                   MessageMeta(
                     message: widget.message,
                     isMe: widget.isMe,
-                    status: context.read<ChatCubit>().getMessageStatus(
-                      message: widget.message,
-                    ),
+                    status: widget.status,
                   ),
                 ],
               ),
@@ -162,7 +163,9 @@ class _ChatImageState extends State<ChatImage> {
     return SizedBox(
       width: widget.width,
       height: widget.height,
-      child: const Center(child: Icon(Icons.broken_image_outlined)),
+      child: const Center(
+        child: Icon(Icons.broken_image_outlined),
+      ),
     );
   }
 }

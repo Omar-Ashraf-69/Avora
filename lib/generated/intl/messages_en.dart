@@ -311,7 +311,7 @@ class MessageLookup extends MessageLookupByLibrary {
       "The password is incorrect",
     ),
     "yes": MessageLookupByLibrary.simpleMessage("Yes"),
-    "you": MessageLookupByLibrary.simpleMessage("You"),
+    "you": MessageLookupByLibrary.simpleMessage("You: "),
     "your_account_has_been_created": MessageLookupByLibrary.simpleMessage(
       "Your account is ready to use. You will be redirected to the Home page in a few seconds.",
     ),

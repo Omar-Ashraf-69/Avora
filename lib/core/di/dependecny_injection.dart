@@ -60,9 +60,11 @@ import 'package:avora/features/groups/domain/entities/get_group_details_use_case
 import 'package:avora/features/groups/domain/repos/group_avatar_repo.dart';
 import 'package:avora/features/groups/domain/repos/group_repo.dart';
 import 'package:avora/features/groups/domain/use_case/create_group.dart';
+import 'package:avora/features/groups/domain/use_case/get_groups_use_case.dart';
 import 'package:avora/features/groups/domain/use_case/update_group_avatar.dart';
 import 'package:avora/features/groups/domain/use_case/upload_group_avatar.dart';
 import 'package:avora/features/groups/presentation/cubits/create_group/create_group_cubit.dart';
+import 'package:avora/features/groups/presentation/cubits/groups_cubit/groups_cubit.dart';
 import 'package:avora/features/home/presentation/views/cubits/message_delivery_cubit.dart';
 import 'package:avora/features/profile/data/data_sources/profile_avatar_storage_data_source.dart';
 import 'package:avora/features/profile/data/data_sources/profile_avatar_storage_data_source_impl.dart';
@@ -423,6 +425,13 @@ void _registerGroup() {
   );
   getIt.registerLazySingleton<CreateGroupUseCase>(
     () => CreateGroupUseCase(getIt<GroupRepository>()),
+  );
+  getIt.registerLazySingleton<GetGroupsUseCase>(
+    () => GetGroupsUseCase(getIt<GroupRepository>()),
+  );
+
+  getIt.registerFactory<GroupsCubit>(
+    () => GroupsCubit(getGroupsUseCase: getIt<GetGroupsUseCase>()),
   );
   getIt.registerFactory<CreateGroupCubit>(
     () => CreateGroupCubit(

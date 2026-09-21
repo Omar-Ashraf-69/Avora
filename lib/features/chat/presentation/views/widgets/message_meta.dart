@@ -21,7 +21,7 @@ class MessageMeta extends StatelessWidget {
   Widget build(BuildContext context) {
     return Row(
       mainAxisSize: MainAxisSize.min,
-        
+
       mainAxisAlignment: isMe ? MainAxisAlignment.end : MainAxisAlignment.start,
       children: [
         Text(
@@ -31,7 +31,7 @@ class MessageMeta extends StatelessWidget {
           ),
         ),
 
-        if (isMe) ...[horizontalSpace(3), _buildStatusIcon()],
+        if (isMe && status != null) ...[horizontalSpace(3), _buildStatusIcon()],
       ],
     );
   }

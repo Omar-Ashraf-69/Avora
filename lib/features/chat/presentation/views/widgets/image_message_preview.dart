@@ -4,27 +4,26 @@ import 'package:avora/core/funcs/custom_field_decoration.dart';
 import 'package:avora/core/helper/spacing.dart';
 import 'package:avora/core/themes/app_colors.dart';
 import 'package:avora/core/themes/app_text_styles.dart';
-import 'package:avora/features/chats/presentation/cubits/chat_cubit/chat_cubit.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class ImagePreviewScreen extends StatefulWidget {
   const ImagePreviewScreen({
     super.key,
     required this.imageFile,
-    required this.conversationId,
+    required this.onSend,
   });
 
   final File imageFile;
-  final String conversationId;
+  final Future<bool> Function(String? caption) onSend;
 
   @override
   State<ImagePreviewScreen> createState() => _ImagePreviewScreenState();
 }
 
 class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
-  final TextEditingController _captionController = TextEditingController();
+  final TextEditingController _captionController =
+      TextEditingController();
 
   bool _isSending = false;
 
@@ -38,15 +37,15 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
     if (_isSending) {
       return;
     }
+
     final caption = _captionController.text.trim();
+
     setState(() {
       _isSending = true;
     });
 
-    final success = await context.read<ChatCubit>().sendImageMessage(
-      conversationId: widget.conversationId,
-      filePath: widget.imageFile.path,
-      content: caption.isEmpty ? null : caption,
+    final success = await widget.onSend(
+      caption.isEmpty ? null : caption,
     );
 
     if (!mounted) {
@@ -63,7 +62,11 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
     });
 
     ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('Failed to send image. Please try again.')),
+      const SnackBar(
+        content: Text(
+          'Failed to send image. Please try again.',
+        ),
+      ),
     );
   }
 
@@ -76,7 +79,9 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
         foregroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-          onPressed: _isSending ? null : () => Navigator.pop(context),
+          onPressed: _isSending
+              ? null
+              : () => Navigator.pop(context),
           icon: const Icon(Icons.close),
         ),
       ),
@@ -84,10 +89,12 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
         children: [
           Positioned.fill(
             child: InteractiveViewer(
-              child: Image.file(widget.imageFile, fit: BoxFit.contain),
+              child: Image.file(
+                widget.imageFile,
+                fit: BoxFit.contain,
+              ),
             ),
           ),
-
           Positioned(
             left: 12.w,
             right: 12.w,
@@ -105,23 +112,30 @@ class _ImagePreviewScreenState extends State<ImagePreviewScreen> {
       children: [
         Expanded(
           child: Container(
-            constraints: BoxConstraints(minHeight: 48.h, maxHeight: 120.h),
-
-            padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 4.h),
+            constraints: BoxConstraints(
+              minHeight: 48.h,
+              maxHeight: 120.h,
+            ),
+            padding: EdgeInsets.symmetric(
+              horizontal: 16.w,
+              vertical: 4.h,
+            ),
             child: TextField(
               controller: _captionController,
               enabled: !_isSending,
               maxLines: 4,
               minLines: 1,
               textInputAction: TextInputAction.newline,
-              decoration: customFieldDecoration('Send a caption...'),
-              style: TextStyles.regular15.copyWith(color: AppColors.darkBlue),
+              decoration: customFieldDecoration(
+                'Send a caption...',
+              ),
+              style: TextStyles.regular15.copyWith(
+                color: AppColors.darkBlue,
+              ),
             ),
           ),
         ),
-
         horizontalSpace(2),
-
         Material(
           color: AppColors.mainBlue,
           shape: const CircleBorder(),

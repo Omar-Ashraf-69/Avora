@@ -18,6 +18,7 @@ import 'package:avora/features/chats/presentation/cubits/group_chat_cubit/group_
 import 'package:avora/features/group_chat/presentation/views/widget/group_chat_room_app_bar.dart';
 import 'package:avora/features/groups/domain/entities/get_group_details_use_case.dart';
 import 'package:avora/features/groups/domain/entities/group_details_entity.dart';
+import 'package:avora/features/groups/domain/entities/group_member_entity.dart';
 import 'package:avora/generated/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -112,10 +113,6 @@ class _GroupChatRoomState extends State<GroupChatRoom> {
                     return const Center(child: CircularProgressIndicator());
                   }
 
-                  if (state is GroupChatFailure) {
-                    ToastNoContext.showCenterShortToast(message: state.message);
-                  }
-
                   if (state is GroupChatLoaded) {
                     if (state.messages.isEmpty) {
                       return Center(
@@ -158,10 +155,24 @@ class _GroupChatRoomState extends State<GroupChatRoom> {
           value: context.read<GroupChatCubit>(),
           child: ImagePreviewScreen(
             imageFile: File(image.path),
-            conversationId: widget.conversationId,
+            onSend: (caption) async {
+              return _sendGroupImage(context, File(image.path), caption);
+            },
           ),
         ),
       ),
+    );
+  }
+
+  Future<bool> _sendGroupImage(
+    BuildContext context,
+    File imageFile,
+    String? caption,
+  ) {
+    return context.read<GroupChatCubit>().sendImageMessage(
+      conversationId: widget.conversationId,
+      imagePath: imageFile.path,
+      content: caption,
     );
   }
 
@@ -185,12 +196,15 @@ class _GroupChatRoomState extends State<GroupChatRoom> {
           separatorBuilder: (_, _) => verticalSpace(8),
           itemBuilder: (context, index) {
             final message = messages[messages.length - 1 - index];
+            final isMe = message.senderId == currentUserId;
             return KeyedSubtree(
               key: ValueKey(message.id),
               child: MessageBubble(
                 message: message,
-                isMe: message.senderId == currentUserId,
+                isMe: isMe,
                 imageStorageDataSource: getIt<ImageStorageDataSource>(),
+                status: null,
+                sender: isMe ? null : _getSender(message.senderId),
               ),
             );
           },
@@ -204,9 +218,27 @@ class _GroupChatRoomState extends State<GroupChatRoom> {
     );
   }
 
+  GroupMemberEntity? _getSender(String senderId) {
+    final members = _groupDetails?.members;
+
+    if (members == null) {
+      return null;
+    }
+
+    for (final member in members) {
+      if (member.userId == senderId) {
+        return member;
+      }
+    }
+
+    return null;
+  }
+
   void _onChatStateChanged(BuildContext context, GroupChatState state) {
     if (state is! GroupChatLoaded) return;
-
+    if (state is GroupChatFailure) {
+      ToastNoContext.showCenterShortToast(message: state.errorMessage ?? '');
+    }
     final messages = state.messages;
 
     if (!_hasInitializedMessages) {

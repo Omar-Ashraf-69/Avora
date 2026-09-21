@@ -24,13 +24,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:skeletonizer/skeletonizer.dart';
 
 class ChatRoomView extends StatefulWidget {
-  const ChatRoomView({
-    super.key,
-    required this.conversationId,
-  });
+  const ChatRoomView({super.key, required this.conversationId});
 
   final String conversationId;
-
 
   @override
   State<ChatRoomView> createState() => _ChatRoomViewState();
@@ -99,7 +95,7 @@ class _ChatRoomViewState extends State<ChatRoomView> {
         preferredSize: Size.fromHeight(70.h),
         child: Skeletonizer(
           enabled: _otherParticipant == null,
-          child: ChatRoomAppBar( profile: _otherParticipant),
+          child: ChatRoomAppBar(profile: _otherParticipant),
         ),
       ),
       body: SafeArea(
@@ -157,7 +153,13 @@ class _ChatRoomViewState extends State<ChatRoomView> {
           value: context.read<ChatCubit>(),
           child: ImagePreviewScreen(
             imageFile: File(image!.path),
-            conversationId: widget.conversationId,
+            onSend: (caption) {
+              return context.read<ChatCubit>().sendImageMessage(
+                conversationId: widget.conversationId,
+                filePath: image.path,
+                content: caption,
+              );
+            },
           ),
         ),
       ),
@@ -190,6 +192,10 @@ class _ChatRoomViewState extends State<ChatRoomView> {
                 message: message,
                 isMe: message.senderId == currentUserId,
                 imageStorageDataSource: getIt<ImageStorageDataSource>(),
+                status: context.read<ChatCubit>().getMessageStatus(
+                  message: message,
+                  
+                ),
               ),
             );
           },

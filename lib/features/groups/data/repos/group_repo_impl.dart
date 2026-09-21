@@ -4,6 +4,7 @@ import 'package:avora/core/error/exceptions.dart';
 import 'package:avora/core/error/failures.dart';
 import 'package:avora/features/groups/data/params/create_group_params.dart';
 import 'package:avora/features/groups/domain/entities/group_details_entity.dart';
+import 'package:avora/features/groups/domain/entities/group_list_entity.dart';
 import 'package:avora/generated/l10n.dart';
 import 'package:dartz/dartz.dart';
 import 'package:avora/features/groups/data/data_sources/group_remote_data_source.dart';
@@ -77,4 +78,21 @@ class GroupRepositoryImpl implements GroupRepository {
       return const Left(ServerFailure('Failed to update group image.'));
     }
   }
+
+  @override
+Future<Either<Failure, List<GroupListItemEntity>>> getGroups() async {
+  try {
+    final models = await _remoteDataSource.getGroups();
+
+    return Right(
+      models.map((model) => model.toEntity()).toList(),
+    );
+  } on CustomException catch (e) {
+    return Left(ServerFailure(e.message));
+  } catch (_) {
+    return const Left(
+      ServerFailure('Failed to load groups.'),
+    );
+  }
+}
 }

@@ -1175,9 +1175,9 @@ class S {
     );
   }
 
-  /// `You`
+  /// `You: `
   String get you {
-    return Intl.message('You', name: 'you', desc: '', args: []);
+    return Intl.message('You: ', name: 'you', desc: '', args: []);
   }
 
   /// `Photo`

@@ -138,7 +138,7 @@
   "start_a_conversation": "Start a conversation",
   "no_messages_yet": "No messages yet. Start the conversation!",
   "loading_user": "Loading user...",
-  "you": "You",
+  "you": "You: ",
   "photo": "Photo",
   "failed_to_create_group": "Failed to create group"
 
