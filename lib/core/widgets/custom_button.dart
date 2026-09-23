@@ -2,28 +2,49 @@ import 'package:avora/core/themes/app_colors.dart';
 import 'package:avora/core/themes/app_text_styles.dart';
 import 'package:avora/core/themes/padding.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class CustomButton extends StatelessWidget {
-  const CustomButton({super.key, required this.label, this.onPressed, this.color});
-  final String label ;
-final Function()? onPressed;
+  const CustomButton({
+    super.key,
+    required this.label,
+    this.onPressed,
+    this.color,
+    this.isLoading = false,
+  });
+
+  final String label;
+  final VoidCallback? onPressed;
   final Color? color;
+  final bool isLoading;
+
   @override
   Widget build(BuildContext context) {
+    final buttonColor = color ?? AppColors.mainBlue;
+
     return SizedBox(
       width: double.infinity,
       child: ElevatedButton(
-        onPressed: onPressed,
-        style: ElevatedButton.styleFrom(
-          iconColor:color ?? AppColors.mainBlue,
-          backgroundColor:color ?? AppColors.mainBlue,
+        onPressed: isLoading ? () {} : onPressed,
+        style: ButtonStyle(
+          backgroundColor: WidgetStatePropertyAll(buttonColor),
+          foregroundColor: const WidgetStatePropertyAll(Colors.white),
+          overlayColor: const WidgetStatePropertyAll(Colors.transparent),
+          elevation: const WidgetStatePropertyAll(0),
           enableFeedback: false,
-          elevation: 0.0,
-          foregroundColor: Colors.white,
         ),
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: AppPadding.normal),
-          child: Text(label, style: TextStyles.bold16),
+          child: isLoading
+              ? SizedBox(
+                  height: 20.h,
+                  width: 20.w,
+                  child: const CircularProgressIndicator(
+                    strokeWidth: 2,
+                    color: Colors.white,
+                  ),
+                )
+              : Text(label, style: TextStyles.bold16),
         ),
       ),
     );

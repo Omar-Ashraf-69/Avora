@@ -11,7 +11,7 @@ enum MessageStatus {
 }
 
 enum SystemMessageType {
-  memberAdded,
+  membersAdded,
 }
 
 class MessageEntity {

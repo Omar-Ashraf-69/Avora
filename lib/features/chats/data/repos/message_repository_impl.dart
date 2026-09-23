@@ -1,3 +1,4 @@
+import 'dart:developer';
 
 import 'package:avora/core/error/exceptions.dart';
 import 'package:avora/core/error/failures.dart';
@@ -12,8 +13,9 @@ import 'package:uuid/uuid.dart';
 
 class MessageRepositoryImpl implements MessageRepository {
   const MessageRepositoryImpl(
-    this.remoteDataSource, {required this.imageStorageDataSource}
-  );
+    this.remoteDataSource, {
+    required this.imageStorageDataSource,
+  });
 
   final MessageRemoteDataSource remoteDataSource;
   final ImageStorageDataSource imageStorageDataSource;
@@ -27,19 +29,12 @@ class MessageRepositoryImpl implements MessageRepository {
         conversationId: conversationId,
       );
 
-      return Right(
-        models.map((model) => model.toEntity()).toList(),
-      );
+      return Right(models.map((model) => model.toEntity()).toList());
     } on CustomException catch (e) {
-      return Left(
-        ServerFailure( e.message),
-      );
-    } catch (_) {
-      return Left(
-        ServerFailure(
-           S.current.unexpected_error,
-        ),
-      );
+      return Left(ServerFailure(e.message));
+    } catch (e) {
+      log('MessageRepositoryImpl.getMessages', error: e);
+      return Left(ServerFailure(S.current.unexpected_error));
     }
   }
 
@@ -56,18 +51,13 @@ class MessageRepositoryImpl implements MessageRepository {
 
       return Right(model.toEntity());
     } on CustomException catch (e) {
-      return Left(
-        ServerFailure( e.message),
-      );
+      return Left(ServerFailure(e.message));
     } catch (_) {
-      return Left(
-        ServerFailure(
-           S.current.unexpected_error,
-        ),
-      );
+      return Left(ServerFailure(S.current.unexpected_error));
     }
   }
- @override
+
+  @override
   Future<Either<Failure, MessageEntity>> sendImageMessage({
     required String conversationId,
     required String filePath,
@@ -99,17 +89,11 @@ class MessageRepositoryImpl implements MessageRepository {
     } on CustomException catch (e) {
       await _deleteUploadedImage(uploadedImagePath);
 
-      return Left(
-        ServerFailure(e.message),
-      );
+      return Left(ServerFailure(e.message));
     } catch (_) {
       await _deleteUploadedImage(uploadedImagePath);
 
-      return Left(
-        ServerFailure(
-          S.current.unexpected_error,
-        ),
-      );
+      return Left(ServerFailure(S.current.unexpected_error));
     }
   }
 
@@ -119,9 +103,7 @@ class MessageRepositoryImpl implements MessageRepository {
     }
 
     try {
-      await imageStorageDataSource.deleteChatImage(
-        path: path,
-      );
+      await imageStorageDataSource.deleteChatImage(path: path);
     } catch (_) {
       // Ignore cleanup errors.
       // The original error is more important.
@@ -129,81 +111,64 @@ class MessageRepositoryImpl implements MessageRepository {
   }
 
   @override
-Future<Either<Failure, void>> markConversationAsRead({
-  required String conversationId,
-}) async {
-  try {
-    await remoteDataSource.markConversationAsRead(
-      conversationId: conversationId,
-    );
-
-    return const Right(null);
-  } on CustomException catch (e) {
-    return Left(
-      ServerFailure(
-         e.message,
-      ),
-    );
-  } catch (_) {
-    return Left(
-      ServerFailure(
-         S.current.unexpected_error,
-      ),
-    );
-  }
-}@override
-Future<Either<Failure, void>> markConversationAsDelivered({
-  required String conversationId,
-}) async {
-  try {
-    await remoteDataSource.markConversationAsDelivered(
-      conversationId: conversationId,
-    );
-
-    return const Right(null);
-  } on CustomException catch (e) {
-    return Left(
-      ServerFailure(e.message),
-    );
-  } catch (_) {
-    return Left(
-      ServerFailure(
-        S.current.unexpected_error,
-      ),
-    );
-  }
-}
-
-  @override
-  Future<Either<Failure, ConversationMessageStatus>> getOtherParticipantMessageStatus({required String conversationId}) async{
+  Future<Either<Failure, void>> markConversationAsRead({
+    required String conversationId,
+  }) async {
     try {
-  final status =
-        await remoteDataSource.getOtherParticipantMessageStatus(
-      conversationId: conversationId,
-    );
-      return Right(status);
+      await remoteDataSource.markConversationAsRead(
+        conversationId: conversationId,
+      );
+
+      return const Right(null);
     } on CustomException catch (e) {
-      return Left(
-        ServerFailure(e.message),
-      );
+      return Left(ServerFailure(e.message));
     } catch (_) {
-      return Left(
-        ServerFailure(
-          S.current.unexpected_error,
-        ),
-      );
+      return Left(ServerFailure(S.current.unexpected_error));
     }
   }
-@override
-Future<Either<Failure, void>> markPendingMessagesAsDelivered() async {
-  try {
-    await remoteDataSource.markPendingMessagesAsDelivered();
 
-    return const Right(null);
-  } on CustomException catch (e) {
-    return Left(ServerFailure(e.message));
-  } catch (_) {
-    return Left(ServerFailure(S.current.unexpected_error));
+  @override
+  Future<Either<Failure, void>> markConversationAsDelivered({
+    required String conversationId,
+  }) async {
+    try {
+      await remoteDataSource.markConversationAsDelivered(
+        conversationId: conversationId,
+      );
+
+      return const Right(null);
+    } on CustomException catch (e) {
+      return Left(ServerFailure(e.message));
+    } catch (_) {
+      return Left(ServerFailure(S.current.unexpected_error));
+    }
   }
-}
+
+  @override
+  Future<Either<Failure, ConversationMessageStatus>>
+  getOtherParticipantMessageStatus({required String conversationId}) async {
+    try {
+      final status = await remoteDataSource.getOtherParticipantMessageStatus(
+        conversationId: conversationId,
+      );
+      return Right(status);
+    } on CustomException catch (e) {
+      return Left(ServerFailure(e.message));
+    } catch (_) {
+      return Left(ServerFailure(S.current.unexpected_error));
+    }
+  }
+
+  @override
+  Future<Either<Failure, void>> markPendingMessagesAsDelivered() async {
+    try {
+      await remoteDataSource.markPendingMessagesAsDelivered();
+
+      return const Right(null);
+    } on CustomException catch (e) {
+      return Left(ServerFailure(e.message));
+    } catch (_) {
+      return Left(ServerFailure(S.current.unexpected_error));
+    }
+  }
 }

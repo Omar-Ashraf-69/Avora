@@ -4,7 +4,6 @@ import 'package:avora/core/themes/app_colors.dart';
 import 'package:avora/core/themes/padding.dart';
 import 'package:avora/core/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BottomActions extends StatelessWidget {
   const BottomActions({
@@ -42,27 +41,15 @@ class BottomActions extends StatelessWidget {
               color: AppColors.lightRed,
             ),
           ),
+
           horizontalSpace(AppSpacing.md),
 
           Expanded(
-            child: isLoading
-                ? SizedBox(
-                    width: double.infinity,
-
-                    child: ElevatedButton(
-                      onPressed: null,
-                      child: SizedBox(
-                        height: 24.h,
-                        width: 24.w,
-                        child: CircularProgressIndicator(
-                          strokeWidth: 2,
-
-                          color: AppColors.mainBlue,
-                        ),
-                      ),
-                    ),
-                  )
-                : CustomButton(label: 'Create', onPressed: onCreate),
+            child: CustomButton(
+              label: 'Create',
+              onPressed: onCreate,
+              isLoading: isLoading,
+            ),
           ),
         ],
       ),

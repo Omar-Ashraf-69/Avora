@@ -141,7 +141,7 @@ class _CreateGroupViewState extends State<CreateGroupView> {
 
                     return BottomActions(
                       isLoading: isLoading,
-                      onCancel: isLoading ? () {} : () => context.pop(),
+                      onCancel: isLoading ? null : () => context.pop(),
                       onCreate: isLoading ? null : _createGroup,
                     );
                   },

@@ -34,17 +34,11 @@ class MessageModel {
       id: json['id'] as String,
       conversationId: json['conversation_id'] as String,
       senderId: json['sender_id'] as String,
-      type: MessageType.values.byName(
-        json['type'] as String,
-      ),
+      type: MessageType.values.byName(json['type'] as String),
       content: json['content'] as String?,
       imageUrl: json['image_url'] as String?,
-      createdAt: DateTime.parse(
-        json['created_at'] as String,
-      ),
-      updatedAt: DateTime.parse(
-        json['updated_at'] as String,
-      ),
+      createdAt: DateTime.parse(json['created_at'] as String),
+      updatedAt: DateTime.parse(json['updated_at'] as String),
       systemEvent: json['system_event'] == null
           ? null
           : SystemMessageType.values.byName(
@@ -52,9 +46,7 @@ class MessageModel {
             ),
       metadata: json['metadata'] == null
           ? null
-          : Map<String, dynamic>.from(
-              json['metadata'] as Map,
-            ),
+          : Map<String, dynamic>.from(json['metadata'] as Map),
     );
   }
 
@@ -74,15 +66,15 @@ class MessageModel {
     );
   }
 
-  static String _mapSystemEvent(String event) {
-    switch (event) {
-      case 'member_added':
-        return 'memberAdded';
+static String _mapSystemEvent(String event) {
+  switch (event) {
+    case 'members_added':
+      return 'membersAdded';
 
-      default:
-        throw FormatException(
-          'Unknown system event: $event',
-        );
-    }
+    default:
+      throw FormatException(
+        'Unknown system event: $event',
+      );
   }
+}
 }

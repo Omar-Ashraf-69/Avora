@@ -12,6 +12,7 @@ import 'package:avora/features/chat/presentation/views/widgets/chat_Input.dart';
 import 'package:avora/features/chat/presentation/views/widgets/image_message_preview.dart';
 import 'package:avora/features/chat/presentation/views/widgets/message_bubble.dart';
 import 'package:avora/features/chat/presentation/views/widgets/scroll_down_floating_action_button.dart';
+import 'package:avora/features/chat/presentation/views/widgets/system_message_bubble.dart';
 import 'package:avora/features/chats/data/data_source/image_storage_data_source.dart';
 import 'package:avora/features/chats/domain/entities/message_entity.dart';
 import 'package:avora/features/chats/presentation/cubits/group_chat_cubit/group_chat_cubit.dart';
@@ -206,13 +207,19 @@ class _GroupChatRoomState extends State<GroupChatRoom> {
             final isMe = message.senderId == currentUserId;
             return KeyedSubtree(
               key: ValueKey(message.id),
-              child: MessageBubble(
-                message: message,
-                isMe: isMe,
-                imageStorageDataSource: getIt<ImageStorageDataSource>(),
-                status: null,
-                sender: isMe ? null : _getSender(message.senderId),
-              ),
+              child: message.type == MessageType.system
+                  ? SystemMessageBubble(
+                      message: message,
+                      currentUserId: currentUserId,
+                      members: _groupDetails?.members ?? [],
+                    )
+                  : MessageBubble(
+                      message: message,
+                      isMe: isMe,
+                      imageStorageDataSource: getIt<ImageStorageDataSource>(),
+                      status: null,
+                      sender: isMe ? null : _getSender(message.senderId),
+                    ),
             );
           },
         ),
