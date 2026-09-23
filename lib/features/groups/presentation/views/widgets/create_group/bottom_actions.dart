@@ -1,16 +1,22 @@
-
 import 'package:avora/core/constants/app_spacing.dart';
 import 'package:avora/core/helper/spacing.dart';
 import 'package:avora/core/themes/app_colors.dart';
 import 'package:avora/core/themes/padding.dart';
 import 'package:avora/core/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class BottomActions extends StatelessWidget {
-  const BottomActions({super.key, required this.onCancel, required this.onCreate});
+  const BottomActions({
+    super.key,
+    required this.onCancel,
+    required this.onCreate,
+    required this.isLoading,
+  });
 
-  final VoidCallback onCancel;
-  final VoidCallback onCreate;
+  final VoidCallback? onCancel;
+  final VoidCallback? onCreate;
+  final bool isLoading;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +45,24 @@ class BottomActions extends StatelessWidget {
           horizontalSpace(AppSpacing.md),
 
           Expanded(
-            child: CustomButton(label: 'Create', onPressed: onCreate),
+            child: isLoading
+                ? SizedBox(
+                    width: double.infinity,
+
+                    child: ElevatedButton(
+                      onPressed: null,
+                      child: SizedBox(
+                        height: 24.h,
+                        width: 24.w,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+
+                          color: AppColors.mainBlue,
+                        ),
+                      ),
+                    ),
+                  )
+                : CustomButton(label: 'Create', onPressed: onCreate),
           ),
         ],
       ),

@@ -5,5 +5,5 @@ abstract class PresenceRealtimeDataSource {
     required void Function(String userId) onUserOffline,
   });
 
-  Future<void> unsubscribe();
+Future<void> unsubscribe();
 }

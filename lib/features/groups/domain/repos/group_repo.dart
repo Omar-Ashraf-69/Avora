@@ -8,7 +8,7 @@ abstract class GroupRepository {
   Future<Either<Failure, String>> createGroup({
     required CreateGroupParams params,
   });
-    Future<Either<Failure, GroupDetailsEntity>> getGroupDetails({
+  Future<Either<Failure, GroupDetailsEntity>> getGroupDetails({
     required String conversationId,
   });
 
@@ -16,5 +16,10 @@ abstract class GroupRepository {
     required String conversationId,
     required String avatarUrl,
   });
- Future<Either<Failure, List<GroupListItemEntity>>> getGroups();
+  Future<Either<Failure, void>> finalizeGroupCreation({
+    required String conversationId,
+    required List<String> memberIds,
+  });
+
+  Future<Either<Failure, List<GroupListItemEntity>>> getGroups();
 }

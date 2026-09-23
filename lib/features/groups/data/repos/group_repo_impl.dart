@@ -80,19 +80,34 @@ class GroupRepositoryImpl implements GroupRepository {
   }
 
   @override
-Future<Either<Failure, List<GroupListItemEntity>>> getGroups() async {
-  try {
-    final models = await _remoteDataSource.getGroups();
+  Future<Either<Failure, List<GroupListItemEntity>>> getGroups() async {
+    try {
+      final models = await _remoteDataSource.getGroups();
 
-    return Right(
-      models.map((model) => model.toEntity()).toList(),
-    );
-  } on CustomException catch (e) {
-    return Left(ServerFailure(e.message));
-  } catch (_) {
-    return const Left(
-      ServerFailure('Failed to load groups.'),
-    );
+      return Right(models.map((model) => model.toEntity()).toList());
+    } on CustomException catch (e) {
+      return Left(ServerFailure(e.message));
+    } catch (_) {
+      return const Left(ServerFailure('Failed to load groups.'));
+    }
   }
-}
+
+  @override
+  Future<Either<Failure, void>> finalizeGroupCreation({
+    required String conversationId,
+    required List<String> memberIds,
+  }) async {
+    try {
+      await _remoteDataSource.finalizeGroupCreation(
+        conversationId: conversationId,
+        memberIds: memberIds,
+      );
+
+      return const Right(null);
+    } on CustomException catch (e) {
+      return Left(ServerFailure(e.message));
+    } catch (e) {
+      return Left(ServerFailure(e.toString()));
+    }
+  }
 }

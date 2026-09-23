@@ -1,6 +1,18 @@
-enum MessageType { text, image }
+enum MessageType {
+  text,
+  image,
+  system,
+}
 
-enum MessageStatus { sent, delivered, seen }
+enum MessageStatus {
+  sent,
+  delivered,
+  seen,
+}
+
+enum SystemMessageType {
+  memberAdded,
+}
 
 class MessageEntity {
   const MessageEntity({
@@ -11,7 +23,10 @@ class MessageEntity {
     required this.createdAt,
     required this.updatedAt,
     this.content,
-    this.imageUrl, this.status,
+    this.imageUrl,
+    this.status,
+    this.systemEvent,
+    this.metadata,
   });
 
   final String id;
@@ -25,5 +40,9 @@ class MessageEntity {
 
   final DateTime createdAt;
   final DateTime updatedAt;
+
   final MessageStatus? status;
+
+  final SystemMessageType? systemEvent;
+  final Map<String, dynamic>? metadata;
 }

@@ -320,7 +320,7 @@ class ChatCubit extends Cubit<ChatState> {
 
   @override
   Future<void> close() async {
-    await messageRealtimeDataSource.unsubscribe();
+    await messageRealtimeDataSource.unsubscribeFromMessages();
     await conversationStatusRealtimeDataSource.unsubscribe();
 
     return super.close();

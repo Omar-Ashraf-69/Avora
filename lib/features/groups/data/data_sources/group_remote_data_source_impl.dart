@@ -75,4 +75,22 @@ class GroupRemoteDataSourceImpl implements GroupRemoteDataSource {
       return [];
     }
   }
+
+  @override
+  Future<void> finalizeGroupCreation({
+    required String conversationId,
+    required List<String> memberIds,
+  }) async {
+    try {
+      await databaseService.rpc(
+        functionName: 'finalize_group_creation',
+        params: {
+          'p_conversation_id': conversationId,
+          'p_member_ids': memberIds,
+        },
+      );
+    } catch (e) {
+      throw CustomException(message: e.toString());
+    }
+  }
 }

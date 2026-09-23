@@ -108,6 +108,7 @@ class AppRouter {
         return _buildRoute(const QrCodeView());
 
       case AppRoutes.createGroup:
+      
         return _buildRoute(
           BlocProvider(
             create: (_) => getIt<CreateGroupCubit>(),

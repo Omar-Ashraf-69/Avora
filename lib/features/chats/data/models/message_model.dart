@@ -10,6 +10,8 @@ class MessageModel {
     required this.updatedAt,
     this.content,
     this.imageUrl,
+    this.systemEvent,
+    this.metadata,
   });
 
   final String id;
@@ -23,6 +25,9 @@ class MessageModel {
 
   final DateTime createdAt;
   final DateTime updatedAt;
+
+  final SystemMessageType? systemEvent;
+  final Map<String, dynamic>? metadata;
 
   factory MessageModel.fromJson(Map<String, dynamic> json) {
     return MessageModel(
@@ -40,6 +45,16 @@ class MessageModel {
       updatedAt: DateTime.parse(
         json['updated_at'] as String,
       ),
+      systemEvent: json['system_event'] == null
+          ? null
+          : SystemMessageType.values.byName(
+              _mapSystemEvent(json['system_event'] as String),
+            ),
+      metadata: json['metadata'] == null
+          ? null
+          : Map<String, dynamic>.from(
+              json['metadata'] as Map,
+            ),
     );
   }
 
@@ -53,8 +68,21 @@ class MessageModel {
       imageUrl: imageUrl,
       createdAt: createdAt,
       updatedAt: updatedAt,
-          status: null,
-
+      status: null,
+      systemEvent: systemEvent,
+      metadata: metadata,
     );
+  }
+
+  static String _mapSystemEvent(String event) {
+    switch (event) {
+      case 'member_added':
+        return 'memberAdded';
+
+      default:
+        throw FormatException(
+          'Unknown system event: $event',
+        );
+    }
   }
 }

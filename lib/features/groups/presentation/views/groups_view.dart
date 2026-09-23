@@ -30,11 +30,24 @@ class _GroupsViewState extends State<GroupsView> {
   void initState() {
     super.initState();
 
-    context.read<GroupsCubit>().loadGroups();
+    context.read<GroupsCubit>().initialize();
   }
 
-  void _startNewGroup() {
-    context.pushNamed(AppRoutes.createGroup);
+  void _startNewGroup() async {
+    final conversationId = await context.pushNamed(AppRoutes.createGroup);
+
+    if (!mounted) return;
+
+    if (conversationId is String) {
+      await context.read<GroupsCubit>().loadGroups();
+
+      if (!mounted) return;
+
+      context.pushNamed(
+        AppRoutes.groupChatRoom,
+        arguments: {'conversationId': conversationId},
+      );
+    }
   }
 
   @override

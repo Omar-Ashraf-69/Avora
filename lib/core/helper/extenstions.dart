@@ -23,29 +23,50 @@ extension MeidaQueryExt on BuildContext {
   double get width => MediaQuery.of(this).size.width;
 }
 
-
 extension NavigatorExtension on BuildContext {
   void pop() => Navigator.of(this).pop();
- //void pop<T extends Object?>([T? result]) =>
-   // Navigator.of(this).pop(result);
-  void pushNamed(String routeName, {Object? arguments}) =>
-      Navigator.of(this).pushNamed(routeName, arguments: arguments);
-  void pushReplacementNamed(String routeName, {Object? arguments}) =>
-      Navigator.of(this).pushReplacementNamed(routeName, arguments: arguments);
+
+  Future<T?> pushNamed<T extends Object?>(
+    String routeName, {
+    Object? arguments,
+  }) =>
+      Navigator.of(this).pushNamed<T>(
+        routeName,
+        arguments: arguments,
+      );
+
+  Future<T?> pushReplacementNamed<T extends Object?, TO extends Object?>(
+    String routeName, {
+    Object? arguments,
+    TO? result,
+  }) =>
+      Navigator.of(this).pushReplacementNamed<T, TO>(
+        routeName,
+        arguments: arguments,
+        result: result,
+      );
+
   void pushNamedAndRemoveUntil(
     String routeName, {
     Object? arguments,
     required RoutePredicate predicate,
-  }) => Navigator.of(
-    this,
-  ).pushNamedAndRemoveUntil(routeName, predicate, arguments: arguments);
+  }) =>
+      Navigator.of(this).pushNamedAndRemoveUntil(
+        routeName,
+        predicate,
+        arguments: arguments,
+      );
 
-  void pushNamedAndRemoveAll(String routeName, {Object? arguments}) =>
-      Navigator.of(
-        this,
-      ).pushNamedAndRemoveUntil(routeName, (_) => false, arguments: arguments);
+  void pushNamedAndRemoveAll(
+    String routeName, {
+    Object? arguments,
+  }) =>
+      Navigator.of(this).pushNamedAndRemoveUntil(
+        routeName,
+        (_) => false,
+        arguments: arguments,
+      );
 }
-
 
 extension KeyboardExtension on BuildContext {
   bool get isKeyboardOpen =>

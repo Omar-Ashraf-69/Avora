@@ -54,12 +54,15 @@ import 'package:avora/features/chats/presentation/cubits/group_chat_cubit/group_
 import 'package:avora/features/chats/presentation/cubits/presence_cubit/presence_cubit.dart';
 import 'package:avora/features/groups/data/data_sources/group_remote_data_source.dart';
 import 'package:avora/features/groups/data/data_sources/group_remote_data_source_impl.dart';
+import 'package:avora/features/groups/data/data_sources/user_real_time_data_source.dart';
+import 'package:avora/features/groups/data/data_sources/user_real_time_data_source_impl.dart';
 import 'package:avora/features/groups/data/repos/group_avatar_repo_impl.dart';
 import 'package:avora/features/groups/data/repos/group_repo_impl.dart';
 import 'package:avora/features/groups/domain/entities/get_group_details_use_case.dart';
 import 'package:avora/features/groups/domain/repos/group_avatar_repo.dart';
 import 'package:avora/features/groups/domain/repos/group_repo.dart';
 import 'package:avora/features/groups/domain/use_case/create_group.dart';
+import 'package:avora/features/groups/domain/use_case/finalize_group_creation.dart';
 import 'package:avora/features/groups/domain/use_case/get_groups_use_case.dart';
 import 'package:avora/features/groups/domain/use_case/update_group_avatar.dart';
 import 'package:avora/features/groups/domain/use_case/upload_group_avatar.dart';
@@ -429,15 +432,25 @@ void _registerGroup() {
   getIt.registerLazySingleton<GetGroupsUseCase>(
     () => GetGroupsUseCase(getIt<GroupRepository>()),
   );
-
+  getIt.registerLazySingleton<FinalizeGroupCreationUseCase>(
+    () => FinalizeGroupCreationUseCase(getIt<GroupRepository>()),
+  );
+  getIt.registerLazySingleton<UserRealtimeDataSource>(
+    () => UserRealtimeDataSourceImpl(),
+  );
   getIt.registerFactory<GroupsCubit>(
-    () => GroupsCubit(getGroupsUseCase: getIt<GetGroupsUseCase>()),
+    () => GroupsCubit(
+      messageRealtimeDataSource: getIt<MessageRealtimeDataSource>(),
+      getGroupsUseCase: getIt<GetGroupsUseCase>(),
+      userRealtimeDataSource: getIt<UserRealtimeDataSource>(),
+    ),
   );
   getIt.registerFactory<CreateGroupCubit>(
     () => CreateGroupCubit(
       createGroupUseCase: getIt<CreateGroupUseCase>(),
       updateGroupAvatarUseCase: getIt<UpdateGroupAvatarUseCase>(),
       uploadGroupAvatarUseCase: getIt<UploadGroupAvatarUseCase>(),
+      finalizeGroupCreationUseCase: getIt<FinalizeGroupCreationUseCase>(),
     ),
   );
 }

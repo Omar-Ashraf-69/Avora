@@ -205,7 +205,7 @@ class GroupChatCubit extends Cubit<GroupChatState> {
 
   @override
   Future<void> close() async {
-    await messageRealtimeDataSource.unsubscribe();
+  await messageRealtimeDataSource.unsubscribeFromMessages();
 
     return super.close();
   }

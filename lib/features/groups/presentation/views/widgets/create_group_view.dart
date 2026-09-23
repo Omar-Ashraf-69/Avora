@@ -1,9 +1,7 @@
 import 'package:avora/core/constants/app_spacing.dart';
-import 'package:avora/core/funcs/loading_dialoag.dart';
 import 'package:avora/core/helper/custom_toast.dart';
 import 'package:avora/core/helper/extenstions.dart';
 import 'package:avora/core/helper/spacing.dart';
-import 'package:avora/core/routing/app_routes.dart';
 import 'package:avora/core/themes/app_colors.dart';
 import 'package:avora/core/themes/app_text_styles.dart';
 import 'package:avora/core/themes/padding.dart';
@@ -69,13 +67,10 @@ class _CreateGroupViewState extends State<CreateGroupView> {
     return BlocListener<CreateGroupCubit, CreateGroupState>(
       listener: (context, state) {
         if (state is CreateGroupSuccess) {
-          context.pop();
+          Navigator.of(context).pop(state.conversationId);
+
           ToastNoContext.showColoredToast(
             message: 'Group created successfully.',
-          );
-          context.pushReplacementNamed(
-            AppRoutes.groupChatRoom,
-            arguments: {'conversationId': state.conversationId},
           );
         }
 
@@ -85,9 +80,6 @@ class _CreateGroupViewState extends State<CreateGroupView> {
             color: AppColors.lightRed,
           );
           context.pop();
-        }
-        if (state is CreateGroupLoading) {
-          loadingDialog(context);
         }
       },
       child: Scaffold(
@@ -143,9 +135,16 @@ class _CreateGroupViewState extends State<CreateGroupView> {
                     ),
                   ),
                 ),
-                BottomActions(
-                  onCancel: () => context.pop(),
-                  onCreate: _createGroup,
+                BlocBuilder<CreateGroupCubit, CreateGroupState>(
+                  builder: (context, state) {
+                    final isLoading = state is CreateGroupLoading;
+
+                    return BottomActions(
+                      isLoading: isLoading,
+                      onCancel: isLoading ? () {} : () => context.pop(),
+                      onCreate: isLoading ? null : _createGroup,
+                    );
+                  },
                 ),
               ],
             ),
